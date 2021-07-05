@@ -43,8 +43,7 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        if (!Auth::attempt($request->validated()))
-        {
+        if (!Auth::attempt($request->validated())) {
             return $this->error('Credentials mismatch');
         }
 

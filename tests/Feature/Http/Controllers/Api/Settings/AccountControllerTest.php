@@ -13,7 +13,6 @@ class AccountControllerTest extends TestCase
     public function user_can_verify_account()
     {
         $data = [
-            'userId' => 1,
             'password' => 'genephillip222@gmail.com'
         ];
 
@@ -26,14 +25,13 @@ class AccountControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-
     /** @test */
     public function user_can_update_account()
     {
         $data = [
-            'userId' => 1,
-            'firstName' => 'Gene Pogi',
-            'lastName' => 'Artista',
+            'user_id' => 1,
+            'first_name' => 'Gene Pogi',
+            'last_name' => 'Artista',
             'email' => 'genephillip222@gmail.com',
             'password' => 'genephillip222@gmail.com'
         ];

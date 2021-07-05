@@ -16,7 +16,7 @@ class LoginControllerTest extends TestCase
             'password' => 'administrator'
         ];
 
-        $response = $this->post('/api/auth/login', $data, $this->apiHeader());
+        $response = $this->post('/api/auth/login', $data);
 
         $this->assertResponse($response);
     }

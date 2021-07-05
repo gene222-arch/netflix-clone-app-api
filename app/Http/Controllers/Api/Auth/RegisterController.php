@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\User;
+use App\Traits\Api\ApiServices;
 use App\Traits\Api\ApiResponser;
+use App\Traits\Auth\AuthServices;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Traits\Api\ApiServices;
-use App\Traits\Auth\AuthServices;
 
 class RegisterController extends Controller
 {
@@ -54,25 +55,29 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request)
     {
-        User::create([
-            'first_name' => $request->firstName,
-            'last_name' => $request->lastName,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        if (!Auth::attempt($request->only('email', 'password')))
-        {
-            return $this->error('Credentials mismatch', 401);
+        try {
+            DB::transaction(function () use ($request)
+            {
+                User::create([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+        
+                if (!Auth::attempt($request->only('email', 'password'))) {
+                    return $this->error('Credentials mismatch', 401);
+                }
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
         }
-
+        
         return $this->token(
             $this->getPersonalAccessToken($request),
-            'Successful Registration',
-            [
+            'Successful Registration', [
                 'user' => Auth::user(),
                 'permissions' => $this->authPermissionViaRoles()
-            ]
-        );
+        ]);
     }
 }

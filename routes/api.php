@@ -28,46 +28,58 @@ use App\Http\Controllers\Api\Exports\UserExportController;
  */
 Route::middleware(['api'])->group(function () 
 {
+
+    /**
+     * * Login
+     * * Register
+     */
     Route::prefix('auth')->group(function () 
     {
         Route::post('/login', [LoginController::class, 'login']);
         Route::post('/register', [RegisterController::class, 'register']);
     });
 
+    /**
+     * * Reset Password
+     */
     Route::prefix('forgot-password')->group(function () 
     {
         Route::post('/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
         Route::post('/reset', [ResetPasswordController::class, 'reset']);
     });
 
+    /**
+     * * Logout
+     */
     Route::middleware(['auth:api'])->group(function () 
     {
         Route::post('/logout', [LoginController::class, 'logout']);
         Route::get('/auth', [AuthController::class, 'show']);
     });
-});
 
-/**
- * Access rights module
- */
-Route::prefix('access-rights')->group(function () 
-{
-    Route::get('/', [AccessRightsController::class, 'index']);
-    Route::get('/{id}', [AccessRightsController::class, 'show']);
-    Route::post('/', [AccessRightsController::class, 'store']);
-    Route::put('/', [AccessRightsController::class, 'update']);
-    Route::delete('/', [AccessRightsController::class, 'destroy']);
-});
-
-/**
- * Settings
- */
-Route::prefix('settings')->group(function () 
-{
-    Route::prefix('account')->group(function () 
+    /**
+     * * Access rights
+     */
+    Route::prefix('access-rights')->group(function () 
     {
-        Route::post('/verify', [AccountController::class, 'verify']);
-        Route::put('/', [AccountController::class, 'update']);
+        Route::get('/', [AccessRightsController::class, 'index']);
+        Route::get('/{id}', [AccessRightsController::class, 'show']);
+        Route::post('/', [AccessRightsController::class, 'store']);
+        Route::put('/', [AccessRightsController::class, 'update']);
+        Route::delete('/', [AccessRightsController::class, 'destroy']);
+    });
+
+    /**
+     * * Settings
+     */
+    Route::prefix('settings')->group(function () 
+    {
+        Route::prefix('account')->group(function () 
+        {
+            Route::post('/verify', [AccountController::class, 'verify']);
+            Route::put('/', [AccountController::class, 'update']);
+        });
     });
 });
+
 

@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Api\Settings;
 
+use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Settings\Account\UpdateRequest;
 use App\Http\Requests\Settings\Account\VerifyUserRequest;
-use App\Traits\Api\ApiResponser;
-use App\Traits\Settings\AccountServices;
 
 class AccountController extends Controller
 {
-    use ApiResponser, AccountServices;
+    use ApiResponser;
 
     
     public function __construct()
@@ -26,10 +27,7 @@ class AccountController extends Controller
      */
     public function verify(VerifyUserRequest $request)
     {
-        $result = $this->verifyAccountViaPassword(
-            $request->userId,
-            $request->password 
-        );
+        $result = Hash::check($request->password, Auth::user()->password);
 
         return !$result
             ? $this->noContent()
@@ -44,16 +42,15 @@ class AccountController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateRequest $request)
-    {
-        $this->updateAccount(
-            $request->userId,
-            $request->firstName,
-            $request->lastName,
-            $request->email,
-            $request->password
-        );
+    { 
+        Auth::user()->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
 
-        return $this->success();
+        return $this->success(null, 'User account updated successfully.');
     }
 
 }
