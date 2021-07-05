@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\AccessRight\AccessRightsController;
 use App\Http\Controllers\Api\Exports\UserExportController;
-
+use App\Http\Controllers\UserProfilesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +67,18 @@ Route::middleware(['api'])->group(function ()
         Route::post('/', [AccessRightsController::class, 'store']);
         Route::put('/', [AccessRightsController::class, 'update']);
         Route::delete('/', [AccessRightsController::class, 'destroy']);
+    });
+    
+    /**
+      * Route
+      */
+    Route::prefix('user-profiles')->group(function () 
+    {
+        Route::get('/', [UserProfilesController::class, 'index']);
+        Route::get('/{profile}', [UserProfilesController::class, 'show']);
+        Route::post('/', [UserProfilesController::class, 'store']);
+        Route::put('/{profile}', [UserProfilesController::class, 'update']);
+        Route::delete('/{profile}', [UserProfilesController::class, 'destroy']);
     });
 
     /**

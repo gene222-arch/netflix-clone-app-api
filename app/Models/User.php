@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Jobs\QueuePasswordResetNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -57,5 +58,15 @@ class User extends Authenticatable
     {
         dispatch(new QueuePasswordResetNotification($this, $token))
             ->delay(now()->addSeconds(10));
+    }
+    
+    /**
+     * Define a one-to-many relationship with UserProfile Class
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function profiles(): HasMany
+    {
+        return $this->hasMany(UserProfile::class);
     }
 }
