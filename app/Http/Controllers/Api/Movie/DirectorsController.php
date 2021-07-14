@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Director;
-use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Movie\Director\Request;
+use App\Http\Requests\Movie\Director\DestroyRequest;
 
 class DirectorsController extends Controller
 {
@@ -18,9 +19,15 @@ class DirectorsController extends Controller
      */
     public function index()
     {
-        $result = true;
+        $result = Director::all([
+            'id',
+            'pseudonym',
+            'birth_name',
+            'date_of_birth',
+            'biographical_information'
+        ]);
 
-        return !$result
+        return !$result->count()
             ? $this->noContent()
             : $this->success($result);
     }
@@ -29,55 +36,53 @@ class DirectorsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\Movie\Director\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        return $this->success([
-            'data' => ''
-        ]);
+        Director::create($request->validated());
+
+        return $this->success(null, 'Director created successfully.');
     }
+
 
     /**
      * Display the specified resource.
      *
-     * @param  Director  $director
+     * @param  Director  $cast
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Director $director)
+    public function show(Director $cast)
     {
-        return $this->success($director);
+        return $this->success($cast);
     }
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Director  $director
+     * @param  App\Http\Requests\Movie\Director\Request  $request
+     * @param  Director  $cast
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Director $director)
+    public function update(Request $request, Director $cast)
     {
-        $director->update([
+        $cast->update($request->validated());
 
-        ]);
-        
-        return $this->success([
-            'data' => ''
-        ]);
+        return $this->success(null, 'Director updated successfully.');
     }
 
+    
     /**
      * Remove the specified resource from storage.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy()
+    public function destroy(DestroyRequest $request)
     {
-        return $this->success([
-            'data' => ''
-        ]);
+        Director::whereIn('id', $request->ids)->delete();
+
+        return $this->success(null, 'Director/s deleted successfully.');
     }
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\AccessRight\AccessRightsController;
 use App\Http\Controllers\Api\Exports\UserExportController;
 use App\Http\Controllers\Api\Movie\AuthorsController;
 use App\Http\Controllers\Api\Movie\CastsController;
+use App\Http\Controllers\Api\Movie\DirectorsController;
 use App\Http\Controllers\Api\Movie\GenresController;
 use App\Http\Controllers\Api\Movie\MoviesController;
 use App\Http\Controllers\UserProfilesController;
@@ -93,6 +94,18 @@ Route::middleware(['api'])->group(function ()
         Route::put('/{cast}', [CastsController::class, 'update']);
         Route::delete('/', [CastsController::class, 'destroy']);
     });
+
+    /**
+      * Director
+      */
+      Route::prefix('directors')->group(function () 
+      {
+          Route::get('/', [DirectorsController::class, 'index']);
+          Route::get('/{director}', [DirectorsController::class, 'show']);
+          Route::post('/', [DirectorsController::class, 'store']);
+          Route::put('/{director}', [DirectorsController::class, 'update']);
+          Route::delete('/', [DirectorsController::class, 'destroy']);
+      });
 
     /**
       * Genre

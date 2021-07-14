@@ -31,6 +31,6 @@ class Author extends Model
     */
     public function movies(): BelongsToMany
     {
-        return $this->belongsToMany('movie_casts', Movie::class);
+        return $this->belongsToMany('movie_authors', Movie::class);
     }
 }
