@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Cast;
-use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Movie\Cast\DestroyRequest;
+use App\Http\Requests\Movie\Cast\Request;
+use App\Models\Movie;
 
 class CastsController extends Controller
 {
@@ -18,9 +20,15 @@ class CastsController extends Controller
      */
     public function index()
     {
-        $result = true;
+        $result = Cast::all([
+            'id',
+            'pseudonym',
+            'birth_name',
+            'date_of_birth',
+            'biographical_information'
+        ]);
 
-        return !$result
+        return !$result->count()
             ? $this->noContent()
             : $this->success($result);
     }
@@ -29,15 +37,16 @@ class CastsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\Movie\Cast\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        return $this->success([
-            'data' => ''
-        ]);
+        Cast::create($request->validated());
+
+        return $this->success(null, 'Cast created successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -47,26 +56,22 @@ class CastsController extends Controller
      */
     public function show(Cast $cast)
     {
-        return !$this->success($cast);
+        return $this->success($cast);
     }
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\Movie\Cast\Request  $request
      * @param  Cast  $cast
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, Cast $cast)
     {
-        $cast->update([
+        $cast->update($request->validated());
 
-        ]);
-        
-        return $this->success([
-            'data' => ''
-        ]);
+        return $this->success(null, 'Cast updated successfully.');
     }
 
     /**
@@ -74,10 +79,10 @@ class CastsController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy()
+    public function destroy(DestroyRequest $request)
     {
-        return $this->success([
-            'data' => ''
-        ]);
+        Cast::whereIn('id', $request->ids)->delete();
+
+        return $this->success(null, 'Cast/s deleted successfully.');
     }
 }

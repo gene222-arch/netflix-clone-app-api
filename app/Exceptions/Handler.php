@@ -44,14 +44,19 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $exception)
+    /**
+     * render
+     *
+     * @param  mixed $request
+     * @param  mixed $e
+     * @return Symfony\Component\HttpFoundation\Response
+     */
+    public function render($request, Throwable $e)
     {
-        if ($exception instanceof ModelNotFoundException &&
-            $request->wantsJson())
-        {
+        if ($e instanceof ModelNotFoundException && $request->wantsJson()) {
             return $this->error('Resource not found', 404);
         }
 
-        return parent::render($request, $exception);
+        return parent::render($request, $e);
     }
 }

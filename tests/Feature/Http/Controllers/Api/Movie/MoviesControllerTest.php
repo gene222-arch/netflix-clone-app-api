@@ -116,7 +116,7 @@ class MoviesControllerTest extends TestCase
     public function user_can_delete_movies()
     {
         $data = [
-            1
+            'ids' => [1]
         ];
 
         $response = $this->delete(

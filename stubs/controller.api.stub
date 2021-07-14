@@ -33,9 +33,7 @@ class {{ class }} extends Controller
      */
     public function store(Request $request)
     {
-        return $this->success([
-            'data' => ''
-        ]);
+        return $this->success(null, 'Model created successfully.');
     }
 
 
@@ -64,9 +62,7 @@ class {{ class }} extends Controller
 
         ]);
         
-        return $this->success([
-            'data' => ''
-        ]);
+        return $this->success(null, 'Model updated successfully.');
     }
 
 
@@ -77,8 +73,6 @@ class {{ class }} extends Controller
      */
     public function destroy()
     {
-        return $this->success([
-            'data' => ''
-        ]);
+        return $this->success(null, 'Model deleted successfully.');
     }
 }

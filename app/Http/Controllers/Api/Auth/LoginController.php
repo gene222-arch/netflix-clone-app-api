@@ -53,7 +53,7 @@ class LoginController extends Controller
             $this->getPersonalAccessToken($request),
             'User logged in successfully.',
             [
-                'user' => Auth::user(),
+                'user' => Auth::user()->withoutRelations(),
                 'permissions' => $this->authPermissionViaRoles()
             ]
         );

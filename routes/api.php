@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\AccessRight\AccessRightsController;
 use App\Http\Controllers\Api\Exports\UserExportController;
+use App\Http\Controllers\Api\Movie\CastsController;
 use App\Http\Controllers\Api\Movie\MoviesController;
 use App\Http\Controllers\UserProfilesController;
 
@@ -67,6 +68,17 @@ Route::middleware(['api'])->group(function ()
         Route::delete('/', [AccessRightsController::class, 'destroy']);
     });
     
+    /**
+      * Casts
+      */
+    Route::prefix('casts')->group(function () 
+    {
+        Route::get('/', [CastsController::class, 'index']);
+        Route::get('/{cast}', [CastsController::class, 'show']);
+        Route::post('/', [CastsController::class, 'store']);
+        Route::put('/{cast}', [CastsController::class, 'update']);
+        Route::delete('/', [CastsController::class, 'destroy']);
+    });
 
     /**
      * Movie
