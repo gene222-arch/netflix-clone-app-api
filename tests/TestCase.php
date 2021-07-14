@@ -17,28 +17,12 @@ abstract class TestCase extends BaseTestCase
         $this->withoutExceptionHandling();
     }
 
-
     protected function apiHeader()
     {
         return [
             'Accept' => 'application/json'
         ];
     }
-
-    /**
-     * Expected JSON response from the request
-     * 
-     * @return array
-     */
-    protected function jsonStructure()
-    {
-        return [
-            'status',
-            'message',
-            'data'
-        ];
-    }
-
 
     /**
      * 
@@ -50,7 +34,11 @@ abstract class TestCase extends BaseTestCase
     {
         $response
             ->assertStatus($code)
-            ->assertJsonStructure($this->jsonStructure());
+            ->assertJsonStructure([
+                'status',
+                'message',
+                'data'
+            ]);
     }
 
 }

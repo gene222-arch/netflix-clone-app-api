@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\AccessRight\AccessRightsController;
 use App\Http\Controllers\Api\Exports\UserExportController;
+use App\Http\Controllers\Api\Movie\MoviesController;
 use App\Http\Controllers\UserProfilesController;
 
 /*
@@ -51,14 +52,11 @@ Route::middleware(['api'])->group(function ()
     /**
      * * Logout
      */
-    Route::middleware(['auth:api'])->group(function () 
-    {
-        Route::post('/logout', [LoginController::class, 'logout']);
-        Route::get('/auth', [AuthController::class, 'show']);
-    });
+    Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:api');
+    Route::get('/auth', [AuthController::class, 'show']);
 
     /**
-     * * Access rights
+     * * Access right
      */
     Route::prefix('access-rights')->group(function () 
     {
@@ -69,8 +67,21 @@ Route::middleware(['api'])->group(function ()
         Route::delete('/', [AccessRightsController::class, 'destroy']);
     });
     
+
     /**
-      * Route
+     * Movie
+     */
+    Route::prefix('movies')->group(function () 
+    {
+        Route::get('/', [MoviesController::class, 'index']);
+        Route::get('/{movie}', [MoviesController::class, 'show']);
+        Route::post('/', [MoviesController::class, 'store']);
+        Route::put('/{movie}', [MoviesController::class, 'update']);
+        Route::delete('/', [MoviesController::class, 'destroy']);
+    });
+
+    /**
+      * User Profile
       */
     Route::prefix('user-profiles')->group(function () 
     {

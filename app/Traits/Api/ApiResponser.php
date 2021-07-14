@@ -35,10 +35,10 @@ trait ApiResponser
      * @param integer $code
      * @return \Illuminate\Http\JsonResponse
      */
-    public function success($data = null, $message = null, $code = 200)
+    public function success($data = null, $message = null, int $code = 200)
 	{
 		return response()->json([
-			'status' => 'Success',
+			'status' => 'success',
 			'message' => $message,
 			'data' => $data
 		], $code);
@@ -52,10 +52,10 @@ trait ApiResponser
      * @param integer $code
      * @return \Illuminate\Http\JsonResponse
      */
-	public function error($message = null, $code = 422)
+	public function error($message = null, int $code = 422)
 	{
 		return response()->json([
-			'status'=> 'Error',
+			'status'=> 'error',
 			'message' => $message
         ], $code);
     }
@@ -64,10 +64,10 @@ trait ApiResponser
     /**
      * Success Response
      *
-     * @param [type] $message
+     * @param string $message
      * @return \Illuminate\Http\JsonResponse
      */
-    public function noContent($message = 'No Content')
+    public function noContent(string $message = 'No Content')
 	{
 		return response()->json([
             'status' => 'No Content',

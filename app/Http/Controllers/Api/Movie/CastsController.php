@@ -1,12 +1,13 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Http\Controllers\Api\Movie;
 
-use {{ rootNamespace }}Http\Controllers\Controller;
+use App\Models\Cast;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
+use App\Http\Controllers\Controller;
 
-class {{ class }} extends Controller
+class CastsController extends Controller
 {
     use ApiResponser;
 
@@ -38,16 +39,15 @@ class {{ class }} extends Controller
         ]);
     }
 
-
     /**
      * Display the specified resource.
      *
-     * @param  Model  $model
+     * @param  Cast  $cast
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Model $model)
+    public function show(Cast $cast)
     {
-        return $this->success($model);
+        return !$this->success($cast);
     }
 
 
@@ -55,12 +55,12 @@ class {{ class }} extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Model  $model
+     * @param  Cast  $cast
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Model $model)
+    public function update(Request $request, Cast $cast)
     {
-        $model->update([
+        $cast->update([
 
         ]);
         
@@ -68,7 +68,6 @@ class {{ class }} extends Controller
             'data' => ''
         ]);
     }
-
 
     /**
      * Remove the specified resource from storage.

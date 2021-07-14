@@ -4,7 +4,7 @@ namespace App\Traits\Upload;
 
 use Illuminate\Support\Facades\Storage;
 
-trait ImageUpload
+trait HasUploadable
 {
     /**
      * File upload
@@ -14,7 +14,7 @@ trait ImageUpload
      * @param  string $pathToStore
      * @return string
      */
-    public function uploadImage($request, string $property, string $pathToStore): string
+    public function upload($request, string $property, string $pathToStore): string
     {
         $path = '';
         

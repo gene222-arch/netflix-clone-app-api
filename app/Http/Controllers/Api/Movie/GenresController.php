@@ -1,12 +1,13 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Http\Controllers\Api\Movie;
 
-use {{ rootNamespace }}Http\Controllers\Controller;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
+use App\Http\Controllers\Controller;
 
-class {{ class }} extends Controller
+class GenresController extends Controller
 {
     use ApiResponser;
 
@@ -38,16 +39,15 @@ class {{ class }} extends Controller
         ]);
     }
 
-
     /**
      * Display the specified resource.
      *
-     * @param  Model  $model
+     * @param  Genre  $genre
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Model $model)
+    public function show(Genre $genre)
     {
-        return $this->success($model);
+        return $this->success($genre);
     }
 
 
@@ -55,12 +55,12 @@ class {{ class }} extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Model  $model
+     * @param  Genre  $genre
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Model $model)
+    public function update(Request $request, Genre $genre)
     {
-        $model->update([
+        $genre->update([
 
         ]);
         
@@ -68,7 +68,6 @@ class {{ class }} extends Controller
             'data' => ''
         ]);
     }
-
 
     /**
      * Remove the specified resource from storage.

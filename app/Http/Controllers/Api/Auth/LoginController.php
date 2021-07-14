@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Traits\Api\ApiResponser;
 use App\Traits\Api\ApiServices;
 use App\Traits\Auth\AuthServices;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class LoginController extends Controller
 {
@@ -65,11 +67,8 @@ class LoginController extends Controller
      */
     public function logout()
     {
-        $this->guard()
-            ->user()
-            ->token()
-            ->revoke();
-        
+        Auth::user()->token()->revoke();
+
         return $this->success([], 'User logged out successfully.');
     }
 }
