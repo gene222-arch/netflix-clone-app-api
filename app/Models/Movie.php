@@ -42,7 +42,7 @@ class Movie extends Model
     */
     public function authors(): BelongsToMany
     {
-        return $this->belongsToMany('movie_authors', Author::class);
+        return $this->belongsToMany(Author::class, 'movie_authors');
     }
 
     /**
@@ -52,7 +52,7 @@ class Movie extends Model
      */
     public function casts(): BelongsToMany
     {
-        return $this->belongsToMany('movie_casts', Cast::class);
+        return $this->belongsToMany(Cast::class, 'movie_casts');
     }
 
     /**
@@ -62,7 +62,7 @@ class Movie extends Model
     */
     public function directors(): BelongsToMany
     {
-        return $this->belongsToMany('movie_directors', Director::class);
+        return $this->belongsToMany(Director::class, 'movie_directors');
     }
 
     /**
@@ -72,6 +72,6 @@ class Movie extends Model
     */
     public function genres(): BelongsToMany
     {
-        return $this->belongsToMany('movie_genres', Genre::class);
+        return $this->belongsToMany(Genre::class, 'movie_genres');
     }
 }

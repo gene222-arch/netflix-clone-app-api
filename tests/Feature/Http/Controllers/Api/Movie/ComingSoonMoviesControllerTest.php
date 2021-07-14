@@ -116,6 +116,8 @@ class ComingSoonMoviesControllerTest extends TestCase
     /** test */
     public function user_can_update_coming_soon_movie()
     {
+        $id = 2;
+
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
         $wallpaper = UploadedFile::fake()->image('wallpaper.jpg')->size(100);
         $titleLogo = UploadedFile::fake()->image('title_logo.png', 100, 100)->size(100);
@@ -139,7 +141,7 @@ class ComingSoonMoviesControllerTest extends TestCase
         ];
 
         $response = $this->put(
-            '/api/coming-soon-movies/',
+            "/api/coming-soon-movies/$id",
             $data,
             $this->apiHeader()
         );

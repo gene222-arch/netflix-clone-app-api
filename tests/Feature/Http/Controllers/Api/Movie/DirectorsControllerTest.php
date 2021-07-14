@@ -39,13 +39,13 @@ class DirectorsControllerTest extends TestCase
     public function user_can_create_director()
     {
         $data = [
-            'pseudonym' => '',
-            'birth_name' => 'Mone Kamishiraishi',
-            'gender' => 'Female',
-            'height_in_cm' => '152',
-            'biographical_information' => 'Mone Kamishiraishi was born on January 27, 1998 in Kagoshima, Japan. She is an actress, known for Your Name. (2016), Lady Maiko (2014) and Wolf Children (2012).',
+            'pseudonym' => 'Makoto Shinkai',
+            'birth_name' => 'Makoto Niitsu',
+            'gender' => 'Male',
+            'height_in_cm' => '180.34',
+            'biographical_information' => "Makoto Niitsu, also known as Makoto Shinkai, is a Japanese animator, filmmaker and manga artist best known for directing Your Name, the third highest-grossing anime film of all time and 2019's Weathering",
             'birth_details' => '',
-            'date_of_birth' => '1998-01-27',
+            'date_of_birth' => '1973-02-09',
             'place_of_birth' => '',
             'death_details' => '',
             'date_of_death' => '',
@@ -68,12 +68,13 @@ class DirectorsControllerTest extends TestCase
         $id = 1;
 
         $data = [
-            'birth_name' => 'Mone Kamishiraishi',
-            'gender' => 'Female',
-            'height_in_cm' => '152',
-            'biographical_information' => 'Mone Kamishiraishi was born on January 27, 1998 in Kagoshima, Japan. She is an actress, known for Your Name. (2016), Lady Maiko (2014) and Wolf Children (2012).',
+            'pseudonym' => 'Makoto Shinkai',
+            'birth_name' => 'Makoto Niitsu',
+            'gender' => 'Male',
+            'height_in_cm' => '180.34',
+            'biographical_information' => "Makoto Niitsu, also known as Makoto Shinkai, is a Japanese animator, filmmaker and manga artist best known for directing Your Name, the third highest-grossing anime film of all time and 2019's Weathering",
             'birth_details' => '',
-            'date_of_birth' => '1998-01-27',
+            'date_of_birth' => '1973-02-09',
             'place_of_birth' => '',
             'death_details' => '',
             'date_of_death' => '',

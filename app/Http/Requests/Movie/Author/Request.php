@@ -17,7 +17,7 @@ class Request extends BaseRequest
             'pseudonym' => ['nullable', 'string'],
             'birth_name' => ['required', 'string'],
             'gender' => ['required', 'string', 'in:Male,Female'],
-            'height_in_cm' => ['required', 'integer'],
+            'height_in_cm' => ['required', 'numeric'],
             'biographical_information' => ['nullable', 'string'],
             'birth_details' => ['nullable', 'string'],
             'date_of_birth' => ['required', 'date'],

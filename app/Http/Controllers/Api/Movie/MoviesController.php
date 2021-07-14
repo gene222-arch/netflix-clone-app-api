@@ -43,9 +43,11 @@ class MoviesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->createMovie($request);
+        $result = $this->createMovie($request);
 
-        return $this->success(null, 'Movie created successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Movie created successfully.');
     }
 
 
@@ -70,9 +72,11 @@ class MoviesController extends Controller
      */
     public function update(UpdateRequest $request, Movie $movie)
     {
-        $this->updateMovie($request, $movie);
+        $result = $this->updateMovie($request, $movie);
 
-        return $this->success(null, 'Movie updated successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Movie updated successfully.');
     }
 
 

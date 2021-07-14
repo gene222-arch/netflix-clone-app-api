@@ -35,7 +35,13 @@ class StoreRequest extends BaseRequest
                 'dimensions:min_width=300,min_height=300,max_width=2000,max_height=3000', 
                 'max:2048'
             ],
-            'wallpaper' => ['required', 'image', 'mimes:jpeg,jpg', 'max:2048'],
+            'wallpaper' => [
+                'required', 
+                'image', 
+                'mimes:jpeg,jpg', 
+                'dimensions:min_width=1000,min_height=500,max_width=3000,max_height=2500',
+                'max:2048'
+            ],
             'video_trailer' => ['required', 'file', 'mimes:mp4,ogx,oga,ogv,ogg,webm', 'max:50000'],
             'title_logo' => [
                 'required', 

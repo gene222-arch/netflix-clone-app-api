@@ -39,7 +39,7 @@ class GenresControllerTest extends TestCase
     public function user_can_create_genre()
     {
         $data = [
-            'name' => 'Horrors',
+            'name' => 'Fantasy',
             'enabled' => false
         ];
 

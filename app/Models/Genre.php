@@ -28,6 +28,6 @@ class Genre extends Movie
     */
     public function movies(): BelongsToMany
     {
-        return $this->belongsToMany('movie_genres', Movie::class);
+        return $this->belongsToMany(Movie::class, 'movie_genres');
     }
 }

@@ -40,15 +40,15 @@ class MoviesControllerTest extends TestCase
     public function user_can_create_movie()
     {
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg')->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 100, 100)->size(100);
+        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
+        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
         $video = UploadedFile::fake()->image('video.mp4')->size(10000);
 
         $data = [
             'title' => 'Kimi no Na wa',
             'plot' => 'Two teenagers share a profound, magical connection upon discovering they are swapping bodies. Things manage to become even more complicated when the boy and girl decide to meet in person.',
             'year_of_release' => 2016,
-            'date_of_release' => '12-14-2016',
+            'date_of_release' => '2016-04-12',
             'duration_in_minutes' => 107,
             'age_restriction' => 12,
             'country' => 'Japan',
@@ -70,23 +70,28 @@ class MoviesControllerTest extends TestCase
             $this->apiHeader()
         );
 
+        dd(json_decode($response->getContent()));
+
         $this->assertResponse($response);
     }
 
 
-    /** test */
+    /** @test */
     public function user_can_update_movie()
     {
+        $id = 3;
+
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg')->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 100, 100)->size(100);
+        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 1000, 500)->size(100);
+        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
         $video = UploadedFile::fake()->image('video.mp4')->size(10000);
 
         $data = [
-            'title' => 'Kimi no Na wa',
+            'id' => $id,
+            'title' => 'Your Name',
             'plot' => 'Two teenagers share a profound, magical connection upon discovering they are swapping bodies. Things manage to become even more complicated when the boy and girl decide to meet in person.',
             'year_of_release' => 2016,
-            'date_of_release' => '12-14-2016',
+            'date_of_release' => '2016-04-12',
             'duration_in_minutes' => 107,
             'age_restriction' => 12,
             'country' => 'Japan',
@@ -95,18 +100,17 @@ class MoviesControllerTest extends TestCase
             'genres' => 'Anime, Romance, Drama, Animation, Fantasy',
             'directors' => 'Makoto Shinkai',
             'authors' => 'Makoto Shinkai',
-            'poster' => $poster,
-            'wallpaper' => $wallpaper,
-            'video' => $video,
             'title_logo' => $titleLogo,
             'video_size_in_mb' => '325'
         ];
 
         $response = $this->put(
-            '/api/movies/',
+            "/api/movies/$id",
             $data,
             $this->apiHeader()
         );
+
+        dd(json_decode($response->getContent()));
 
         $this->assertResponse($response);
     }

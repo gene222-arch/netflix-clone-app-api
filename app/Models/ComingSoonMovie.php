@@ -41,7 +41,7 @@ class ComingSoonMovie extends Model
     */
     public function authors(): BelongsToMany
     {
-        return $this->belongsToMany('coming_soon_movie_authors', Author::class);
+        return $this->belongsToMany(Author::class, 'coming_soon_movie_authors');
     }
 
     /**
@@ -51,7 +51,7 @@ class ComingSoonMovie extends Model
      */
     public function casts(): BelongsToMany
     {
-        return $this->belongsToMany('coming_soon_movie_casts', Cast::class);
+        return $this->belongsToMany(Cast::class, 'coming_soon_movie_casts');
     }
 
     /**
@@ -61,7 +61,7 @@ class ComingSoonMovie extends Model
     */
     public function directors(): BelongsToMany
     {
-        return $this->belongsToMany('coming_soon_movie_directors', Director::class);
+        return $this->belongsToMany(Director::class, 'coming_soon_movie_directors');
     }
 
     /**
@@ -71,7 +71,7 @@ class ComingSoonMovie extends Model
     */
     public function genres(): BelongsToMany
     {
-        return $this->belongsToMany('coming_soon_movie_genres', Genre::class);
+        return $this->belongsToMany(Genre::class, 'coming_soon_movie_genres');
     }
 
     /**

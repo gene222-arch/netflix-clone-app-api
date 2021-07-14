@@ -31,6 +31,6 @@ class Cast extends Model
     */
     public function movies(): BelongsToMany
     {
-        return $this->belongsToMany('movie_casts', Movie::class);
+        return $this->belongsToMany(Movie::class, 'movie_casts');
     }
 }

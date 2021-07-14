@@ -97,7 +97,7 @@ Route::middleware(['api'])->group(function ()
     });
 
     /**
-     * Movie
+     * Coming Soon Movie
      */
     Route::prefix('coming-soon-movies')->group(function () 
     {

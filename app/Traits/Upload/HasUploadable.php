@@ -2,6 +2,7 @@
 
 namespace App\Traits\Upload;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 trait HasUploadable
@@ -32,6 +33,22 @@ trait HasUploadable
         }
 
         return Storage::disk('public')->url($path);
+    }
+    
+    /**
+     * deleteFile
+     *
+     * @param  $request
+     * @param  array $file
+     * @return void
+     */
+    public function deleteFile($request, array $file)
+    {
+        foreach ($file as $name => $path) {
+            if ($request->hasFile($name)) {
+                File::delete($path);
+            }
+        }
     }
 
 }
