@@ -6,14 +6,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class CastsControllerTest extends TestCase
+class AuthorsControllerTest extends TestCase
 {
 
     /** test */
-    public function user_can_view_any_casts()
+    public function user_can_view_any_authors()
     {
         $response = $this->get(
-            '/api/casts',
+            '/api/authors',
             $this->apiHeader()
         );
 
@@ -22,12 +22,12 @@ class CastsControllerTest extends TestCase
 
 
     /** test */
-    public function user_can_view_cast()
+    public function user_can_view_author()
     {
-        $id = 2;
+        $id = 1;
 
         $response = $this->get(
-            "/api/casts/$id",
+            "/api/authors/$id",
             $this->apiHeader()
         );
 
@@ -36,7 +36,7 @@ class CastsControllerTest extends TestCase
 
 
     /** test */
-    public function user_can_create_cast()
+    public function user_can_create_author()
     {
         $data = [
             'pseudonym' => '',
@@ -53,7 +53,7 @@ class CastsControllerTest extends TestCase
         ];
 
         $response = $this->post(
-            '/api/casts',
+            '/api/authors',
             $data,
             $this->apiHeader()
         );
@@ -63,7 +63,7 @@ class CastsControllerTest extends TestCase
 
 
     /** test */
-    public function user_can_update_cast()
+    public function user_can_update_author()
     {
         $id = 1;
 
@@ -81,7 +81,7 @@ class CastsControllerTest extends TestCase
         ];
 
         $response = $this->put(
-            "/api/casts/$id",
+            "/api/authors/$id",
             $data,
             $this->apiHeader()
         );
@@ -91,14 +91,14 @@ class CastsControllerTest extends TestCase
 
 
     /** test */
-    public function user_can_delete_casts()
+    public function user_can_delete_authors()
     {
         $data = [
             'ids' => [2]
         ];
 
         $response = $this->delete(
-            '/api/casts',
+            '/api/authors',
             $data
         );
 

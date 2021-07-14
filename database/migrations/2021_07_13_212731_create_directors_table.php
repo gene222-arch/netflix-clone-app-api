@@ -15,7 +15,7 @@ class CreateDirectorsTable extends Migration
     {
         Schema::create('directors', function (Blueprint $table) {
             $table->id();
-            $table->string('pseudonyms')->unique();
+            $table->string('pseudonym')->nullable();
             $table->string('birth_name');
             $table->char('gender', 6);
             $table->unsignedDouble('height_in_cm', 5, 2)->default(0);
@@ -27,6 +27,11 @@ class CreateDirectorsTable extends Migration
             $table->timestamp('date_of_death')->nullable();
             $table->boolean('enabled');
             $table->timestamps();
+
+            $table->index([
+                'pseudonym',
+                'birth_name'
+            ]);
         });
     }
 

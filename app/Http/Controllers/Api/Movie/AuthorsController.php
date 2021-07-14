@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Author;
-use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Movie\Author\Request;
+use App\Http\Requests\Movie\Author\DestroyRequest;
 
 class AuthorsController extends Controller
 {
@@ -18,9 +19,15 @@ class AuthorsController extends Controller
      */
     public function index()
     {
-        $result = true;
+        $result = Author::all([
+            'id',
+            'pseudonym',
+            'birth_name',
+            'date_of_birth',
+            'biographical_information'
+        ]);
 
-        return !$result
+        return !$result->count()
             ? $this->noContent()
             : $this->success($result);
     }
@@ -29,55 +36,53 @@ class AuthorsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\Movie\Author\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        return $this->success([
-            'data' => ''
-        ]);
+        Author::create($request->validated());
+
+        return $this->success(null, 'Author created successfully.');
     }
+
 
     /**
      * Display the specified resource.
      *
-     * @param  Author  $author
+     * @param  Author  $cast
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Author $author)
+    public function show(Author $cast)
     {
-        return $this->success($author);
+        return $this->success($cast);
     }
 
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Author  $author
+     * @param  App\Http\Requests\Movie\Author\Request  $request
+     * @param  Author  $cast
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Author $author)
+    public function update(Request $request, Author $cast)
     {
-        $author->update([
+        $cast->update($request->validated());
 
-        ]);
-        
-        return $this->success([
-            'data' => ''
-        ]);
+        return $this->success(null, 'Author updated successfully.');
     }
 
+    
     /**
      * Remove the specified resource from storage.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy()
+    public function destroy(DestroyRequest $request)
     {
-        return $this->success([
-            'data' => ''
-        ]);
+        Author::whereIn('id', $request->ids)->delete();
+
+        return $this->success(null, 'Author/s deleted successfully.');
     }
 }
