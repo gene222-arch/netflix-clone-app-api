@@ -14,7 +14,7 @@ class DestroyRequest extends BaseRequest
     public function rules()
     {
         return [
-            //
+            'ids.*' => ['required', 'integer', 'distinct', 'exists:directors,id']
         ];
     }
 }
