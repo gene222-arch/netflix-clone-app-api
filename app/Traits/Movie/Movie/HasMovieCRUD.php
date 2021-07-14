@@ -10,7 +10,7 @@ use App\Models\Movie;
 trait HasMovieCRUD
 {
 
-    public function createMovie(StoreRequest $request)
+    public function createMovie(StoreRequest $request): bool|string
     {
         try {
             DB::transaction(function () use ($request)
@@ -35,7 +35,7 @@ trait HasMovieCRUD
         return true;
     }
 
-    public function updateMovie(UpdateRequest $request, Movie $movie)
+    public function updateMovie(UpdateRequest $request, Movie $movie): bool|string
     {
         try {
             DB::transaction(function () use ($request, $movie)

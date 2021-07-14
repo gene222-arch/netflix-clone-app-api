@@ -13,7 +13,7 @@ class CreateComingSoonMoviesTable extends Migration
      */
     public function up()
     {
-        Schema::create('coming_soon_movies', function (Blueprint $table) {
+        Schema::create('coming_soon_movie_movies', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
             $table->text('plot');
@@ -32,6 +32,94 @@ class CreateComingSoonMoviesTable extends Migration
             $table->string('status')->default('Coming Soon');
             $table->timestamps();
         });
+
+        Schema::create('coming_soon_movie_genres', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('coming_soon_movie_id');
+            $table->foreignId('genre_id');
+            $table->timestamps();
+
+            $table->unique([
+                'coming_soon_movie_id',
+                'genre_id'
+            ]);
+
+            $table->foreign('coming_soon_movie_id')
+                ->references('id')
+                ->on('coming_soon_movies')
+                ->cascadeOnDelete();
+
+            $table->foreign('genre_id')
+                ->references('id')
+                ->on('genres')
+                ->cascadeOnDelete();
+        });
+
+        Schema::create('coming_soon_movie_directors', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('coming_soon_id');
+            $table->foreignId('director_id');
+            $table->timestamps();
+
+            $table->unique([
+                'coming_soon_id',
+                'director_id'
+            ]);
+
+            $table->foreign('coming_soon_id')
+                ->references('id')
+                ->on('coming_soon_movies')
+                ->cascadeOnDelete();
+
+            $table->foreign('director_id')
+                ->references('id')
+                ->on('directors')
+                ->cascadeOnDelete();
+        });
+
+        Schema::create('coming_soon_movie_authors', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('coming_soon_id');
+            $table->foreignId('author_id');
+            $table->timestamps();
+
+            $table->unique([
+                'coming_soon_id',
+                'author_id'
+            ]);
+
+            $table->foreign('coming_soon_id')
+                ->references('id')
+                ->on('coming_soon_movies')
+                ->cascadeOnDelete();
+
+            $table->foreign('author_id')
+                ->references('id')
+                ->on('authors')
+                ->cascadeOnDelete();
+        });
+
+        Schema::create('coming_soon_movie_casts', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('coming_soon_id');
+            $table->foreignId('cast_id');
+            $table->timestamps();
+
+            $table->unique([
+                'coming_soon_id',
+                'cast_id'
+            ]);
+
+            $table->foreign('coming_soon_id')
+                ->references('id')
+                ->on('coming_soon_movies')
+                ->cascadeOnDelete();
+
+            $table->foreign('cast_id')
+                ->references('id')
+                ->on('casts')
+                ->cascadeOnDelete();
+        });
     }
 
     /**
@@ -41,6 +129,10 @@ class CreateComingSoonMoviesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('coming_soon_movies');
+        Schema::dropIfExists('coming_soon_movie_casts');
+        Schema::dropIfExists('coming_soon_movie_authors');
+        Schema::dropIfExists('coming_soon_movie_directors');
+        Schema::dropIfExists('coming_soon_movie_genres');
+        Schema::dropIfExists('coming_soon_movie_movies');
     }
 }

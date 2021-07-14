@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Settings\AccountController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\AccessRight\AccessRightsController;
+use App\Http\Controllers\Api\ComingSoonMovie\ComingSoonMoviesController;
 use App\Http\Controllers\Api\Exports\UserExportController;
 use App\Http\Controllers\Api\Movie\AuthorsController;
 use App\Http\Controllers\Api\Movie\CastsController;
@@ -96,16 +97,28 @@ Route::middleware(['api'])->group(function ()
     });
 
     /**
+     * Movie
+     */
+    Route::prefix('coming-soon-movies')->group(function () 
+    {
+        Route::get('/', [ComingSoonMoviesController::class, 'index']);
+        Route::get('/{comingSoonMovie}', [ComingSoonMoviesController::class, 'show']);
+        Route::post('/', [ComingSoonMoviesController::class, 'store']);
+        Route::put('/{comingSoonMovie}', [ComingSoonMoviesController::class, 'update']);
+        Route::delete('/', [ComingSoonMoviesController::class, 'destroy']);
+    });
+
+    /**
       * Director
       */
-      Route::prefix('directors')->group(function () 
-      {
-          Route::get('/', [DirectorsController::class, 'index']);
-          Route::get('/{director}', [DirectorsController::class, 'show']);
-          Route::post('/', [DirectorsController::class, 'store']);
-          Route::put('/{director}', [DirectorsController::class, 'update']);
-          Route::delete('/', [DirectorsController::class, 'destroy']);
-      });
+    Route::prefix('directors')->group(function () 
+    {
+        Route::get('/', [DirectorsController::class, 'index']);
+        Route::get('/{director}', [DirectorsController::class, 'show']);
+        Route::post('/', [DirectorsController::class, 'store']);
+        Route::put('/{director}', [DirectorsController::class, 'update']);
+        Route::delete('/', [DirectorsController::class, 'destroy']);
+    });
 
     /**
       * Genre

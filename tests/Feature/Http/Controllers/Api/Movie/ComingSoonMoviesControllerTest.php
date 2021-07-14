@@ -7,14 +7,14 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class MoviesControllerTest extends TestCase
+class ComingSoonMoviesControllerTest extends TestCase
 {
 
     /** test */
-    public function user_can_view_any_movies()
+    public function user_can_view_any_coming_soon_movies()
     {
         $response = $this->get(
-            '/api/movies',
+            '/api/coming-soon-movies',
             $this->apiHeader()
         );
 
@@ -23,12 +23,12 @@ class MoviesControllerTest extends TestCase
 
 
     /** test */
-    public function user_can_view_movie()
+    public function user_can_view_coming_soon_movie()
     {
         $id = 1;
 
         $response = $this->get(
-            "/api/movies/$id",
+            "/api/coming-soon-movies/$id",
             $this->apiHeader()
         );
 
@@ -37,18 +37,16 @@ class MoviesControllerTest extends TestCase
 
 
     /** test */
-    public function user_can_create_movie()
+    public function user_can_create_coming_soon_movie()
     {
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
         $wallpaper = UploadedFile::fake()->image('wallpaper.jpg')->size(100);
         $titleLogo = UploadedFile::fake()->image('title_logo.png', 100, 100)->size(100);
-        $video = UploadedFile::fake()->image('video.mp4')->size(10000);
+        $videoTrailer = UploadedFile::fake()->image('video_trailer.mp4')->size(1000);
 
         $data = [
             'title' => 'Kimi no Na wa',
             'plot' => 'Two teenagers share a profound, magical connection upon discovering they are swapping bodies. Things manage to become even more complicated when the boy and girl decide to meet in person.',
-            'year_of_release' => 2016,
-            'date_of_release' => '12-14-2016',
             'duration_in_minutes' => 107,
             'age_restriction' => 12,
             'country' => 'Japan',
@@ -59,13 +57,12 @@ class MoviesControllerTest extends TestCase
             'authors' => 'Makoto Shinkai',
             'poster' => $poster,
             'wallpaper' => $wallpaper,
-            'video' => $video,
+            'video_trailer' => $videoTrailer,
             'title_logo' => $titleLogo,
-            'video_size_in_mb' => '325'
         ];
 
         $response = $this->post(
-            '/api/movies',
+            '/api/coming-soon-movies',
             $data,
             $this->apiHeader()
         );
@@ -75,18 +72,16 @@ class MoviesControllerTest extends TestCase
 
 
     /** test */
-    public function user_can_update_movie()
+    public function user_can_update_coming_soon_movie()
     {
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
         $wallpaper = UploadedFile::fake()->image('wallpaper.jpg')->size(100);
         $titleLogo = UploadedFile::fake()->image('title_logo.png', 100, 100)->size(100);
-        $video = UploadedFile::fake()->image('video.mp4')->size(10000);
+        $videoTrailer = UploadedFile::fake()->image('video.mp4')->size(1000);
 
         $data = [
             'title' => 'Kimi no Na wa',
             'plot' => 'Two teenagers share a profound, magical connection upon discovering they are swapping bodies. Things manage to become even more complicated when the boy and girl decide to meet in person.',
-            'year_of_release' => 2016,
-            'date_of_release' => '12-14-2016',
             'duration_in_minutes' => 107,
             'age_restriction' => 12,
             'country' => 'Japan',
@@ -97,13 +92,12 @@ class MoviesControllerTest extends TestCase
             'authors' => 'Makoto Shinkai',
             'poster' => $poster,
             'wallpaper' => $wallpaper,
-            'video' => $video,
+            'video_trailer' => $videoTrailer,
             'title_logo' => $titleLogo,
-            'video_size_in_mb' => '325'
         ];
 
         $response = $this->put(
-            '/api/movies/',
+            '/api/coming-soon-movies/',
             $data,
             $this->apiHeader()
         );
@@ -113,14 +107,14 @@ class MoviesControllerTest extends TestCase
 
 
     /** test */
-    public function user_can_delete_movies()
+    public function user_can_delete_coming_soon_movies()
     {
         $data = [
             'ids' => [1]
         ];
 
         $response = $this->delete(
-            '/api/movies/',
+            '/api/coming-soon-movies',
             $data
         );
 
