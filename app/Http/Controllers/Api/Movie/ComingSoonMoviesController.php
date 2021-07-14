@@ -9,6 +9,10 @@ use App\Traits\ComingSoonMovie\HasComingSoonMovieCRUD;
 use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\DestroyRequest;
+use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
+use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
+use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
+use App\Models\Trailer;
 
 class ComingSoonMoviesController extends Controller
 {
@@ -35,6 +39,7 @@ class ComingSoonMoviesController extends Controller
     }
 
 
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -50,6 +55,20 @@ class ComingSoonMoviesController extends Controller
 
 
     /**
+     * Store a newly created resource in storage.
+     *
+     * @param  App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeTrailer(TrailerStoreRequest $request)
+    {
+       Trailer::create($request->validated());
+
+        return $this->success(null, 'Trailer created successfully.');
+    }
+
+
+    /**
      * Display the specified resource.
      *
      * @param  ComingSoonMovie  $comingSoonMovie
@@ -60,6 +79,17 @@ class ComingSoonMoviesController extends Controller
         return $this->success($comingSoonMovie);
     }
 
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  ComingSoonMovie  $comingSoonMovie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showTrailer(ComingSoonMovie $comingSoonMovie)
+    {
+        return $this->success($comingSoonMovie->with('trailers')->get());
+    }
 
     /**
      * Update the specified resource in storage.
@@ -77,6 +107,20 @@ class ComingSoonMoviesController extends Controller
 
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest  $request
+     * @param  Trailer  $trailer
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateTrailer(TrailerUpdateRequest $request, Trailer $trailer)
+    {
+        $trailer->update($request->validated());
+
+        return $this->success(null, 'Trailer updated successfully.');
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  App\Http\Requests\Movie\ComingSoonMovie\DestroyRequest  $request
@@ -87,5 +131,19 @@ class ComingSoonMoviesController extends Controller
         ComingSoonMovie::whereIn('id', $request->ids)->delete();
 
         return $this->success(null, 'Coming Soon Movie/s deleted successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest  $request
+     * @param  integer  $comingSoonMovieID
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyTrailer(TrailerDestroyRequest $request, int $comingSoonMovieID)
+    {
+        Trailer::where('coming_soon_movie_id', $comingSoonMovieID)->whereIn('id', $request->ids)->delete();
+
+        return $this->success(null, 'Trailer/s deleted successfully.');
     }
 }

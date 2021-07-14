@@ -7,6 +7,7 @@ use App\Models\Genre;
 use App\Models\Director;
 use App\Traits\Upload\HasUploadable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -71,5 +72,15 @@ class ComingSoonMovie extends Model
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany('coming_soon_movie_genres', Genre::class);
+    }
+
+    /**
+    * Define a many-to-many relationship with Model class
+    *
+    * @return Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function trailers(): HasMany
+    {
+        return $this->hasMany('coming_soon_movie_trailers');
     }
 }

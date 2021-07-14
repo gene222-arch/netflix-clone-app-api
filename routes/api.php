@@ -106,6 +106,11 @@ Route::middleware(['api'])->group(function ()
         Route::post('/', [ComingSoonMoviesController::class, 'store']);
         Route::put('/{comingSoonMovie}', [ComingSoonMoviesController::class, 'update']);
         Route::delete('/', [ComingSoonMoviesController::class, 'destroy']);
+
+        Route::get('/{comingSoonMovie}/trailers', [ComingSoonMoviesController::class, 'showTrailer']);
+        Route::post('/{comingSoonMovie}/trailers', [ComingSoonMoviesController::class, 'storeTrailer']);
+        Route::put('/{comingSoonMovie}/trailers/{trailer}', [ComingSoonMoviesController::class, 'updateTrailer']);
+        Route::delete('/{comingSoonMovie}/trailers', [ComingSoonMoviesController::class, 'destroyTrailer']);
     });
 
     /**
