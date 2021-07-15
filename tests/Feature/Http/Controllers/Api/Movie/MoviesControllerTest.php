@@ -55,7 +55,7 @@ class MoviesControllerTest extends TestCase
             'language' => 'Japanese',
             'cast_ids' => [1],
             'casts' => 'Mone Kamishiraishi',
-            'genre_ids' => [1, 2, 3, 4, 8],
+            'genre_ids' => [1, 2, 3, 4, 5],
             'genres' => 'Anime, Romance, Drama, Animation, Fantasy',
             'director_ids' => [1],
             'directors' => 'Makoto Shinkai',

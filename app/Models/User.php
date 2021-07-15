@@ -72,4 +72,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserProfile::class);
     }
+
+    /**
+    * Define a many-to-many relationship with Model class
+    *
+    * @return Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function userRatings(): HasMany
+    {
+        return $this->hasMany(UserRating::class);
+    }
 }

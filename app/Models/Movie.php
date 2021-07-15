@@ -7,6 +7,8 @@ use App\Models\Author;
 use App\Models\Director;
 use App\Traits\Upload\HasUploadable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -73,5 +75,25 @@ class Movie extends Model
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class, 'movie_genres');
+    }
+    
+    /**
+     * Define a one-to-one relationship with Rating Class
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function rating(): HasOne
+    {
+        return $this->hasOne(Rating::class);
+    }
+
+    /**
+    * Define a many-to-many relationship with Model class
+    *
+    * @return Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function userRatings(): HasMany
+    {
+        return $this->hasMany(UserRating::class);
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserProfile extends Model
 {
@@ -25,5 +26,15 @@ class UserProfile extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+    * Define a many-to-many relationship with Model class
+    *
+    * @return Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function userRatings(): HasMany
+    {
+        return $this->hasMany(UserRating::class);
     }
 }

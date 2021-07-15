@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Movie\CastsController;
 use App\Http\Controllers\Api\Movie\DirectorsController;
 use App\Http\Controllers\Api\Movie\GenresController;
 use App\Http\Controllers\Api\Movie\MoviesController;
+use App\Http\Controllers\Api\Movie\UserRatingsController;
 use App\Http\Controllers\UserProfilesController;
 
 /*
@@ -172,6 +173,20 @@ Route::middleware(['api'])->group(function ()
             Route::post('/verify', [AccountController::class, 'verify']);
             Route::put('/', [AccountController::class, 'update']);
         });
+    });
+
+    /**
+      * User Rating
+      */
+    Route::prefix('user-ratings')->group(function () 
+    {
+        Route::get('/', [UserRatingsController::class, 'index']);
+        Route::get('/users', [UserRatingsController::class, 'showByUserID']);
+        Route::get('/user-profiles/{userProfile}', [UserRatingsController::class, 'showByUserProfileID']);
+        Route::get('/movies/{movie}', [UserRatingsController::class, 'showByMovieID']);
+        Route::get('/{userRating}', [UserRatingsController::class, 'show']);
+        Route::post('/', [UserRatingsController::class, 'store']);
+        Route::delete('/', [UserRatingsController::class, 'destroy']);
     });
 });
 
