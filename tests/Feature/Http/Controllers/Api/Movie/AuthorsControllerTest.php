@@ -57,8 +57,6 @@ class AuthorsControllerTest extends TestCase
             $data,
             $this->apiHeader()
         );
-
-        dd(json_decode($response->getContent()));
         
         $this->assertResponse($response);
     }

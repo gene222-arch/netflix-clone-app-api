@@ -5,6 +5,8 @@ namespace App\Traits\Upload;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
+use function PHPUnit\Framework\isEmpty;
+
 trait HasUploadable
 {
     /**
@@ -44,11 +46,16 @@ trait HasUploadable
      */
     public function deleteFile($request, array $file)
     {
+        $paths = [];
+
         foreach ($file as $name => $path) {
             if ($request->hasFile($name)) {
-                File::delete($path);
+                $path = str_replace('http://localhost:8000/storage/', 'public/', $path);
+                $paths[] = $path;
             }
         }
+
+        Storage::delete($paths);
     }
 
 }

@@ -53,15 +53,19 @@ class MoviesControllerTest extends TestCase
             'age_restriction' => 12,
             'country' => 'Japan',
             'language' => 'Japanese',
-            'casts' => 'Mone Kamishiraishi, Ryûnosuke Kamiki, Aoi Yūki',
+            'cast_ids' => [1],
+            'casts' => 'Mone Kamishiraishi',
+            'genre_ids' => [1, 2, 3, 4, 8],
             'genres' => 'Anime, Romance, Drama, Animation, Fantasy',
+            'director_ids' => [1],
             'directors' => 'Makoto Shinkai',
+            'author_ids' => [1],
             'authors' => 'Makoto Shinkai',
             'poster' => $poster,
             'wallpaper' => $wallpaper,
             'video' => $video,
             'title_logo' => $titleLogo,
-            'video_size_in_mb' => '325'
+            'video_size_in_mb' => 325
         ];
 
         $response = $this->post(
@@ -79,10 +83,10 @@ class MoviesControllerTest extends TestCase
     /** @test */
     public function user_can_update_movie()
     {
-        $id = 3;
+        $id = 1;
 
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 1000, 500)->size(100);
+        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
         $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
         $video = UploadedFile::fake()->image('video.mp4')->size(10000);
 
@@ -96,12 +100,19 @@ class MoviesControllerTest extends TestCase
             'age_restriction' => 12,
             'country' => 'Japan',
             'language' => 'Japanese',
-            'casts' => 'Mone Kamishiraishi, Ryûnosuke Kamiki, Aoi Yūki',
+            'cast_ids' => [1],
+            'casts' => 'Mone Kamishiraishi',
+            'genre_ids' => [1, 2, 3, 4, 8],
             'genres' => 'Anime, Romance, Drama, Animation, Fantasy',
+            'director_ids' => [1],
             'directors' => 'Makoto Shinkai',
+            'author_ids' => [1],
             'authors' => 'Makoto Shinkai',
+            'poster' => $poster,
+            'wallpaper' => $wallpaper,
+            'video' => $video,
             'title_logo' => $titleLogo,
-            'video_size_in_mb' => '325'
+            'video_size_in_mb' => 325
         ];
 
         $response = $this->put(
