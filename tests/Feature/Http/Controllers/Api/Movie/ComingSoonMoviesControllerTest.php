@@ -32,6 +32,7 @@ class ComingSoonMoviesControllerTest extends TestCase
             $this->apiHeader()
         );
 
+        dd(json_decode($response->getContent()));
         $this->assertResponse($response);
     }
 
@@ -163,6 +164,19 @@ class ComingSoonMoviesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_update_coming_soon_movie_status()
+    {
+        $id = 1;
+
+        $response = $this->put(
+            "/api/coming-soon-movies/$id/status",
+            [],
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
 
     /** test */
     public function user_can_update_coming_soon_movie_trailer()

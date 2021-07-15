@@ -13,6 +13,7 @@ use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Models\Trailer;
 use App\Traits\Movie\HasComingSoonMovieCRUD;
+use Carbon\Carbon;
 
 class ComingSoonMoviesController extends Controller
 {
@@ -90,7 +91,7 @@ class ComingSoonMoviesController extends Controller
      */
     public function showTrailer(ComingSoonMovie $comingSoonMovie)
     {
-        return $this->success($comingSoonMovie->with('trailers')->get());
+        return $this->success($comingSoonMovie->trailers()->get());
     }
 
     /**
@@ -107,6 +108,23 @@ class ComingSoonMoviesController extends Controller
         return $result !== true 
         ? $this->error($result)
         : $this->success(null, 'Coming Soon Movie updated successfully.');
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  ComingSoonMovie  $comingSoonMovie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateStatus(ComingSoonMovie $comingSoonMovie)
+    {
+        $comingSoonMovie->update([
+            'status' => 'Released',
+            'released_at' => Carbon::now()
+        ]);
+
+        return $this->success(null, 'Coming Soon Movie Status updated successfully.');
     }
 
 

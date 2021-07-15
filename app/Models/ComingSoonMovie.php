@@ -33,6 +33,12 @@ class ComingSoonMovie extends Model
         'status'
     ];
 
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
         
     /**
     * Define a many-to-many relationship with Author class
@@ -81,6 +87,6 @@ class ComingSoonMovie extends Model
     */
     public function trailers(): HasMany
     {
-        return $this->hasMany('coming_soon_movie_trailers');
+        return $this->hasMany(Trailer::class);
     }
 }
