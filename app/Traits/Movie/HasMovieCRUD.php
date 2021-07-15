@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Movie\Movie;
+namespace App\Traits\Movie;
 
 use App\Models\Movie;
 use Illuminate\Support\Str;
@@ -26,7 +26,7 @@ trait HasMovieCRUD
                 $directorIDs = $request->director_ids;
                 $genreIDs = $request->genre_ids;
 
-                $pathToStore = 'movies/' . str_replace(' ', '', Str::lower($request->title));
+                $pathToStore = 'movies/' . str_replace(' ', '-', Str::lower($request->title));
 
                 $poster = $this->upload($request, 'poster', $pathToStore);
                 $wallpaper = $this->upload($request, 'wallpaper', $pathToStore);
@@ -68,12 +68,20 @@ trait HasMovieCRUD
                 $directorIDs = $request->director_ids;
                 $genreIDs = $request->genre_ids;    
 
-                $oldPath = 'movies/' . str_replace(' ', '', Str::lower($movie->title));
-                $newPath = 'movies/' . str_replace(' ', '', Str::lower($request->title));
+                $oldPath = 'public/movies/' . str_replace(' ', '-', Str::lower($movie->title));
+                $newPath = 'public/movies/' . str_replace(' ', '-', Str::lower($request->title));
+
+                /** Delete a file only if it exist within the request */
+                $this->deleteFile($request, [
+                    'poster' => $movie->poster_path,
+                    'wallpaper' => $movie->wallpaper_path,
+                    'title_logo' => $movie->title_logo_path,
+                    'video' => $movie->video_path
+                ]);
 
                 if ($newPath !== $oldPath) {
                     /** Rename folder */
-                    Storage::rename('public/' . $oldPath, $newPath);
+                    Storage::rename($oldPath, $newPath);
                     $pathToStore = $newPath;
                 }
                 else {
@@ -95,21 +103,10 @@ trait HasMovieCRUD
 
                 /** Upload a file/image only if it exist within the request */
                 foreach ($oldFiles as $fileName => $filePath) {
-                    if ($request->hasFile($fileName)) {
-                       $$fileName = $this->upload($request, $fileName, $pathToStore);
-                    }
-                    else {
-                        $$fileName = $filePath;
-                    }
+                    $$fileName = $request->hasFile($fileName) 
+                        ? $this->upload($request, $fileName, $pathToStore)
+                        : $filePath;
                 }
-
-                /** Delete a file only if it exist within the request */
-                $this->deleteFile($request, [
-                    'poster' => $movie->poster_path,
-                    'wallpaper' => $movie->wallpaper_path,
-                    'title_logo' => $movie->title_logo_path,
-                    'video' => $movie->video_path
-                ]);
 
                 $movieData = array_merge($movieData, [
                     'poster_path' => $poster,

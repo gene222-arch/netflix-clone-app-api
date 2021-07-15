@@ -80,7 +80,7 @@ class MoviesControllerTest extends TestCase
     }
 
 
-    /** @test */
+    /** test */
     public function user_can_update_movie()
     {
         $id = 1;

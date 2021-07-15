@@ -24,8 +24,6 @@ class AuthorSeeder extends Seeder
                 'birth_details' => '',
                 'date_of_birth' => '1973-02-09',
                 'place_of_birth' => '',
-                'death_details' => '',
-                'date_of_death' => '',
                 'enabled' => false,
             ]
         ]);

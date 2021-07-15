@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\Movie\DestroyRequest;
 use App\Http\Requests\Movie\Movie\StoreRequest;
 use App\Http\Requests\Movie\Movie\UpdateRequest;
-use App\Traits\Movie\Movie\HasMovieCRUD;
+use App\Traits\Movie\HasMovieCRUD;
 
 class MoviesController extends Controller
 {

@@ -21,11 +21,16 @@ class CastSeeder extends Seeder
                 'gender' => 'Female',
                 'height_in_cm' => '152',
                 'biographical_information' => 'Mone Kamishiraishi was born on January 27, 1998 in Kagoshima, Japan. She is an actress, known for Your Name. (2016), Lady Maiko (2014) and Wolf Children (2012).',
-                'birth_details' => '',
                 'date_of_birth' => '1998-01-27',
-                'place_of_birth' => '',
-                'death_details' => '',
-                'date_of_death' => '',
+                'enabled' => false,
+            ],
+            [
+                'pseudonym' => '',
+                'birth_name' => 'Kotaro Daigo',
+                'gender' => 'Male',
+                'height_in_cm' => 167,
+                'biographical_information' => 'Kotaro Daigo (醍醐虎汰朗, Daigo Kotaro) is a Japanese actor. He voiced Hodaka Morishima in Weathering With You.',
+                'date_of_birth' => '2000-09-01',
                 'enabled' => false,
             ]
         ]);

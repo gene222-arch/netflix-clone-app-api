@@ -10,10 +10,10 @@ class Trailer extends Model
 {
     use HasFactory;
 
-    protected $table = 'coming_soon_show_trailers';
+    protected $table = 'coming_soon_movie_trailers';
 
     protected $fillable = [
-        'coming_soon_show_id',
+        'coming_soon_movie_id',
         'title',
         'poster_path',
         'wallpaper_path',

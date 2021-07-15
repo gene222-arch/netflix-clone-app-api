@@ -13,7 +13,7 @@ class CreateComingSoonMoviesTable extends Migration
      */
     public function up()
     {
-        Schema::create('coming_soon_movie_movies', function (Blueprint $table) {
+        Schema::create('coming_soon_movies', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
             $table->text('plot');
@@ -57,16 +57,11 @@ class CreateComingSoonMoviesTable extends Migration
 
         Schema::create('coming_soon_movie_directors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('coming_soon_id');
-            $table->foreignId('director_id');
+            $table->foreignId('coming_soon_movie_id')->unique('csmd_coming_soon_movie_id_unique');
+            $table->foreignId('director_id')->unique('csmd_director_id_unique');
             $table->timestamps();
 
-            $table->unique([
-                'coming_soon_id',
-                'director_id'
-            ]);
-
-            $table->foreign('coming_soon_id')
+            $table->foreign('coming_soon_movie_id')
                 ->references('id')
                 ->on('coming_soon_movies')
                 ->cascadeOnDelete();
@@ -79,16 +74,16 @@ class CreateComingSoonMoviesTable extends Migration
 
         Schema::create('coming_soon_movie_authors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('coming_soon_id');
+            $table->foreignId('coming_soon_movie_id');
             $table->foreignId('author_id');
             $table->timestamps();
 
             $table->unique([
-                'coming_soon_id',
+                'coming_soon_movie_id',
                 'author_id'
             ]);
 
-            $table->foreign('coming_soon_id')
+            $table->foreign('coming_soon_movie_id')
                 ->references('id')
                 ->on('coming_soon_movies')
                 ->cascadeOnDelete();
@@ -101,16 +96,16 @@ class CreateComingSoonMoviesTable extends Migration
 
         Schema::create('coming_soon_movie_casts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('coming_soon_id');
+            $table->foreignId('coming_soon_movie_id');
             $table->foreignId('cast_id');
             $table->timestamps();
 
             $table->unique([
-                'coming_soon_id',
+                'coming_soon_movie_id',
                 'cast_id'
             ]);
 
-            $table->foreign('coming_soon_id')
+            $table->foreign('coming_soon_movie_id')
                 ->references('id')
                 ->on('coming_soon_movies')
                 ->cascadeOnDelete();

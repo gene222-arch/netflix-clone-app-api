@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\ComingSoonMovie;
+namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\ComingSoonMovie;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
-use App\Traits\ComingSoonMovie\HasComingSoonMovieCRUD;
 use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\DestroyRequest;
@@ -13,6 +12,7 @@ use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Models\Trailer;
+use App\Traits\Movie\HasComingSoonMovieCRUD;
 
 class ComingSoonMoviesController extends Controller
 {
@@ -38,7 +38,6 @@ class ComingSoonMoviesController extends Controller
             : $this->success($result);
     }
 
-
     
     /**
      * Store a newly created resource in storage.
@@ -48,9 +47,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->createComingSoonMovie($request);
+        $result = $this->createComingSoonMovie($request);
 
-        return $this->success(null, 'ComingSoonMovie created successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'ComingSoonMovie created successfully.');
     }
 
 
@@ -58,11 +59,12 @@ class ComingSoonMoviesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest  $request
+     * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeTrailer(TrailerStoreRequest $request)
+    public function storeTrailer(TrailerStoreRequest $request, ComingSoonMovie $comingSoonMovie)
     {
-       Trailer::create($request->validated());
+       $this->trailerCreate($request, $comingSoonMovie);
 
         return $this->success(null, 'Trailer created successfully.');
     }
@@ -100,9 +102,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function update(UpdateRequest $request, ComingSoonMovie $comingSoonMovie)
     {
-        $this->updateComingSoonMovie($request, $comingSoonMovie);
+        $result = $this->updateComingSoonMovie($request, $comingSoonMovie);
 
-        return $this->success(null, 'Coming Soon Movie updated successfully.');
+        return $result !== true 
+        ? $this->error($result)
+        : $this->success(null, 'Coming Soon Movie updated successfully.');
     }
 
 
@@ -110,12 +114,13 @@ class ComingSoonMoviesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest  $request
+     * @param  ComingSoonMovie  $comingSoonMovie
      * @param  Trailer  $trailer
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateTrailer(TrailerUpdateRequest $request, Trailer $trailer)
+    public function updateTrailer(TrailerUpdateRequest $request, ComingSoonMovie $comingSoonMovie, Trailer $trailer)
     {
-        $trailer->update($request->validated());
+        $this->trailerUpdate($request, $comingSoonMovie, $trailer);
 
         return $this->success(null, 'Trailer updated successfully.');
     }

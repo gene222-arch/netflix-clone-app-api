@@ -50,8 +50,7 @@ trait HasUploadable
 
         foreach ($file as $name => $path) {
             if ($request->hasFile($name)) {
-                $path = str_replace('http://localhost:8000/storage/', 'public/', $path);
-                $paths[] = $path;
+                $paths[] = str_replace('http://localhost:8000/storage/', 'public/', $path);
             }
         }
 

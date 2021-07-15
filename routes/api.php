@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\Settings\AccountController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\AccessRight\AccessRightsController;
-use App\Http\Controllers\Api\ComingSoonMovie\ComingSoonMoviesController;
+use App\Http\Controllers\Api\Movie\ComingSoonMoviesController;
 use App\Http\Controllers\Api\Exports\UserExportController;
 use App\Http\Controllers\Api\Movie\AuthorsController;
 use App\Http\Controllers\Api\Movie\CastsController;

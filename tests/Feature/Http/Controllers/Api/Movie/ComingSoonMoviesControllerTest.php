@@ -54,21 +54,25 @@ class ComingSoonMoviesControllerTest extends TestCase
     public function user_can_create_coming_soon_movie()
     {
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg')->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 100, 100)->size(100);
+        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
+        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
         $videoTrailer = UploadedFile::fake()->image('video_trailer.mp4')->size(1000);
 
         $data = [
-            'title' => 'Kimi no Na wa',
-            'plot' => 'Two teenagers share a profound, magical connection upon discovering they are swapping bodies. Things manage to become even more complicated when the boy and girl decide to meet in person.',
-            'duration_in_minutes' => 107,
+            'title' => 'Weathering With You',
+            'plot' => 'Set during a period of exceptionally rainy weather, high-school boy Hodaka Morishima runs away from his troubled rural home to Tokyo and befriends an orphan girl who can manipulate the weather.',
+            'duration_in_minutes' => 112,
             'age_restriction' => 12,
             'country' => 'Japan',
             'language' => 'Japanese',
-            'casts' => 'Mone Kamishiraishi, Ryûnosuke Kamiki, Aoi Yūki',
+            'casts' => 'Kotaro Daigo',
+            'cast_ids' => [2],
             'genres' => 'Anime, Romance, Drama, Animation, Fantasy',
+            'genre_ids' => [1, 2, 3, 4, 5],
             'directors' => 'Makoto Shinkai',
+            'director_ids' => [1],
             'authors' => 'Makoto Shinkai',
+            'author_ids' => [1],
             'poster' => $poster,
             'wallpaper' => $wallpaper,
             'video_trailer' => $videoTrailer,
@@ -81,8 +85,10 @@ class ComingSoonMoviesControllerTest extends TestCase
             $this->apiHeader()
         );
 
+        dd(json_decode($response->getContent()));
         $this->assertResponse($response);
     }
+
 
     /** test */
     public function user_can_create_coming_soon_movie_trailer()
@@ -90,16 +96,16 @@ class ComingSoonMoviesControllerTest extends TestCase
         $id  = 1;
 
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg')->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 100, 100)->size(100);
-        $videoTrailer = UploadedFile::fake()->image('video_trailer.mp4')->size(1000);
+        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
+        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
+        $video = UploadedFile::fake()->image('video.mp4')->size(1000);
 
         $data = [
             'coming_soon_movie_id' => $id,
-            'title' => 'Kimi no Na wa',
+            'title' => 'Kimi no Na wa Trailer II',
             'poster' => $poster,
             'wallpaper' => $wallpaper,
-            'video_trailer' => $videoTrailer,
+            'video' => $video,
             'title_logo' => $titleLogo,
         ];
 
@@ -109,6 +115,8 @@ class ComingSoonMoviesControllerTest extends TestCase
             $this->apiHeader()
         );
 
+        dd(json_decode($response->getContent()));
+
         $this->assertResponse($response);
     }
 
@@ -116,24 +124,29 @@ class ComingSoonMoviesControllerTest extends TestCase
     /** test */
     public function user_can_update_coming_soon_movie()
     {
-        $id = 2;
+        $id = 1;
 
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg')->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 100, 100)->size(100);
-        $videoTrailer = UploadedFile::fake()->image('video.mp4')->size(1000);
+        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
+        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
+        $videoTrailer = UploadedFile::fake()->image('video_trailer.mp4')->size(1000);
 
         $data = [
-            'title' => 'Kimi no Na wa',
-            'plot' => 'Two teenagers share a profound, magical connection upon discovering they are swapping bodies. Things manage to become even more complicated when the boy and girl decide to meet in person.',
-            'duration_in_minutes' => 107,
+            'id' => $id,
+            'title' => 'Tenki no Ko',
+            'plot' => 'Set during a period of exceptionally rainy weather, high-school boy Hodaka Morishima runs away from his troubled rural home to Tokyo and befriends an orphan girl who can manipulate the weather.',
+            'duration_in_minutes' => 112,
             'age_restriction' => 12,
             'country' => 'Japan',
             'language' => 'Japanese',
-            'casts' => 'Mone Kamishiraishi, Ryûnosuke Kamiki, Aoi Yūki',
+            'casts' => 'Kotaro Daigo',
+            'cast_ids' => [2],
             'genres' => 'Anime, Romance, Drama, Animation, Fantasy',
+            'genre_ids' => [1, 2, 3, 4, 5],
             'directors' => 'Makoto Shinkai',
+            'director_ids' => [1],
             'authors' => 'Makoto Shinkai',
+            'author_ids' => [1],
             'poster' => $poster,
             'wallpaper' => $wallpaper,
             'video_trailer' => $videoTrailer,
@@ -146,6 +159,7 @@ class ComingSoonMoviesControllerTest extends TestCase
             $this->apiHeader()
         );
 
+        dd(json_decode($response->getContent()));
         $this->assertResponse($response);
     }
 
@@ -154,19 +168,20 @@ class ComingSoonMoviesControllerTest extends TestCase
     public function user_can_update_coming_soon_movie_trailer()
     {
         $comingSoonMovieID  = 1;
-        $trailerID = 1;
+        $trailerID = 2;
 
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg')->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 100, 100)->size(100);
-        $videoTrailer = UploadedFile::fake()->image('video_trailer.mp4')->size(1000);
+        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
+        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
+        $video = UploadedFile::fake()->image('video.mp4')->size(1000);
 
         $data = [
+            'id' => $trailerID,
             'coming_soon_movie_id' => $comingSoonMovieID,
-            'title' => 'Kimi no Na wa',
+            'title' => 'Weathering with you trailer part II',
             'poster' => $poster,
             'wallpaper' => $wallpaper,
-            'video_trailer' => $videoTrailer,
+            'video' => $video,
             'title_logo' => $titleLogo,
         ];
 
@@ -178,7 +193,6 @@ class ComingSoonMoviesControllerTest extends TestCase
 
         $this->assertResponse($response);
     }
-
 
 
     /** test */
@@ -202,7 +216,7 @@ class ComingSoonMoviesControllerTest extends TestCase
     {
         $comingSoonMovieID = 1;
         $data = [
-            'ids' => [1]
+            'ids' => [3]
         ];
 
         $response = $this->delete(

@@ -22,6 +22,11 @@ class CreateComingSoonMovieTrailersTable extends Migration
             $table->string('title_logo_path');
             $table->string('video_path');
             $table->timestamps();
+
+            $table->foreign('coming_soon_movie_id')
+                ->references('id')
+                ->on('coming_soon_movies')
+                ->cascadeOnDelete();
         });
     }
 
