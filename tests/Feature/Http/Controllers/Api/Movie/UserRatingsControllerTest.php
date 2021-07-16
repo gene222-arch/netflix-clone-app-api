@@ -91,7 +91,7 @@ class UserRatingsControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-    /** @test */
+    /** test */
     public function user_can_delete_user_rating()
     {
         $data = [

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\MyList;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,19 @@ class UserProfile extends Model
         'is_for_kids'  
     ];
     
+
+    /** RELATIONSHIPS */
+
+    /**
+    * Define a many-to-many relationship with MyList class
+    *
+    * @return Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function myLists(): HasMany
+    {
+        return $this->hasMany(MyList::class);
+    }
+
     /**
      * Define an inverse one-to-one or many relationship with User Class.
      *

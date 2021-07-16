@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use App\Jobs\QueuePasswordResetNotification;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Models\MyList;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use App\Jobs\QueuePasswordResetNotification;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -63,6 +64,18 @@ class User extends Authenticatable
             ->delay(now()->addSeconds(10));
     }
     
+    /** RELATIONSHIPS */
+
+    /**
+    * Define a many-to-many relationship with MyList class
+    *
+    * @return Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function myLists(): HasMany
+    {
+        return $this->hasMany(MyList::class);
+    }
+
     /**
      * Define a one-to-many relationship with UserProfile Class
      *

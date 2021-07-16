@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Movie\CastsController;
 use App\Http\Controllers\Api\Movie\DirectorsController;
 use App\Http\Controllers\Api\Movie\GenresController;
 use App\Http\Controllers\Api\Movie\MoviesController;
+use App\Http\Controllers\Api\Movie\MyListsController;
 use App\Http\Controllers\Api\Movie\UserRatingsController;
 use App\Http\Controllers\UserProfilesController;
 
@@ -149,6 +150,15 @@ Route::middleware(['api'])->group(function ()
         Route::post('/', [MoviesController::class, 'store']);
         Route::put('/{movie}', [MoviesController::class, 'update']);
         Route::delete('/', [MoviesController::class, 'destroy']);
+    });
+
+    /**
+      * My List
+      */
+    Route::prefix('my-lists')->group(function () 
+    {
+        Route::post('/', [MyListsController::class, 'store']);
+        Route::delete('/', [MyListsController::class, 'destroy']);
     });
 
     /**
