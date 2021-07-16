@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\MyList;
+use App\Models\RemindMe;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,6 +31,16 @@ class UserProfile extends Model
     public function myLists(): HasMany
     {
         return $this->hasMany(MyList::class);
+    }
+
+    /**
+    * Define a many-to-many relationship with RemindMe class
+    *
+    * @return Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function remindMes(): HasMany
+    {
+        return $this->hasMany(RemindMe::class);
     }
 
     /**

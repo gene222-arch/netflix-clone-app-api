@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Movie\DirectorsController;
 use App\Http\Controllers\Api\Movie\GenresController;
 use App\Http\Controllers\Api\Movie\MoviesController;
 use App\Http\Controllers\Api\Movie\MyListsController;
+use App\Http\Controllers\Api\Movie\RemindMesController;
 use App\Http\Controllers\Api\Movie\UserRatingsController;
 use App\Http\Controllers\UserProfilesController;
 
@@ -159,6 +160,15 @@ Route::middleware(['api'])->group(function ()
     {
         Route::post('/', [MyListsController::class, 'store']);
         Route::delete('/', [MyListsController::class, 'destroy']);
+    });
+
+    /**
+      * Remind Me
+      */
+    Route::prefix('remind-mes')->group(function () 
+    {
+        Route::post('/', [RemindMesController::class, 'store']);
+        Route::delete('/', [RemindMesController::class, 'destroy']);
     });
 
     /**

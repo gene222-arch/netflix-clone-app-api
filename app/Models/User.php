@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\MyList;
+use App\Models\RemindMe;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -84,6 +85,17 @@ class User extends Authenticatable
     public function profiles(): HasMany
     {
         return $this->hasMany(UserProfile::class);
+    }
+
+
+    /**
+    * Define a many-to-many relationship with RemindMe class
+    *
+    * @return Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function remindMes(): HasMany
+    {
+        return $this->hasMany(RemindMe::class);
     }
 
     /**
