@@ -45,7 +45,7 @@ class MoviesControllerTest extends TestCase
         $video = UploadedFile::fake()->image('video.mp4')->size(10000);
 
         $data = [
-            'title' => 'Kimi no Na wa',
+            'title' => 'Kimi no na wa',
             'plot' => 'Two teenagers share a profound, magical connection upon discovering they are swapping bodies. Things manage to become even more complicated when the boy and girl decide to meet in person.',
             'year_of_release' => 2016,
             'date_of_release' => '2016-04-12',

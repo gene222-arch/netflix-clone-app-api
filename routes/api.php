@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Settings\AccountController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\AccessRight\AccessRightsController;
+use App\Http\Controllers\Api\Dashboards\DashboardsController;
 use App\Http\Controllers\Api\Movie\ComingSoonMoviesController;
 use App\Http\Controllers\Api\Exports\UserExportController;
 use App\Http\Controllers\Api\Movie\AuthorsController;
@@ -18,7 +19,7 @@ use App\Http\Controllers\Api\Movie\MoviesController;
 use App\Http\Controllers\Api\Movie\MyListsController;
 use App\Http\Controllers\Api\Movie\RemindMesController;
 use App\Http\Controllers\Api\Movie\UserRatingsController;
-use App\Http\Controllers\UserProfilesController;
+use App\Http\Controllers\User\UserProfilesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,6 +117,8 @@ Route::middleware(['api'])->group(function ()
         Route::put('/{comingSoonMovie}/trailers/{trailer}', [ComingSoonMoviesController::class, 'updateTrailer']);
         Route::delete('/{comingSoonMovie}/trailers', [ComingSoonMoviesController::class, 'destroyTrailer']);
     });
+
+	Route::get('/dashboard', DashboardsController::class);
 
     /**
       * Director

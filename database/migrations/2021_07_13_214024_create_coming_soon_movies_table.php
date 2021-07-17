@@ -58,9 +58,14 @@ class CreateComingSoonMoviesTable extends Migration
 
         Schema::create('coming_soon_movie_directors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('coming_soon_movie_id')->unique('csmd_coming_soon_movie_id_unique');
-            $table->foreignId('director_id')->unique('csmd_director_id_unique');
+            $table->foreignId('coming_soon_movie_id');
+            $table->foreignId('director_id');
             $table->timestamps();
+
+            $table->unique([
+                'coming_soon_movie_id',
+                'director_id'
+            ], 'csm_coming_soon_movie_id_director_id_unique');
 
             $table->foreign('coming_soon_movie_id')
                 ->references('id')
@@ -129,6 +134,6 @@ class CreateComingSoonMoviesTable extends Migration
         Schema::dropIfExists('coming_soon_movie_authors');
         Schema::dropIfExists('coming_soon_movie_directors');
         Schema::dropIfExists('coming_soon_movie_genres');
-        Schema::dropIfExists('coming_soon_movie_movies');
+        Schema::dropIfExists('coming_soon_movies');
     }
 }

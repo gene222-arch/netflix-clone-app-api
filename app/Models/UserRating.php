@@ -16,7 +16,8 @@ class UserRating extends Model
         'user_profile_id',
         'movie_id',
         'like',
-        'dislike'
+        'dislike',
+        'rate'
     ];
 
     public $timestamps = false;

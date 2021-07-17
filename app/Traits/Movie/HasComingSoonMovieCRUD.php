@@ -43,6 +43,7 @@ trait HasComingSoonMovieCRUD
                 ]);
 
                 $comingSoonMovie = ComingSoonMovie::create($comingSoonMovieData);
+                
                 $comingSoonMovie->authors()->attach($authorIDs);
                 $comingSoonMovie->casts()->attach($castIDs);
                 $comingSoonMovie->directors()->attach($directorIDs);

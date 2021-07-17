@@ -26,6 +26,14 @@ class GenreSeeder extends Seeder
             [
                 'name' => 'Animation',
                 'enabled' => false
+            ],
+            [
+                'name' => 'Fantasy',
+                'enabled' => false
+            ],
+            [
+                'name' => 'Anime',
+                'enabled' => false
             ]
         ]);
     }

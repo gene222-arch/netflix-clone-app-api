@@ -59,7 +59,7 @@ class ComingSoonMoviesControllerTest extends TestCase
         $videoTrailer = UploadedFile::fake()->image('video_trailer.mp4')->size(1000);
 
         $data = [
-            'title' => 'Weathering With You',
+            'title' => 'Tenki no ko',
             'plot' => 'Set during a period of exceptionally rainy weather, high-school boy Hodaka Morishima runs away from his troubled rural home to Tokyo and befriends an orphan girl who can manipulate the weather.',
             'duration_in_minutes' => 112,
             'age_restriction' => 12,
