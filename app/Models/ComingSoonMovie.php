@@ -39,6 +39,15 @@ class ComingSoonMovie extends Model
         'updated_at'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::created(function ($comingSoonMovie) {
+            event(new \App\Events\ComingSoonMovieCreatedEvent($comingSoonMovie));
+        });
+    }
+
         
     /**
     * Define a many-to-many relationship with Author class

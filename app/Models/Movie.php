@@ -36,6 +36,15 @@ class Movie extends Model
         'video_size_in_mb'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($movie) {
+            event(new \App\Events\MovieCreatedEvent($movie));
+        });
+    }
+
         
     /**
     * Define a many-to-many relationship with Author class

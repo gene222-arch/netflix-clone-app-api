@@ -14,6 +14,7 @@ class BroadcastServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        /** Only authenticated user can listen to a channel */
         Broadcast::routes(['middleware' => ['auth:api']]);
 
         require base_path('routes/channels.php');

@@ -25,7 +25,7 @@ class RemindMesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-    /** @test */
+    /** test */
     public function user_can_delete_remind_me()
     {
         $data = [
