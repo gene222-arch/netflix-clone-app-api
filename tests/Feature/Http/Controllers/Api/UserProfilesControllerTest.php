@@ -39,7 +39,7 @@ class UserProfilesControllerTest extends TestCase
     public function user_can_create_profile()
     {
         $data = [
-            'name' => 'Philippians',
+            'name' => 'Philippians V',
             'avatar' => 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/84c20033850498.56ba69ac290ea.png',
             'is_for_kids' => false
         ];
@@ -54,13 +54,14 @@ class UserProfilesControllerTest extends TestCase
     }
 
 
-    /** @test */
+    /** test */
     public function user_can_update_profile()
     {
         $id = 1;
 
         $data = [
-            'name' => 'Philippians II',
+            'id' => $id,
+            'name' => 'Philippians the II',
             'avatar' => 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/84c20033850498.56ba69ac290ea.png',
             'is_for_kids' => false
         ];

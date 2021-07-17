@@ -15,7 +15,8 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'unique:users,id,.' . Auth::user()->id],
+            'id' => ['required', 'integer', 'exists:user_profiles'],
+            'name' => ['required', 'string', "unique:user_profiles,name,{$this->id}"],
             'avatar' => ['required', 'string'],
             'is_for_kids' => ['required', 'boolean']
         ];

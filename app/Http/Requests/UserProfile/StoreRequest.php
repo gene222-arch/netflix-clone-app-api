@@ -15,7 +15,7 @@ class StoreRequest extends BaseRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'unique:users,id,.' . Auth::user()->id],
+            'name' => ['required', 'string', 'unique:user_profiles'],
             'avatar' => ['required', 'string'],
             'is_for_kids' => ['required', 'boolean']
         ];
