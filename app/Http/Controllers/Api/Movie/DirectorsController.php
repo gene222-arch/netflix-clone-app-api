@@ -19,13 +19,7 @@ class DirectorsController extends Controller
      */
     public function index()
     {
-        $result = Director::all([
-            'id',
-            'pseudonym',
-            'birth_name',
-            'date_of_birth',
-            'biographical_information'
-        ]);
+        $result = Director::all();
 
         return !$result->count()
             ? $this->noContent()
@@ -50,12 +44,12 @@ class DirectorsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Director  $cast
+     * @param  Director  $director
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Director $cast)
+    public function show(Director $director)
     {
-        return $this->success($cast);
+        return $this->success($director);
     }
 
 
@@ -63,16 +57,30 @@ class DirectorsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  App\Http\Requests\Movie\Director\Request  $request
-     * @param  Director  $cast
+     * @param  Director  $director
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Director $cast)
+    public function update(Request $request, Director $director)
     {
-        $cast->update($request->validated());
+        $director->update($request->validated());
 
         return $this->success(null, 'Director updated successfully.');
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  Director  $director
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateEnabledStatus(Director $director)
+    {
+        $director->update([
+            'enabled' => !$director->enabled 
+        ]);
+        
+        return $this->success(null, 'Updated enabled successfully.');
+    }
     
     /**
      * Remove the specified resource from storage.

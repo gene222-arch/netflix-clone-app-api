@@ -19,13 +19,7 @@ class AuthorsController extends Controller
      */
     public function index()
     {
-        $result = Author::all([
-            'id',
-            'pseudonym',
-            'birth_name',
-            'date_of_birth',
-            'biographical_information'
-        ]);
+        $result = Author::all();
 
         return !$result->count()
             ? $this->noContent()
@@ -50,12 +44,12 @@ class AuthorsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Author  $cast
+     * @param  Author  $author
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Author $cast)
+    public function show(Author $author)
     {
-        return $this->success($cast);
+        return $this->success($author);
     }
 
 
@@ -63,16 +57,30 @@ class AuthorsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  App\Http\Requests\Movie\Author\Request  $request
-     * @param  Author  $cast
+     * @param  Author  $author
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Author $cast)
+    public function update(Request $request, Author $author)
     {
-        $cast->update($request->validated());
+        $author->update($request->validated());
 
         return $this->success(null, 'Author updated successfully.');
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  Author  $author
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateEnabledStatus(Author $author)
+    {
+        $author->update([
+            'enabled' => !$author->enabled 
+        ]);
+        
+        return $this->success(null, 'Updated enabled successfully.');
+    }
     
     /**
      * Remove the specified resource from storage.

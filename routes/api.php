@@ -85,6 +85,7 @@ Route::middleware(['api'])->group(function ()
         Route::get('/{author}', [AuthorsController::class, 'show']);
         Route::post('/', [AuthorsController::class, 'store']);
         Route::put('/{author}', [AuthorsController::class, 'update']);
+        Route::put('/{author}/enabled', [AuthorsController::class, 'updateEnabledStatus']);
         Route::delete('/', [AuthorsController::class, 'destroy']);
     });
 
@@ -97,6 +98,7 @@ Route::middleware(['api'])->group(function ()
         Route::get('/{cast}', [CastsController::class, 'show']);
         Route::post('/', [CastsController::class, 'store']);
         Route::put('/{cast}', [CastsController::class, 'update']);
+        Route::put('/{cast}/enabled', [CastsController::class, 'updateEnabledStatus']);
         Route::delete('/', [CastsController::class, 'destroy']);
     });
 
@@ -129,6 +131,7 @@ Route::middleware(['api'])->group(function ()
         Route::get('/{director}', [DirectorsController::class, 'show']);
         Route::post('/', [DirectorsController::class, 'store']);
         Route::put('/{director}', [DirectorsController::class, 'update']);
+        Route::put('/{director}/enabled', [DirectorsController::class, 'updateEnabledStatus']);
         Route::delete('/', [DirectorsController::class, 'destroy']);
     });
 

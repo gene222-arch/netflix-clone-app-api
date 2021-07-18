@@ -89,6 +89,20 @@ class CastsControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_update_enabled_status()
+    {
+        $id = 1;
+
+        $response = $this->put(
+            "/api/casts/$id/enabled",
+            [],
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
 
     /** test */
     public function user_can_delete_casts()

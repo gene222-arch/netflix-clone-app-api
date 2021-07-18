@@ -37,11 +37,7 @@ trait ApiResponser
      */
     public function success($data = null, $message = null, int $code = 200)
 	{
-		return response()->json([
-			'status' => 'success',
-			'message' => $message,
-			'data' => $data
-		], $code);
+        return self::jsonResponse($code, $data, $message, 'success');
 	}
 
 
@@ -54,10 +50,7 @@ trait ApiResponser
      */
 	public function error($message = null, int $code = 422)
 	{
-		return response()->json([
-			'status'=> 'error',
-			'message' => $message
-        ], $code);
+        return self::jsonResponse($code, null, $message, 'error');
     }
 
 
@@ -69,9 +62,30 @@ trait ApiResponser
      */
     public function noContent(string $message = 'No Content')
 	{
-		return response()->json([
-            'status' => 'No Content',
-            'message' => $message
-		], 204);
+        return self::jsonResponse(204, null, $message);
 	}
+
+    private static function jsonResponse(int $code = 200, $data = null, ?string $message = '', string $status = '')
+    {
+        $status_message = [
+            200 => '200 OK',
+            204 => 'No Content',
+            400 => '400 Bad Request',
+            422 => 'Unprocessable Entity',
+            500 => '500 Internal Server Error'
+        ];
+    
+        header_remove();
+        http_response_code($code);
+        header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
+        header('Content-Type: application/json');
+        header("Status: $status_message[$code]");
+
+        return json_encode([
+            'data' => $data,
+            'message' => $message,
+            'status' => $status,
+            'status_message' => $status_message[$code]
+        ]);
+    }
 }

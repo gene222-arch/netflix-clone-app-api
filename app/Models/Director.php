@@ -24,6 +24,11 @@ class Director extends Model
         'enabled',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+    
     /**
     * Define a many-to-many relationship with Movie class
     *

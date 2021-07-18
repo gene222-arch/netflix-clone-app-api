@@ -20,13 +20,7 @@ class CastsController extends Controller
      */
     public function index()
     {
-        $result = Cast::all([
-            'id',
-            'pseudonym',
-            'birth_name',
-            'date_of_birth',
-            'biographical_information'
-        ]);
+        $result = Cast::all();
 
         return !$result->count()
             ? $this->noContent()
@@ -72,6 +66,21 @@ class CastsController extends Controller
         $cast->update($request->validated());
 
         return $this->success(null, 'Cast updated successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Cast  $cast
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateEnabledStatus(Cast $cast)
+    {
+        $cast->update([
+            'enabled' => !$cast->enabled 
+        ]);
+        
+        return $this->success(null, 'Updated enabled successfully.');
     }
 
     /**

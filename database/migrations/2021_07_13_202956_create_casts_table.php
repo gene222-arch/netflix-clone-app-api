@@ -20,10 +20,10 @@ class CreateCastsTable extends Migration
             $table->char('gender', 6);
             $table->unsignedDouble('height_in_cm', 5, 2)->default(0);
             $table->text('biographical_information')->nullable();
-            $table->string('birth_details')->nullable();
+            $table->text('birth_details')->nullable();
             $table->timestamp('date_of_birth')->default(now());
             $table->string('place_of_birth')->nullable();
-            $table->string('death_details')->nullable();
+            $table->text('death_details')->nullable();
             $table->timestamp('date_of_death')->nullable();
             $table->boolean('enabled');
             $table->timestamps();
