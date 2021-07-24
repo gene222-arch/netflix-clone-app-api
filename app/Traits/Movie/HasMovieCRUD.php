@@ -21,25 +21,11 @@ trait HasMovieCRUD
             DB::transaction(function () use ($request)
             {
                 $movieData = $this->filterMovieData($request);
-                $authorIDs = $request->author_ids;
-                $castIDs = $request->cast_ids;
-                $directorIDs = $request->director_ids;
-                $genreIDs = $request->genre_ids;
-
-                $pathToStore = 'movies/' . str_replace(' ', '-', Str::lower($request->title));
-
-                $poster = $this->upload($request, 'poster', $pathToStore);
-                $wallpaper = $this->upload($request, 'wallpaper', $pathToStore);
-                $title_logo = $this->upload($request, 'title_logo', $pathToStore);
-                $video = $this->upload($request, 'video', $pathToStore);
-
-                $movieData = array_merge($movieData, [
-                    'poster_path' => $poster,
-                    'wallpaper_path' => $wallpaper,
-                    'title_logo_path' => $title_logo,
-                    'video_path' => $video
-                ]);
-
+                $authorIDs = explode(',', $request->author_ids);
+                $castIDs = explode(',', $request->cast_ids);
+                $directorIDs = explode(',', $request->director_ids);
+                $genreIDs = explode(',', $request->genre_ids);
+                
                 $movie = Movie::create($movieData);
                 $movie->authors()->attach($authorIDs);
                 $movie->casts()->attach($castIDs);
@@ -63,57 +49,23 @@ trait HasMovieCRUD
             {   
                 /** Store data */
                 $movieData = $this->filterMovieData($request);
-                $authorIDs = $request->author_ids;
-                $castIDs = $request->cast_ids;
-                $directorIDs = $request->director_ids;
-                $genreIDs = $request->genre_ids;    
+                $authorIDs = explode(',', $request->author_ids);
+                $castIDs = explode(',', $request->cast_ids);
+                $directorIDs = explode(',', $request->director_ids);
+                $genreIDs = explode(',', $request->genre_ids);
 
                 $oldPath = 'public/movies/' . str_replace(' ', '-', Str::lower($movie->title));
                 $newPath = 'public/movies/' . str_replace(' ', '-', Str::lower($request->title));
 
                 /** Delete a file only if it exist within the request */
                 $this->deleteFile($request, [
-                    'poster' => $movie->poster_path,
-                    'wallpaper' => $movie->wallpaper_path,
-                    'title_logo' => $movie->title_logo_path,
-                    'video' => $movie->video_path
+                    'poster_path' => $movie->poster_path,
+                    'wallpaper_path' => $movie->wallpaper_path,
+                    'title_logo_path' => $movie->title_logo_path,
+                    'video_path' => $movie->video_path
                 ]);
 
-                if ($newPath !== $oldPath) {
-                    /** Rename folder */
-                    Storage::rename($oldPath, $newPath);
-                    $pathToStore = $newPath;
-                }
-                else {
-                    $pathToStore = $oldPath;
-                }
-
-                $poster = '';
-                $wallpaper = '';
-                $title_logo = '';
-                $video = '';
-
-                /** Get old data file's path */
-                $oldFiles = [
-                    'poster' => $movie->poster_path,
-                    'wallpaper' => $movie->wallpaper_path,
-                    'title_logo' => $movie->title_logo_path,
-                    'video' => $movie->video_path
-                ];
-
-                /** Upload a file/image only if it exist within the request */
-                foreach ($oldFiles as $fileName => $filePath) {
-                    $$fileName = $request->hasFile($fileName) 
-                        ? $this->upload($request, $fileName, $pathToStore)
-                        : $filePath;
-                }
-
-                $movieData = array_merge($movieData, [
-                    'poster_path' => $poster,
-                    'wallpaper_path' => $wallpaper,
-                    'title_logo_path' => $title_logo,
-                    'video_path' => $video
-                ]);
+                Storage::rename($oldPath, $newPath);
 
                 /** Update */
                 $movie->update($movieData);
@@ -135,11 +87,7 @@ trait HasMovieCRUD
             'author_ids', 
             'cast_ids', 
             'director_ids', 
-            'genre_ids', 
-            'poster', 
-            'wallpaper', 
-            'title_logo', 
-            'video'
+            'genre_ids'
         ]);
     }
 }

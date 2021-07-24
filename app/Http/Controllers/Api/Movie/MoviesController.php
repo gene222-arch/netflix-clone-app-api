@@ -8,11 +8,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\Movie\DestroyRequest;
 use App\Http\Requests\Movie\Movie\StoreRequest;
 use App\Http\Requests\Movie\Movie\UpdateRequest;
+use App\Http\Requests\Upload\UploadPosterRequest;
+use App\Http\Requests\Upload\UploadTitleLogoRequest;
+use App\Http\Requests\Upload\UploadVideoRequest;
+use App\Http\Requests\Upload\UploadWallpaperRequest;
 use App\Traits\Movie\HasMovieCRUD;
+use App\Traits\Upload\HasUploadable;
 
 class MoviesController extends Controller
 {
-    use ApiResponser, HasMovieCRUD;
+    use ApiResponser, HasMovieCRUD, HasUploadable;
 
     /**
      * Display a listing of the resource.
@@ -21,13 +26,7 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $result = Movie::all([
-            'id',
-            'genres',
-            'year_of_release',
-            'language',
-            'plot'
-        ]);
+        $result = Movie::all();
 
         return !$result->count()
             ? $this->noContent()
@@ -79,6 +78,57 @@ class MoviesController extends Controller
             : $this->success(null, 'Movie updated successfully.');
     }
 
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadPosterRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadPoster(UploadPosterRequest $request)
+    {   
+        $poster = $this->upload($request, 'poster', Movie::pathToStore($request->title));
+
+        return $this->success($poster);
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadTitleLogoRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadWallpaper(UploadWallpaperRequest $request)
+    {
+        $wallpaper = $this->upload($request, 'wallpaper', Movie::pathToStore($request->title));
+        
+        return $this->success($wallpaper);
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadVideoRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadTitleLogo(UploadTitleLogoRequest $request)
+    {
+        $title_logo = $this->upload($request, 'title_logo', Movie::pathToStore($request->title));
+        
+        return $this->success($title_logo);
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadWallpaperRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadVideo(UploadVideoRequest $request)
+    {
+        $video = $this->upload($request, 'video', Movie::pathToStore($request->title));
+        
+        return $this->success($video);
+    }
 
     /**
      * Remove the specified resource from storage.

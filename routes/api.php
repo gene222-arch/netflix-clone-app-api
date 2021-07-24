@@ -144,6 +144,7 @@ Route::middleware(['api'])->group(function ()
         Route::get('/{genre}', [GenresController::class, 'show']);
         Route::post('/', [GenresController::class, 'store']);
         Route::put('/{genre}', [GenresController::class, 'update']);
+        Route::put('/{genre}/enabled', [GenresController::class, 'updateEnabledStatus']);
         Route::delete('/', [GenresController::class, 'destroy']);
     });
 
@@ -155,6 +156,10 @@ Route::middleware(['api'])->group(function ()
         Route::get('/', [MoviesController::class, 'index']);
         Route::get('/{movie}', [MoviesController::class, 'show']);
         Route::post('/', [MoviesController::class, 'store']);
+        Route::post('/upload/poster', [MoviesController::class, 'uploadPoster']);
+        Route::post('/upload/wallpaper', [MoviesController::class, 'uploadWallpaper']);
+        Route::post('/upload/title-logo', [MoviesController::class, 'uploadTitleLogo']);
+        Route::post('/upload/video', [MoviesController::class, 'uploadVideo']);
         Route::put('/{movie}', [MoviesController::class, 'update']);
         Route::delete('/', [MoviesController::class, 'destroy']);
     });

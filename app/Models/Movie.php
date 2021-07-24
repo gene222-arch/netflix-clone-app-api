@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Genre;
 use App\Models\Author;
 use App\Models\Director;
+use Illuminate\Support\Str;
 use App\Traits\Upload\HasUploadable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -35,6 +36,13 @@ class Movie extends Model
         'title_logo_path',
         'video_size_in_mb'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    public static string $FILE_PATH = 'movies/';
 
     protected static function boot()
     {
@@ -86,6 +94,11 @@ class Movie extends Model
         return $this->belongsToMany(Genre::class, 'movie_genres');
     }
     
+    public static function pathToStore(string $title): string 
+    {
+        return self::$FILE_PATH . str_replace(' ', '-', Str::lower($title));
+    }
+
     /**
      * Define a one-to-one relationship with Rating Class
      *

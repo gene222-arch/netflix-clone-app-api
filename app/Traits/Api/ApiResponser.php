@@ -57,7 +57,7 @@ trait ApiResponser
     /**
      * Success Response
      *
-     * @param string $message
+     * @param [type] $message
      * @return \Illuminate\Http\JsonResponse
      */
     public function noContent(string $message = 'No Content')
@@ -65,7 +65,7 @@ trait ApiResponser
         return self::jsonResponse(204, null, $message);
 	}
 
-    private static function jsonResponse(int $code = 200, $data = null, ?string $message = '', string $status = '')
+    private static function jsonResponse(int $code = 200, $data = null, $message = null, string $status = '')
     {
         $status_message = [
             200 => '200 OK',
@@ -74,18 +74,12 @@ trait ApiResponser
             422 => 'Unprocessable Entity',
             500 => '500 Internal Server Error'
         ];
-    
-        header_remove();
-        http_response_code($code);
-        header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
-        header('Content-Type: application/json');
-        header("Status: $status_message[$code]");
 
-        return json_encode([
+        return response()->json([
             'data' => $data,
             'message' => $message,
             'status' => $status,
             'status_message' => $status_message[$code]
-        ]);
+        ], $code);
     }
 }

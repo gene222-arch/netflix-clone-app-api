@@ -39,8 +39,7 @@ class BaseRequest extends FormRequest
                 $errors[$key] = $value[array_key_first($value)];
             }
 
-            throw new HttpResponseException(
-                $this->error($errors, 422));
+            throw new HttpResponseException($this->error($errors, 422));
         }
     }
 

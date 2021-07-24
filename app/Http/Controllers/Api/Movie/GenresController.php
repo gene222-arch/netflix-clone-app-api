@@ -69,6 +69,21 @@ class GenresController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  Genre  $genre
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateEnabledStatus(Genre $genre)
+    {
+        $genre->update([
+            'enabled' => !$genre->enabled 
+        ]);
+        
+        return $this->success(null, 'Updated enabled successfully.');
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param App\Http\Requests\Movie\Genre\DestroyRequest $request
