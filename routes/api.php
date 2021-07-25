@@ -110,16 +110,20 @@ Route::middleware(['api'])->group(function ()
         Route::get('/', [ComingSoonMoviesController::class, 'index']);
         Route::get('/{comingSoonMovie}', [ComingSoonMoviesController::class, 'show']);
         Route::post('/', [ComingSoonMoviesController::class, 'store']);
-        Route::put('/{comingSoonMovie}', [ComingSoonMoviesController::class, 'update']);
         Route::post('/upload/poster', [ComingSoonMoviesController::class, 'uploadPoster']);
         Route::post('/upload/wallpaper', [ComingSoonMoviesController::class, 'uploadWallpaper']);
         Route::post('/upload/title-logo', [ComingSoonMoviesController::class, 'uploadTitleLogo']);
         Route::post('/upload/video-trailer', [ComingSoonMoviesController::class, 'uploadVideo']);
+        Route::put('/{comingSoonMovie}', [ComingSoonMoviesController::class, 'update']);
         Route::put('/{comingSoonMovie}/status', [ComingSoonMoviesController::class, 'updateStatus']);
         Route::delete('/', [ComingSoonMoviesController::class, 'destroy']);
 
         Route::get('/{comingSoonMovie}/trailers', [ComingSoonMoviesController::class, 'showTrailer']);
         Route::post('/{comingSoonMovie}/trailers', [ComingSoonMoviesController::class, 'storeTrailer']);
+        Route::post('/trailers/upload/poster', [ComingSoonMoviesController::class, 'uploadTrailerPoster']);
+        Route::post('/trailers/upload/wallpaper', [ComingSoonMoviesController::class, 'uploadTrailerWallpaper']);
+        Route::post('/trailers/upload/title-logo', [ComingSoonMoviesController::class, 'uploadTrailerTitleLogo']);
+        Route::post('/trailers/upload/video-trailer', [ComingSoonMoviesController::class, 'uploadTrailerVideo']);
         Route::put('/{comingSoonMovie}/trailers/{trailer}', [ComingSoonMoviesController::class, 'updateTrailer']);
         Route::delete('/{comingSoonMovie}/trailers', [ComingSoonMoviesController::class, 'destroyTrailer']);
     });

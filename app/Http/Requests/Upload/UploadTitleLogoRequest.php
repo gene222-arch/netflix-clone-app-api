@@ -14,9 +14,8 @@ class UploadTitleLogoRequest extends BaseRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string', 'unique:movies,title,' . $this->id ?? 0],
             'title_logo' => [
-                'nullable', 
+                'required', 
                 'image', 
                 'mimes:png', 
                 'dimensions:min_width=1280,min_height=288,max_width=1280,max_height=580', 

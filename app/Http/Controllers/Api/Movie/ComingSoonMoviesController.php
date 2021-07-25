@@ -112,7 +112,7 @@ class ComingSoonMoviesController extends Controller
      * ! NOT TESTED
      */
 
-        /**
+    /**
      * Upload a file.
      *
      * @param  App\Http\Requests\Upload\UploadPosterRequest  $request
@@ -120,7 +120,21 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadPoster(UploadPosterRequest $request)
     {   
-        $poster = $this->upload($request, 'poster', ComingSoonMovie::pathToStore($request->title));
+        $poster = $this->upload($request, 'poster', ComingSoonMovie::$FILE_PATH);
+
+        return $this->success($poster);
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadPosterRequest  $request
+     * @param  ComingSoonMovie  $comingSoonMovie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadTrailerPoster(ComingSoonMovie $comingSoonMovie, UploadPosterRequest $request)
+    {   
+        $poster = $this->upload($request, 'poster', ComingSoonMovie::$TRAILER_FILE_PATH);
 
         return $this->success($poster);
     }
@@ -133,7 +147,21 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadWallpaper(UploadWallpaperRequest $request)
     {
-        $wallpaper = $this->upload($request, 'wallpaper', ComingSoonMovie::pathToStore($request->title));
+        $wallpaper = $this->upload($request, 'wallpaper', ComingSoonMovie::$FILE_PATH);
+        
+        return $this->success($wallpaper);
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadTitleLogoRequest  $request
+     * @param  ComingSoonMovie  $comingSoonMovie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadTrailerWallpaper(ComingSoonMovie $comingSoonMovie, UploadWallpaperRequest $request)
+    {
+        $wallpaper = $this->upload($request, 'wallpaper', ComingSoonMovie::$TRAILER_FILE_PATH);
         
         return $this->success($wallpaper);
     }
@@ -146,7 +174,21 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadTitleLogo(UploadTitleLogoRequest $request)
     {
-        $title_logo = $this->upload($request, 'title_logo', ComingSoonMovie::pathToStore($request->title));
+        $title_logo = $this->upload($request, 'title_logo', ComingSoonMovie::$FILE_PATH);
+        
+        return $this->success($title_logo);
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadVideoRequest  $request
+     * @param  ComingSoonMovie  $comingSoonMovie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadTrailerTitleLogo(ComingSoonMovie  $comingSoonMovie, UploadTitleLogoRequest $request)
+    {
+        $title_logo = $this->upload($request, 'title_logo', ComingSoonMovie::$TRAILER_FILE_PATH);
         
         return $this->success($title_logo);
     }
@@ -159,7 +201,22 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadVideo(UploadVideoRequest $request)
     {
-        $videoTrailer = $this->upload($request, 'video_trailer', ComingSoonMovie::pathToStore($request->title));
+        $video = $this->upload($request, 'video', ComingSoonMovie::$FILE_PATH);
+        
+        return $this->success($video);
+    }
+
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadWallpaperRequest  $request
+     * @param  ComingSoonMovie  $comingSoonMovie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadTrailerVideo(ComingSoonMovie $comingSoonMovie, UploadVideoRequest $request)
+    {
+        $videoTrailer = $this->upload($request, 'video_trailer', ComingSoonMovie::$TRAILER_FILE_PATH);
         
         return $this->success($videoTrailer);
     }

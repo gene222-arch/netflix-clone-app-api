@@ -14,8 +14,7 @@ class UploadVideoRequest extends BaseRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string', 'unique:movies,title,' . $this->id ?? 0],
-            'video' => ['nullable', 'file', 'mimes:mp4,ogx,oga,ogv,ogg,webm', 'max:1000000'],
+            'video' => ['required', 'file', 'mimes:mp4,ogx,oga,ogv,ogg,webm', 'max:1000000'],
         ];
     }
 }

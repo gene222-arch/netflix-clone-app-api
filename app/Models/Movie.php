@@ -42,7 +42,7 @@ class Movie extends Model
         'updated_at'
     ];
 
-    public static string $FILE_PATH = 'movies/';
+    public static string $FILE_PATH = 'movies';
 
     protected static function boot()
     {
@@ -92,11 +92,6 @@ class Movie extends Model
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class, 'movie_genres');
-    }
-    
-    public static function pathToStore(string $title): string 
-    {
-        return self::$FILE_PATH . str_replace(' ', '-', Str::lower($title));
     }
 
     /**

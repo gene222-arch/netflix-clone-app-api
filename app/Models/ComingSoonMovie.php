@@ -40,7 +40,8 @@ class ComingSoonMovie extends Model
         'updated_at'
     ];
 
-    public static string $FILE_PATH = 'coming-soon-movies/';
+    public static string $FILE_PATH = 'coming-soon-movies';
+    public static string $TRAILER_FILE_PATH = 'coming-soon-movies/trailers';
 
     protected static function boot()
     {
@@ -90,18 +91,6 @@ class ComingSoonMovie extends Model
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class, 'coming_soon_movie_genres');
-    }
-    
-    public static function pathToStore(string $title): string 
-    {
-        return self::$FILE_PATH . str_replace(' ', '-', Str::lower($title));
-    }
-
-    public static function trailerPathToStore(string $comingSoonMovieTitle, string $trailerTitle): string 
-    {
-        $mainTrailerPath = self::$FILE_PATH . str_replace(' ', '-', Str::lower($comingSoonMovieTitle)) . "/more-trailers/";
-
-        return $mainTrailerPath . str_replace(' ', '-', Str::lower($trailerTitle));
     }
     
     /**

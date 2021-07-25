@@ -94,7 +94,7 @@ class ComingSoonMoviesControllerTest extends TestCase
             'title' => 'Kimi no Na wa Trailer II',
             'poster' => '',
             'wallpaper' => '',
-            'video' => '',
+            'video_trailer' => '',
             'title_logo' => '',
         ];
 
@@ -171,7 +171,7 @@ class ComingSoonMoviesControllerTest extends TestCase
             'title' => 'Weathering with you trailer part II',
             'poster' => '',
             'wallpaper' => '',
-            'video' => '',
+            'video_trailer' => '',
             'title_logo' => '',
         ];
 

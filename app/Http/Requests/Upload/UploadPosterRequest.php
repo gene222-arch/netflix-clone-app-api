@@ -14,9 +14,8 @@ class UploadPosterRequest extends BaseRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string', 'unique:movies,title,' . $this->id ?? 0],
             'poster' => [
-                'nullable', 
+                'required', 
                 'image', 
                 'mimes:jpeg,jpg', 
                 'dimensions:min_width=300,min_height=300,max_width=2000,max_height=3000', 
