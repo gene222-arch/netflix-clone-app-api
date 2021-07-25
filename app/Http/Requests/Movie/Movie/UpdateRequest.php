@@ -32,7 +32,7 @@ class UpdateRequest extends BaseRequest
             'wallpaper_path' => ['required', 'string'],
             'video_path' => ['required', 'string'],
             'title_logo_path' => ['required', 'string'],
-            'video_size_in_mb' => ['required', 'integer']
+            'video_size_in_mb' => ['required', 'numeric']
         ];
     }
 }

@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers\Api\Movie;
 
+use Carbon\Carbon;
+use App\Models\Trailer;
 use App\Models\ComingSoonMovie;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
+use App\Traits\Movie\HasComingSoonMovieCRUD;
+use App\Http\Requests\Upload\UploadVideoRequest;
+use App\Http\Requests\Upload\UploadPosterRequest;
+use App\Http\Requests\Upload\UploadTitleLogoRequest;
+use App\Http\Requests\Upload\UploadWallpaperRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\DestroyRequest;
-use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
-use App\Models\Trailer;
-use App\Traits\Movie\HasComingSoonMovieCRUD;
-use Carbon\Carbon;
+use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
+use App\Traits\Upload\HasUploadable;
 
 class ComingSoonMoviesController extends Controller
 {
-    use ApiResponser, HasComingSoonMovieCRUD;
+    use ApiResponser, HasComingSoonMovieCRUD, HasUploadable;
 
     /**
      * Display a listing of the resource.
@@ -26,13 +31,7 @@ class ComingSoonMoviesController extends Controller
      */
     public function index()
     {
-        $result = ComingSoonMovie::all([
-            'id',
-            'genres',
-            'language',
-            'plot',
-            'status'
-        ]);
+        $result = ComingSoonMovie::all();
 
         return !$result->count()
             ? $this->noContent()
@@ -60,12 +59,11 @@ class ComingSoonMoviesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest  $request
-     * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeTrailer(TrailerStoreRequest $request, ComingSoonMovie $comingSoonMovie)
+    public function storeTrailer(TrailerStoreRequest $request)
     {
-       $this->trailerCreate($request, $comingSoonMovie);
+       Trailer::create($request->validated);
 
         return $this->success(null, 'Trailer created successfully.');
     }
@@ -110,6 +108,66 @@ class ComingSoonMoviesController extends Controller
         : $this->success(null, 'Coming Soon Movie updated successfully.');
     }
 
+    /**
+     * ! NOT TESTED
+     */
+
+        /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadPosterRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadPoster(UploadPosterRequest $request)
+    {   
+        $poster = $this->upload($request, 'poster', ComingSoonMovie::pathToStore($request->title));
+
+        return $this->success($poster);
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadTitleLogoRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadWallpaper(UploadWallpaperRequest $request)
+    {
+        $wallpaper = $this->upload($request, 'wallpaper', ComingSoonMovie::pathToStore($request->title));
+        
+        return $this->success($wallpaper);
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadVideoRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadTitleLogo(UploadTitleLogoRequest $request)
+    {
+        $title_logo = $this->upload($request, 'title_logo', ComingSoonMovie::pathToStore($request->title));
+        
+        return $this->success($title_logo);
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadWallpaperRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadVideo(UploadVideoRequest $request)
+    {
+        $videoTrailer = $this->upload($request, 'video_trailer', ComingSoonMovie::pathToStore($request->title));
+        
+        return $this->success($videoTrailer);
+    }
+
+    /**
+     * !
+     */
+
 
     /**
      * Update the specified resource in storage.
@@ -120,11 +178,11 @@ class ComingSoonMoviesController extends Controller
     public function updateStatus(ComingSoonMovie $comingSoonMovie)
     {
         $comingSoonMovie->update([
-            'status' => 'Released',
-            'released_at' => Carbon::now()
+            'status' => $comingSoonMovie->status === 'Released' ? 'Coming Soon' : 'Released',
+            'released_at' => $comingSoonMovie->status === 'Released' ? null : Carbon::now()
         ]);
 
-        return $this->success(null, 'Coming Soon Movie Status updated successfully.');
+        return $this->success(null, 'Status updated successfully.');
     }
 
 

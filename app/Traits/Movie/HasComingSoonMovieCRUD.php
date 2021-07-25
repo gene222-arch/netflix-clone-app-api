@@ -28,20 +28,6 @@ trait HasComingSoonMovieCRUD
                 $directorIDs = $request->director_ids;
                 $genreIDs = $request->genre_ids;
 
-                $pathToStore = 'coming-soon-movies/' . str_replace(' ', '-', Str::lower($request->title));
-
-                $poster = $this->upload($request, 'poster', $pathToStore);
-                $wallpaper = $this->upload($request, 'wallpaper', $pathToStore);
-                $titleLogo = $this->upload($request, 'title_logo', $pathToStore);
-                $videoTrailer = $this->upload($request, 'video_trailer', $pathToStore);
-
-                $comingSoonMovieData = array_merge($comingSoonMovieData, [
-                    'poster_path' => $poster,
-                    'wallpaper_path' => $wallpaper,
-                    'title_logo_path' => $titleLogo,
-                    'video_trailer_path' => $videoTrailer
-                ]);
-
                 $comingSoonMovie = ComingSoonMovie::create($comingSoonMovieData);
                 
                 $comingSoonMovie->authors()->attach($authorIDs);
@@ -78,44 +64,11 @@ trait HasComingSoonMovieCRUD
                     'video_trailer' => $comingSoonMovie->video_trailer_path
                 ]);
 
-                if ($newPath !== $oldPath) {
-                    /** Rename folder */
+                if ($oldPath !== $newPath) {
                     Storage::rename($oldPath, $newPath);
-                    $pathToStore = $newPath;
                 }
-                else {
-                    $pathToStore = $oldPath;
-                }
-
-                $poster = '';
-                $wallpaper = '';
-                $title_logo = '';
-                $video_trailer = '';
-
-                /** Get old data file's path */
-                $oldFiles = [
-                    'poster' => $comingSoonMovie->poster_path,
-                    'wallpaper' => $comingSoonMovie->wallpaper_path,
-                    'title_logo' => $comingSoonMovie->title_logo_path,
-                    'video_trailer' => $comingSoonMovie->video_trailer_path
-                ];
-
-                /** Upload a file/image only if it exist within the request */
-                foreach ($oldFiles as $fileName => $filePath) {
-                    $$fileName = $request->hasFile($fileName) 
-                        ? $this->upload($request, $fileName, $pathToStore)
-                        : $filePath;
-                }
-
-                $comingSoonMovieData = array_merge($comingSoonMovieData, [
-                    'poster_path' => $poster,
-                    'wallpaper_path' => $wallpaper,
-                    'title_logo_path' => $title_logo,
-                    'video_trailer_path' => $video_trailer
-                ]);
 
                 $comingSoonMovie->update($comingSoonMovieData);
-
                 $comingSoonMovie->authors()->sync($authorIDs);
                 $comingSoonMovie->casts()->sync($castIDs);
                 $comingSoonMovie->directors()->sync($directorIDs);
@@ -134,34 +87,8 @@ trait HasComingSoonMovieCRUD
             'author_ids', 
             'cast_ids', 
             'director_ids', 
-            'genre_ids', 
-            'poster', 
-            'wallpaper', 
-            'title_logo', 
-            'video_trailer'
+            'genre_ids'
         ]);
-    }
-
-    public function trailerCreate(TrailerStoreRequest $request, ComingSoonMovie $comingSoonMovie): Trailer
-    {
-        $trailerData = $this->filterTrailerData($request);
-
-        $mainTrailerPath = "coming-soon-movies/" . str_replace(' ', '-', Str::lower($comingSoonMovie->title)) . "/more-trailers/";
-        $pathToStore = $mainTrailerPath . str_replace(' ', '-', Str::lower($request->title));
-
-        $poster = $this->upload($request, 'poster', $pathToStore);
-        $wallpaper = $this->upload($request, 'wallpaper', $pathToStore);
-        $titleLogo = $this->upload($request, 'title_logo', $pathToStore);
-        $video = $this->upload($request, 'video', $pathToStore);
-
-        $trailerData = array_merge($trailerData, [
-            'poster_path' => $poster,
-            'wallpaper_path' => $wallpaper,
-            'title_logo_path' => $titleLogo,
-            'video_path' => $video
-        ]);
-
-        return Trailer::create($trailerData);
     }
 
     public function trailerUpdate(TrailerUpdateRequest $request, ComingSoonMovie $comingSoonMovie, Trailer $trailer): bool

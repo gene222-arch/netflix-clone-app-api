@@ -21,10 +21,10 @@ trait HasMovieCRUD
             DB::transaction(function () use ($request)
             {
                 $movieData = $this->filterMovieData($request);
-                $authorIDs = explode(',', $request->author_ids);
-                $castIDs = explode(',', $request->cast_ids);
-                $directorIDs = explode(',', $request->director_ids);
-                $genreIDs = explode(',', $request->genre_ids);
+                $authorIDs = $request->author_ids;
+                $castIDs = $request->cast_ids;
+                $directorIDs = $request->director_ids;
+                $genreIDs = $request->genre_ids;
                 
                 $movie = Movie::create($movieData);
                 $movie->authors()->attach($authorIDs);
@@ -40,7 +40,7 @@ trait HasMovieCRUD
     }
 
     /**
-     * Todo: prevent updating the file/image all at once, only if the file is not null in the request
+     * 
      */
     public function updateMovie(UpdateRequest $request, Movie $movie): bool|string
     {
@@ -49,10 +49,10 @@ trait HasMovieCRUD
             {   
                 /** Store data */
                 $movieData = $this->filterMovieData($request);
-                $authorIDs = explode(',', $request->author_ids);
-                $castIDs = explode(',', $request->cast_ids);
-                $directorIDs = explode(',', $request->director_ids);
-                $genreIDs = explode(',', $request->genre_ids);
+                $authorIDs = $request->author_ids;
+                $castIDs = $request->cast_ids;
+                $directorIDs = $request->director_ids;
+                $genreIDs = $request->genre_ids;
 
                 $oldPath = 'public/movies/' . str_replace(' ', '-', Str::lower($movie->title));
                 $newPath = 'public/movies/' . str_replace(' ', '-', Str::lower($request->title));
@@ -65,7 +65,9 @@ trait HasMovieCRUD
                     'video_path' => $movie->video_path
                 ]);
 
-                Storage::rename($oldPath, $newPath);
+                if ($oldPath !== $newPath) {
+                    Storage::rename($oldPath, $newPath);
+                }
 
                 /** Update */
                 $movie->update($movieData);

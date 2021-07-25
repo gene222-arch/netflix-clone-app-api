@@ -39,13 +39,8 @@ class MoviesControllerTest extends TestCase
     /** test */
     public function user_can_create_movie()
     {
-        $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
-        $video = UploadedFile::fake()->image('video.mp4')->size(10000);
-
         $data = [
-            'title' => 'Kimi no na wa',
+            'title' => 'Your Name',
             'plot' => 'Two teenagers share a profound, magical connection upon discovering they are swapping bodies. Things manage to become even more complicated when the boy and girl decide to meet in person.',
             'year_of_release' => 2016,
             'date_of_release' => '2016-04-12',
@@ -55,26 +50,23 @@ class MoviesControllerTest extends TestCase
             'language' => 'Japanese',
             'cast_ids' => [1],
             'casts' => 'Mone Kamishiraishi',
-            'genre_ids' => [1, 2, 3, 4, 5],
+            'genre_ids' => [1, 2, 3, 4, 8],
             'genres' => 'Anime, Romance, Drama, Animation, Fantasy',
             'director_ids' => [1],
             'directors' => 'Makoto Shinkai',
             'author_ids' => [1],
             'authors' => 'Makoto Shinkai',
-            'poster' => $poster,
-            'wallpaper' => $wallpaper,
-            'video' => $video,
-            'title_logo' => $titleLogo,
+            'poster_path' => '',
+            'wallpaper_path' => '',
+            'video_path' => '',
+            'title_logo_path' => '',
             'video_size_in_mb' => 325
         ];
-
         $response = $this->post(
             '/api/movies',
             $data,
             $this->apiHeader()
         );
-
-        dd(json_decode($response->getContent()));
 
         $this->assertResponse($response);
     }
@@ -84,11 +76,6 @@ class MoviesControllerTest extends TestCase
     public function user_can_update_movie()
     {
         $id = 1;
-
-        $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
-        $video = UploadedFile::fake()->image('video.mp4')->size(10000);
 
         $data = [
             'id' => $id,
@@ -108,10 +95,10 @@ class MoviesControllerTest extends TestCase
             'directors' => 'Makoto Shinkai',
             'author_ids' => [1],
             'authors' => 'Makoto Shinkai',
-            'poster' => $poster,
-            'wallpaper' => $wallpaper,
-            'video' => $video,
-            'title_logo' => $titleLogo,
+            'poster_path' => '',
+            'wallpaper_path' => '',
+            'video_path' => '',
+            'title_logo_path' => '',
             'video_size_in_mb' => 325
         ];
 
@@ -121,7 +108,81 @@ class MoviesControllerTest extends TestCase
             $this->apiHeader()
         );
 
-        dd(json_decode($response->getContent()));
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_upload_movie_poster()
+    {
+        $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
+
+        $data = [
+            'title' => '',
+            'poster' => $poster
+        ];
+
+        $response = $this->put(
+            "/api/movies/upload/poster",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_upload_movie_wallpaper()
+    {
+        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
+
+        $data = [
+            'title' => '',
+            'wallpaper' => $wallpaper
+        ];
+
+        $response = $this->put(
+            "/api/movies/upload/wallpaper",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_upload_movie_title_logo()
+    {
+        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
+
+        $data = [
+            'title' => '',
+            'title_logo' => $titleLogo
+        ];
+
+        $response = $this->put(
+            "/api/movies/upload/title_logo",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_upload_movie_video()
+    {
+        $video = UploadedFile::fake()->image('video.mp4')->size(10000);
+
+        $data = [
+            'title' => '',
+            'video' => $video
+        ];
+
+        $response = $this->put(
+            "/api/movies/upload/video",
+            $data,
+            $this->apiHeader()
+        );
 
         $this->assertResponse($response);
     }

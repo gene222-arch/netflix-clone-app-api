@@ -53,11 +53,6 @@ class ComingSoonMoviesControllerTest extends TestCase
     /** test */
     public function user_can_create_coming_soon_movie()
     {
-        $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
-        $videoTrailer = UploadedFile::fake()->image('video_trailer.mp4')->size(1000);
-
         $data = [
             'title' => 'Tenki no ko',
             'plot' => 'Set during a period of exceptionally rainy weather, high-school boy Hodaka Morishima runs away from his troubled rural home to Tokyo and befriends an orphan girl who can manipulate the weather.',
@@ -73,10 +68,10 @@ class ComingSoonMoviesControllerTest extends TestCase
             'director_ids' => [1],
             'authors' => 'Makoto Shinkai',
             'author_ids' => [1],
-            'poster' => $poster,
-            'wallpaper' => $wallpaper,
-            'video_trailer' => $videoTrailer,
-            'title_logo' => $titleLogo,
+            'poster' => '',
+            'wallpaper' => '',
+            'video_trailer' => '',
+            'title_logo' => '',
         ];
 
         $response = $this->post(
@@ -85,7 +80,6 @@ class ComingSoonMoviesControllerTest extends TestCase
             $this->apiHeader()
         );
 
-        dd(json_decode($response->getContent()));
         $this->assertResponse($response);
     }
 
@@ -95,18 +89,13 @@ class ComingSoonMoviesControllerTest extends TestCase
     {
         $id  = 1;
 
-        $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
-        $video = UploadedFile::fake()->image('video.mp4')->size(1000);
-
         $data = [
             'coming_soon_movie_id' => $id,
             'title' => 'Kimi no Na wa Trailer II',
-            'poster' => $poster,
-            'wallpaper' => $wallpaper,
-            'video' => $video,
-            'title_logo' => $titleLogo,
+            'poster' => '',
+            'wallpaper' => '',
+            'video' => '',
+            'title_logo' => '',
         ];
 
         $response = $this->post(
@@ -114,8 +103,6 @@ class ComingSoonMoviesControllerTest extends TestCase
             $data,
             $this->apiHeader()
         );
-
-        dd(json_decode($response->getContent()));
 
         $this->assertResponse($response);
     }
@@ -125,11 +112,6 @@ class ComingSoonMoviesControllerTest extends TestCase
     public function user_can_update_coming_soon_movie()
     {
         $id = 1;
-
-        $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
-        $videoTrailer = UploadedFile::fake()->image('video_trailer.mp4')->size(1000);
 
         $data = [
             'id' => $id,
@@ -147,10 +129,10 @@ class ComingSoonMoviesControllerTest extends TestCase
             'director_ids' => [1],
             'authors' => 'Makoto Shinkai',
             'author_ids' => [1],
-            'poster' => $poster,
-            'wallpaper' => $wallpaper,
-            'video_trailer' => $videoTrailer,
-            'title_logo' => $titleLogo,
+            'poster' => '',
+            'wallpaper' => '',
+            'video_trailer' => '',
+            'title_logo' => '',
         ];
 
         $response = $this->put(
@@ -183,23 +165,94 @@ class ComingSoonMoviesControllerTest extends TestCase
         $comingSoonMovieID  = 1;
         $trailerID = 2;
 
-        $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
-        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
-        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
-        $video = UploadedFile::fake()->image('video.mp4')->size(1000);
-
         $data = [
             'id' => $trailerID,
             'coming_soon_movie_id' => $comingSoonMovieID,
             'title' => 'Weathering with you trailer part II',
-            'poster' => $poster,
-            'wallpaper' => $wallpaper,
-            'video' => $video,
-            'title_logo' => $titleLogo,
+            'poster' => '',
+            'wallpaper' => '',
+            'video' => '',
+            'title_logo' => '',
         ];
 
         $response = $this->put(
             "/api/coming-soon-movies/$comingSoonMovieID/trailers/$trailerID",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_upload_coming_soon_movie_poster()
+    {
+        $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
+
+        $data = [
+            'title' => '',
+            'poster' => $poster
+        ];
+
+        $response = $this->put(
+            "/api/coming-soon/movies/upload/poster",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_upload_coming_soon_movie_wallpaper()
+    {
+        $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
+
+        $data = [
+            'title' => '',
+            'wallpaper' => $wallpaper
+        ];
+
+        $response = $this->put(
+            "/api/coming-soon/movies/upload/wallpaper",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_upload_coming_soon_movie_title_logo()
+    {
+        $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
+
+        $data = [
+            'title' => '',
+            'title_logo' => $titleLogo
+        ];
+
+        $response = $this->put(
+            "/api/coming-soon/movies/upload/title_logo",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_upload_coming_soon_movie_video()
+    {
+        $video = UploadedFile::fake()->image('video.mp4')->size(10000);
+
+        $data = [
+            'title' => '',
+            'video' => $video
+        ];
+
+        $response = $this->put(
+            "/api/coming-soon/movies/upload/video",
             $data,
             $this->apiHeader()
         );

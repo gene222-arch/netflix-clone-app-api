@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Cast;
 use App\Models\Genre;
 use App\Models\Director;
+use Illuminate\Support\Str;
 use App\Traits\Upload\HasUploadable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,6 +39,8 @@ class ComingSoonMovie extends Model
         'created_at',
         'updated_at'
     ];
+
+    public static string $FILE_PATH = 'coming-soon-movies/';
 
     protected static function boot()
     {
@@ -88,7 +91,19 @@ class ComingSoonMovie extends Model
     {
         return $this->belongsToMany(Genre::class, 'coming_soon_movie_genres');
     }
+    
+    public static function pathToStore(string $title): string 
+    {
+        return self::$FILE_PATH . str_replace(' ', '-', Str::lower($title));
+    }
 
+    public static function trailerPathToStore(string $comingSoonMovieTitle, string $trailerTitle): string 
+    {
+        $mainTrailerPath = self::$FILE_PATH . str_replace(' ', '-', Str::lower($comingSoonMovieTitle)) . "/more-trailers/";
+
+        return $mainTrailerPath . str_replace(' ', '-', Str::lower($trailerTitle));
+    }
+    
     /**
     * Define a many-to-many relationship with Model class
     *
