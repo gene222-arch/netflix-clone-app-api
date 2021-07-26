@@ -59,11 +59,12 @@ class ComingSoonMoviesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest  $request
+     * @param ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeTrailer(TrailerStoreRequest $request)
+    public function storeTrailer(ComingSoonMovie $comingSoonMovie, TrailerStoreRequest $request)
     {
-       Trailer::create($request->validated);
+       $comingSoonMovie->trailers()->create($request->validated());
 
         return $this->success(null, 'Trailer created successfully.');
     }
@@ -77,7 +78,7 @@ class ComingSoonMoviesController extends Controller
      */
     public function show(ComingSoonMovie $comingSoonMovie)
     {
-        return $this->success($comingSoonMovie);
+        return $this->success($comingSoonMovie->with('trailers')->find($comingSoonMovie->id));
     }
 
 
@@ -85,11 +86,12 @@ class ComingSoonMoviesController extends Controller
      * Display the specified resource.
      *
      * @param  ComingSoonMovie  $comingSoonMovie
+     * @param  Trailer  $trailer
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showTrailer(ComingSoonMovie $comingSoonMovie)
+    public function showTrailer(ComingSoonMovie $comingSoonMovie, Trailer $trailer)
     {
-        return $this->success($comingSoonMovie->trailers()->get());
+        return $this->success($trailer);
     }
 
     /**
@@ -156,10 +158,9 @@ class ComingSoonMoviesController extends Controller
      * Upload a file.
      *
      * @param  App\Http\Requests\Upload\UploadTitleLogoRequest  $request
-     * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function uploadTrailerWallpaper(ComingSoonMovie $comingSoonMovie, UploadWallpaperRequest $request)
+    public function uploadTrailerWallpaper(UploadWallpaperRequest $request)
     {
         $wallpaper = $this->upload($request, 'wallpaper', ComingSoonMovie::$TRAILER_FILE_PATH);
         
@@ -183,10 +184,9 @@ class ComingSoonMoviesController extends Controller
      * Upload a file.
      *
      * @param  App\Http\Requests\Upload\UploadVideoRequest  $request
-     * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function uploadTrailerTitleLogo(ComingSoonMovie  $comingSoonMovie, UploadTitleLogoRequest $request)
+    public function uploadTrailerTitleLogo(UploadTitleLogoRequest $request)
     {
         $title_logo = $this->upload($request, 'title_logo', ComingSoonMovie::$TRAILER_FILE_PATH);
         
@@ -211,12 +211,11 @@ class ComingSoonMoviesController extends Controller
      * Upload a file.
      *
      * @param  App\Http\Requests\Upload\UploadWallpaperRequest  $request
-     * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function uploadTrailerVideo(ComingSoonMovie $comingSoonMovie, UploadVideoRequest $request)
+    public function uploadTrailerVideo(UploadVideoRequest $request)
     {
-        $videoTrailer = $this->upload($request, 'video_trailer', ComingSoonMovie::$TRAILER_FILE_PATH);
+        $videoTrailer = $this->upload($request, 'video', ComingSoonMovie::$TRAILER_FILE_PATH);
         
         return $this->success($videoTrailer);
     }
@@ -253,7 +252,10 @@ class ComingSoonMoviesController extends Controller
      */
     public function updateTrailer(TrailerUpdateRequest $request, ComingSoonMovie $comingSoonMovie, Trailer $trailer)
     {
-        $this->trailerUpdate($request, $comingSoonMovie, $trailer);
+        $comingSoonMovie
+            ->trailers()
+            ->find($trailer->id)
+            ->update($request->validated());
 
         return $this->success(null, 'Trailer updated successfully.');
     }
@@ -275,12 +277,12 @@ class ComingSoonMoviesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest  $request
-     * @param  integer  $comingSoonMovieID
+     * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroyTrailer(TrailerDestroyRequest $request, int $comingSoonMovieID)
+    public function destroyTrailer(TrailerDestroyRequest $request, ComingSoonMovie $comingSoonMovie)
     {
-        Trailer::where('coming_soon_movie_id', $comingSoonMovieID)->whereIn('id', $request->ids)->delete();
+        $comingSoonMovie->trailers()->whereIn('id', $request->ids)->delete();
 
         return $this->success(null, 'Trailer/s deleted successfully.');
     }

@@ -20,6 +20,11 @@ class Trailer extends Model
         'title_logo_path',
         'video_path'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];  
     
     /**
      * Define an inverse one-to-one or many relationship with Coming Soon Movie class
