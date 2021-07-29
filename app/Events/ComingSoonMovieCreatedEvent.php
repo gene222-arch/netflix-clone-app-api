@@ -32,7 +32,7 @@ class ComingSoonMovieCreatedEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('coming-soon-movie.created');
+        return new PrivateChannel('coming.soon.movie.created');
     }
 
     /**

@@ -61,7 +61,7 @@ trait HasDashboardCRUD
             'SELECT
                 movies.id,
                 movies.title,
-                ratings.likes 
+                ratings.likes as count
             FROM 
                 ratings
             INNER JOIN 
@@ -86,7 +86,7 @@ trait HasDashboardCRUD
             'SELECT
                 movies.id,
                 movies.title,
-                ratings.total_votes
+                ratings.total_votes as count
             FROM 
                 ratings
             INNER JOIN 

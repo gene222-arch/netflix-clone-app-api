@@ -20,3 +20,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('movie.created', function () {
     return true;
 });
+
+Broadcast::channel('coming.soon.movie.created', function () {
+    return true;
+});
