@@ -25,9 +25,12 @@ class AuthController extends Controller
      */
     public function show()
     {
+        $auth = Auth::user();
+
         return $this->success([
-            'user' => Auth::user(),
-            'permissions' => $this->authPermissionViaRoles()
+            'user' => $auth,
+            'permissions' => $this->authPermissionViaRoles(),
+            'profiles' => $auth->profiles
         ]);
     }
 }

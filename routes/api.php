@@ -177,8 +177,7 @@ Route::middleware(['api'])->group(function ()
       */
     Route::prefix('my-lists')->group(function () 
     {
-        Route::post('/', [MyListsController::class, 'store']);
-        Route::delete('/', [MyListsController::class, 'destroy']);
+        Route::post('/', [MyListsController::class, 'toggle']);
     });
 
     /**
@@ -186,8 +185,7 @@ Route::middleware(['api'])->group(function ()
       */
     Route::prefix('remind-mes')->group(function () 
     {
-        Route::post('/', [RemindMesController::class, 'store']);
-        Route::delete('/', [RemindMesController::class, 'destroy']);
+        Route::post('/', [RemindMesController::class, 'toggle']);
     });
 
     /**

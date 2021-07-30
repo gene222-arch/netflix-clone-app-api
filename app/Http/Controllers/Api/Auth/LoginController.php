@@ -49,12 +49,15 @@ class LoginController extends Controller
             return $this->error('Credentials mismatch');
         }
 
+        $auth = Auth::user();
+
         return $this->token(
             $this->getPersonalAccessToken($request),
             'User logged in successfully.',
             [
-                'user' => Auth::user()->withoutRelations(),
-                'permissions' => $this->authPermissionViaRoles()
+                'user' => $auth->withoutRelations(),
+                'permissions' => $this->authPermissionViaRoles(),
+                'profiles' => $auth->profiles
             ]
         );
     }

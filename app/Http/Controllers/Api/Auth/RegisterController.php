@@ -73,11 +73,14 @@ class RegisterController extends Controller
             return $this->error($th->getMessage());
         }
         
+        $auth = Auth::user();
+
         return $this->token(
             $this->getPersonalAccessToken($request),
             'Successful Registration', [
-                'user' => Auth::user(),
-                'permissions' => $this->authPermissionViaRoles()
+                'user' => $auth->withoutRelations(),
+                'permissions' => $this->authPermissionViaRoles(),
+                'profiles' => $auth->profiles
         ]);
     }
 }

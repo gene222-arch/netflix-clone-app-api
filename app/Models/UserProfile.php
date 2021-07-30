@@ -20,6 +20,10 @@ class UserProfile extends Model
         'is_for_kids'  
     ];
     
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     /** RELATIONSHIPS */
 
