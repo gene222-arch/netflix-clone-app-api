@@ -81,4 +81,23 @@ class Rating extends Model
             'total_votes' => DB::raw('total_votes - 1')
         ]);
     }
+
+    public static function unrate(int $movieID, string $previousRate)
+    {
+        $rating = Rating::where('movie_id', $movieID)->first();
+
+        if ($previousRate === 'like') {
+            return $rating->update([
+                'likes' => DB::raw('likes - 1'),
+                'total_votes' => DB::raw('total_votes - 1')
+            ]);
+        }
+
+        if ($previousRate === 'dislike') {
+            return $rating->update([
+                'dislikes' => DB::raw('dislikes - 1'),
+                'total_votes' => DB::raw('total_votes - 1')
+            ]);
+        }
+    }
 }

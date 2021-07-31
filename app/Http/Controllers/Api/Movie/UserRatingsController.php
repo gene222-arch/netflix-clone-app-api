@@ -59,13 +59,17 @@ class UserRatingsController extends Controller
                         Rating::incrementDislike($movieID);
                         UserRating::disliked($movieID, $userProfileID);
                         break;
+
+                    default: 
+                        $previouseRate = UserRating::unrate($movieID, $userProfileID);
+                        Rating::unrate($movieID, $previouseRate);
                 }
             });
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());
         }
         
-        return $this->success(null, 'Movie rated successfully.');
+        return $this->success(null, 'Movie rate successfully.');
     }
 
     /**

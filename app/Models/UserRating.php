@@ -45,4 +45,17 @@ class UserRating extends Model
             'rate' => 'dislike'
         ]);
     }
+
+    protected static function unrate(int $movieID, int $userProfileID): string
+    {
+        $userRatedMovie = self::where([
+                [ 'movie_id', $movieID ],
+                [ 'user_profile_id', $userProfileID ]
+            ])
+            ->first();
+
+        $userRatedMovie->delete();
+
+        return $userRatedMovie->rate;
+    }
 }

@@ -48,7 +48,7 @@ class ComingSoonMovie extends Model
         parent::boot();
 
         self::created(function ($comingSoonMovie) {
-            event(new \App\Events\ComingSoonMovieCreatedEvent($comingSoonMovie));
+            event(new \App\Events\ComingSoonMovieCreatedEvent($comingSoonMovie->with('trailers')->first()));
         });
     }
 

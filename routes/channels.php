@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('App.Models.User', function () {
+    return true;
 });
 
 Broadcast::channel('movie.created', function () {
@@ -24,3 +24,8 @@ Broadcast::channel('movie.created', function () {
 Broadcast::channel('coming.soon.movie.created', function () {
     return true;
 });
+
+Broadcast::channel('coming.soon.movie.released', function () {
+    return true;
+});
+
