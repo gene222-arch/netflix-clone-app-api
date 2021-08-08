@@ -24,7 +24,7 @@ class RemindMesController extends Controller
             ->where([
                 [ 'user_id', Auth::user()->id ],
                 [ 'user_profile_id', $request->user_profile_id ],
-                [ 'movie_id', $request->movie_id ]
+                [ 'coming_soon_movie_id', $request->movie_id ]
             ]);
                 
         if ($findInMyListQuery->exists()) 

@@ -19,7 +19,7 @@ use App\Http\Controllers\Api\Movie\MoviesController;
 use App\Http\Controllers\Api\Movie\MyListsController;
 use App\Http\Controllers\Api\Movie\RemindMesController;
 use App\Http\Controllers\Api\Movie\UserRatingsController;
-use App\Http\Controllers\User\UserProfilesController;
+use App\Http\Controllers\Api\User\UserProfilesController;
 
 /*
 |--------------------------------------------------------------------------

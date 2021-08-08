@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserProfile\StoreRequest;
@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Auth;
 class UserProfilesController extends Controller
 {
     use ApiResponser;
+
+    public function __construct()
+    {
+        $this->middleware(['auth:api']);
+    }
 
     /**
      * Display a listing of the user's profiles.
@@ -31,7 +36,7 @@ class UserProfilesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $profile_id
+     * @param  UserProfile  $profile
      * @return \Illuminate\Http\JsonResponse
      */
     public function show(UserProfile $profile)
@@ -48,9 +53,14 @@ class UserProfilesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        Auth::user()->profiles()->create($request->validated());
+        $profile = UserProfile::create([
+            'user_id' => Auth::user()->id,
+            'name' => $request->name,
+            'is_for_kids' => $request->is_for_kids,
+            'avatar' => $request->avatar
+        ]);
 
-        return $this->success(null, 'Profile created successfully.');
+        return $this->success($profile, 'Profile created successfully.');
     }
 
 
