@@ -19,6 +19,11 @@ class MoviesController extends Controller
 {
     use ApiResponser, HasMovieCRUD, HasUploadable;
 
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:Manage Movies']);
+    }
+
     /**
      * Display a listing of the resource.
      *

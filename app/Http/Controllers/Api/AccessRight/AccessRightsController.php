@@ -17,7 +17,7 @@ class AccessRightsController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api', 'role:Super Admin|super admin']);
+        $this->middleware(['auth:api', 'role:Super Administrator|super admin']);
     }
 
     /**

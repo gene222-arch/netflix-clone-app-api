@@ -11,6 +11,11 @@ class DashboardsController extends Controller
 {
     use ApiResponser, HasDashboardCRUD;
 
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:View Dashboard']);
+    }
+    
     /**
      * Handle the incoming request.
      *

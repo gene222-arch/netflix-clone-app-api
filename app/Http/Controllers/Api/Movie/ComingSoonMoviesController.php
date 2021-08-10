@@ -24,6 +24,11 @@ class ComingSoonMoviesController extends Controller
 {
     use ApiResponser, HasComingSoonMovieCRUD, HasUploadable;
 
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:Manage Coming Soon Movies']);
+    }
+
     /**
      * Display a listing of the resource.
      *

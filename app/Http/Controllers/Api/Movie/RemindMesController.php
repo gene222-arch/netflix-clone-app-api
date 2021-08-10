@@ -11,6 +11,11 @@ class RemindMesController extends Controller
 {
     use ApiResponser;
 
+    public function __construct()
+    {
+        $this->middleware(['auth:api']);
+    }
+    
     /**
      * Store a newly created resource in storage or delete if it exists.
      *
@@ -19,23 +24,23 @@ class RemindMesController extends Controller
      */
     public function toggle(Request $request)
     {
-        $findInMyListQuery = Auth::user()
-            ->remindMes()
-            ->where([
+        $remindMes = Auth::user()->remindMes();
+
+        $findInMyListQuery = $remindMes->where([
                 [ 'user_id', Auth::user()->id ],
                 [ 'user_profile_id', $request->user_profile_id ],
-                [ 'coming_soon_movie_id', $request->movie_id ]
+                [ 'coming_soon_movie_id', $request->coming_soon_movie_id ]
             ]);
                 
-        if ($findInMyListQuery->exists()) 
+        if (! $findInMyListQuery->exists()) 
         {
-            $findInMyListQuery->delete();
+            $remindMes->create($request->validated());
 
-            return $this->success(null, 'Removed to Reminded Movies.');
+            return $this->success(null, 'Reminded.');
         }
+        
+        $findInMyListQuery->delete();
 
-        Auth::user()->remindMes()->create($request->validated());
-
-        return $this->success(null, 'Reminded.');
+        return $this->success(null, 'Removed to Reminded Movies.');
     }
 }

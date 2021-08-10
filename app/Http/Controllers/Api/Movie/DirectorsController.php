@@ -12,6 +12,11 @@ class DirectorsController extends Controller
 {
     use ApiResponser;
 
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:Manage Directors']);
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -12,6 +12,11 @@ class MyListsController extends Controller
 {
     use ApiResponser;
 
+    public function __construct()
+    {
+        $this->middleware(['auth:api']);
+    }
+
     /**
      * Store a newly created resource in storage or delete if it exists.
      *
@@ -20,9 +25,9 @@ class MyListsController extends Controller
      */
     public function toggle(Request $request)
     {
-        $findInMyListQuery = Auth::user()
-            ->myLists()
-            ->where([
+        $myLists = Auth::user()->myLists();
+
+        $findInMyListQuery = $myLists->where([
                 [ 'user_id', Auth::user()->id ],
                 [ 'user_profile_id', $request->user_profile_id ],
                 [ 'movie_id', $request->movie_id ]
@@ -35,7 +40,7 @@ class MyListsController extends Controller
             return $this->success(null, 'Removed to My List.');
         }
 
-        Auth::user()->myLists()->create($request->validated());
+        $myLists->create($request->validated());
 
         return $this->success(null, 'Added to My List.');
     }

@@ -12,6 +12,11 @@ class AuthorsController extends Controller
 {
     use ApiResponser;
 
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:Manage Authors']);
+    }
+
     /**
      * Display a listing of the resource.
      *

@@ -13,6 +13,12 @@ class CastsController extends Controller
 {
     use ApiResponser;
 
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:Manage Casts']);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
