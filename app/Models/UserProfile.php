@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\MyList;
 use App\Models\RemindMe;
+use App\Models\RecentlyWatchedMovie;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,6 +36,17 @@ class UserProfile extends Model
     public function myLists(): HasMany
     {
         return $this->hasMany(MyList::class);
+    }
+
+    
+    /**
+     * Define a one-to-many relationship with RecentlyWatchedMovie class
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function recentlyWatchedMovies(): HasMany
+    {
+        return $this->hasMany(RecentlyWatchedMovie::class);
     }
 
     /**

@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Movie\DirectorsController;
 use App\Http\Controllers\Api\Movie\GenresController;
 use App\Http\Controllers\Api\Movie\MoviesController;
 use App\Http\Controllers\Api\Movie\MyListsController;
+use App\Http\Controllers\Api\Movie\RecentlyWatchedMoviesController;
 use App\Http\Controllers\Api\Movie\RemindMesController;
 use App\Http\Controllers\Api\Movie\UserRatingsController;
 use App\Http\Controllers\Api\User\UserProfilesController;
@@ -172,20 +173,20 @@ Route::middleware(['api'])->group(function ()
         Route::delete('/', [MoviesController::class, 'destroy']);
     });
 
-    /**
-      * My List
-      */
-    Route::prefix('my-lists')->group(function () 
-    {
-        Route::post('/', [MyListsController::class, 'toggle']);
-    });
+    Route::post('my-lists', [MyListsController::class, 'toggle']);
+    Route::post('remind-mes', [RemindMesController::class, 'toggle']);
 
     /**
-      * Remind Me
+      * Recently Watched Movie
       */
-    Route::prefix('remind-mes')->group(function () 
+    Route::prefix('recently-watched-movies')->group(function () 
     {
-        Route::post('/', [RemindMesController::class, 'toggle']);
+        Route::get('/', [RecentlyWatchedMoviesController::class, 'index']);
+        Route::get('/{recentlyWatchedMovie}', [RecentlyWatchedMoviesController::class, 'show']);
+        Route::get('/user-profiles/{id}', [RecentlyWatchedMoviesController::class, 'findByUserProfileId']);
+        Route::post('/', [RecentlyWatchedMoviesController::class, 'store']);
+        Route::put('/{id}', [RecentlyWatchedMoviesController::class, 'update']);
+        Route::delete('/{id}', [RecentlyWatchedMoviesController::class, 'destroy']);
     });
 
     /**

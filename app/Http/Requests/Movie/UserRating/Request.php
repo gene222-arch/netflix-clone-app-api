@@ -16,7 +16,7 @@ class Request extends BaseRequest
         return [
             'movie_id' => ['required', 'integer', 'exists:movies,id'],
             'user_profile_id' => ['required', 'integer', 'exists:user_profiles,id'],
-            'rate' => ['required', 'string', 'in:like,dislike']
+            'rate' => ['nullable', 'string', 'in:like,dislike']
         ];
     }
 }

@@ -87,6 +87,17 @@ class User extends Authenticatable
         return $this->hasMany(UserProfile::class);
     }
 
+        
+    /**
+     * Find Profile By Id
+     *
+     * @param  integer $id
+     * @return UserProfile
+     */
+    public function findProfileById(int $id): UserProfile
+    {
+        return $this->profiles()->find($id);
+    }
 
     /**
     * Define a many-to-many relationship with RemindMe class
