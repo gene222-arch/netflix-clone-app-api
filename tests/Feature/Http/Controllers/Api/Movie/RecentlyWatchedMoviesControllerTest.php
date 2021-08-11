@@ -34,20 +34,6 @@ class RecentlyWatchedMoviesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-    /** @test */
-    public function user_can_view_specific_user_profile_recently_watched_movie()
-    {
-        $id = 1;
-
-        $response = $this->get(
-            "/api/recently-watched-movies/user-profiles/$id",
-            $this->apiHeader()
-        );
-
-        dd(json_decode($response->getContent()));
-        $this->assertResponse($response);
-    }
-
 
     /** test */
     public function user_can_create_recently_watched_movie()
@@ -58,7 +44,7 @@ class RecentlyWatchedMoviesControllerTest extends TestCase
         ];
 
         $response = $this->post(
-            '/api/recently-watched-movies',
+            '/api/recently-watched-movies/' . $data['user_profile_id'],
             $data,
             $this->apiHeader()
         );
@@ -70,10 +56,13 @@ class RecentlyWatchedMoviesControllerTest extends TestCase
     /** test */
     public function user_can_update_recently_watched_movie()
     {
-        $data = [];
+        $data = [
+            'user_profile_id',
+            'movie_id'
+        ];
 
         $response = $this->put(
-            '/api/recently-watched-movies/',
+            '/api/recently-watched-movies',
             $data,
             $this->apiHeader()
         );
@@ -85,10 +74,14 @@ class RecentlyWatchedMoviesControllerTest extends TestCase
     /** test */
     public function user_can_delete_recently_watched_movie()
     {
-        $id = 1;
+        $data = [
+            'user_profile_id',
+            'movie_id'
+        ];
 
         $response = $this->delete(
-            "/api/recently-watched-movies/$id",
+            "/api/recently-watched-movies",
+            $data,
             $this->apiHeader()
         );
 

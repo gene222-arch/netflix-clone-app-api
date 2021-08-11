@@ -6,6 +6,7 @@ use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Traits\Auth\AuthServices;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -23,9 +24,9 @@ class AuthController extends Controller
      * 
      * @return Illuminate\Http\JsonResponse
      */
-    public function show()
+    public function show(Request $request)
     {
-        $auth = Auth::user();
+        $auth = $request->user();
 
         return $this->success([
             'user' => $auth,

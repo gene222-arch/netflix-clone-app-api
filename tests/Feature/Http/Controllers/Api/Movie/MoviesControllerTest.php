@@ -18,9 +18,31 @@ class MoviesControllerTest extends TestCase
             $this->apiHeader()
         );
 
+        
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_view_any_categorized_movies()
+    {
+        $response = $this->get(
+            '/api/movies/categorized',
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_view_any_first_twenty_recently_added_movies()
+    {
+        $response = $this->get(
+            '/api/movies/latest/20',
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
 
     /** test */
     public function user_can_view_movie()

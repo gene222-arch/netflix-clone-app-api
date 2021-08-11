@@ -21,7 +21,7 @@ class MoviesController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:Manage Movies']);
+        $this->middleware(['auth:api', 'permission:Manage Movies']);
     }
 
     /**
@@ -32,6 +32,36 @@ class MoviesController extends Controller
     public function index()
     {
         $result = Movie::all();
+
+        return $this->success($result);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function categorizedMovies()
+    {
+        $result = [
+            [
+                'title' => '20 Recently Added Movies',
+                'movies' => Movie::latest()->take(20)->get()
+            ]
+        ];
+
+        return $this->success($result);
+    }
+
+
+    /**
+     * Display a listing of the first twenty latest source.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getLatestTwenty()
+    {
+        $result = Movie::latest()->take(20)->get();
 
         return !$result->count()
             ? $this->noContent()

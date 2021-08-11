@@ -14,7 +14,7 @@ class DirectorsController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:Manage Directors']);
+        $this->middleware(['auth:api', 'permission:Manage Directors']);
     }
 
     /**

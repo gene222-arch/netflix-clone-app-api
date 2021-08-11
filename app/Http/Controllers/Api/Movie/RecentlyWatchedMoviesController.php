@@ -35,11 +35,12 @@ class RecentlyWatchedMoviesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\Movie\RecentlyWatchedMovie\Request  $request
+     * @param  UserProfile  $userProfile
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request, UserProfile $userProfile)
     {
-        UserProfile::find($request->user_profile_id)
+        $userProfile
             ->recentlyWatchedMovies()
             ->create([
                 'user_id' => Auth::user()->id,
@@ -66,14 +67,19 @@ class RecentlyWatchedMoviesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  RecentlyWatchedMovie  $recentlyWatchedMovie
+     * @param  App\Http\Requests\Movie\RecentlyWatchedMovie\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(RecentlyWatchedMovie $recentlyWatchedMovie)
+    public function update(Request $request)
     {
-        $recentlyWatchedMovie->update([
-            'recently_watched_at' => Carbon::now()
-        ]);
+        RecentlyWatchedMovie::where([
+            [ 'user_profile_id', $request->user_profile_id ],
+            [ 'movie_id' => $request->movie_id ],
+            [ 'user_id' => Auth::user()->id ]
+        ])
+            ->update([
+                'recently_watched_at' => Carbon::now()
+            ]);
         
         return $this->success(null, 'Recently Watched Movie updated successfully.');
     }
@@ -82,12 +88,16 @@ class RecentlyWatchedMoviesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  RecentlyWatchedMovie  $recentlyWatchedMovie
+     * @param  App\Http\Requests\Movie\RecentlyWatchedMovie\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(RecentlyWatchedMovie $recentlyWatchedMovie)
+    public function destroy(Request $request)
     {
-        $recentlyWatchedMovie->delete();
+        RecentlyWatchedMovie::where([
+            [ 'user_profile_id', $request->user_profile_id ],
+            [ 'movie_id' => $request->movie_id ],
+            [ 'user_id' => Auth::user()->id ]
+        ])->delete();
 
         return $this->success(null, 'Recently Watched Movie deleted successfully.');
     }

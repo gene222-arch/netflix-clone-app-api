@@ -14,7 +14,7 @@ class AuthorsController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:Manage Authors']);
+        $this->middleware(['auth:api', 'permission:Manage Authors']);
     }
 
     /**

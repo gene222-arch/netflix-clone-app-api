@@ -15,7 +15,7 @@ class CastsController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:Manage Casts']);
+        $this->middleware(['auth:api', 'permission:Manage Casts']);
     }
 
 

@@ -25,7 +25,7 @@ class UserProfilesController extends Controller
      */
     public function index()
     {
-        $profiles = Auth::user()->profiles;
+        $profiles = request()->user()->profiles;
 
         return !$profiles
             ? $this->noContent()
@@ -38,16 +38,19 @@ class UserProfilesController extends Controller
      * @param  UserProfile $userProfile
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(UserProfile $userProfile) 
+    public function show(UserProfile $profile) 
     {
-        $recentlyWatchedMovies = $userProfile
+        $recentlyWatchedMovies = $profile
             ->recentlyWatchedMovies()
-            ->with(['movie.userRatings' => fn($q) => $q->where('user_ratings.user_profile_id', $userProfile->id)])
+            ->with(['movie.userRatings' => fn($q) => $q->where('user_ratings.user_profile_id', $profile->id)])
             ->get()
             ->map
             ->movie;
 
-        return $this->success($recentlyWatchedMovies);
+        return $this->success([
+            'profile' => $profile,
+            'recently_watched_movies' => $recentlyWatchedMovies
+        ]);
     }
 
 
@@ -60,7 +63,7 @@ class UserProfilesController extends Controller
     public function store(StoreRequest $request)
     {
         $profile = UserProfile::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => $request->user()->id,
             'name' => $request->name,
             'is_for_kids' => $request->is_for_kids,
             'avatar' => $request->avatar

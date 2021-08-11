@@ -127,7 +127,7 @@ class UserRatingsController extends Controller
     public function destroy(DestroyRequest $request)
     {
         $userRating = UserRating::where([
-            ['user_id', Auth::user()->id],
+            ['user_id', $request->user()->id],
             ['user_profile_id', $request->user_profile_id],
             ['movie_id', $request->movie_id]
         ])

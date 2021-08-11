@@ -25,10 +25,12 @@ class MyListsController extends Controller
      */
     public function toggle(Request $request)
     {
-        $myLists = Auth::user()->myLists();
+        $authUser = $request->user();
+
+        $myLists = $authUser->myLists();
 
         $findInMyListQuery = $myLists->where([
-                [ 'user_id', Auth::user()->id ],
+                [ 'user_id', $authUser->id ],
                 [ 'user_profile_id', $request->user_profile_id ],
                 [ 'movie_id', $request->movie_id ]
             ]);

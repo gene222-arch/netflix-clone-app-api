@@ -163,6 +163,8 @@ Route::middleware(['api'])->group(function ()
     Route::prefix('movies')->group(function () 
     {
         Route::get('/', [MoviesController::class, 'index']);
+        Route::get('/categorized', [MoviesController::class, 'categorizedMovies']);
+        Route::get('/latest/20', [MoviesController::class, 'getLatestTwenty']);
         Route::get('/{movie}', [MoviesController::class, 'show']);
         Route::post('/', [MoviesController::class, 'store']);
         Route::post('/upload/poster', [MoviesController::class, 'uploadPoster']);
@@ -183,9 +185,9 @@ Route::middleware(['api'])->group(function ()
     {
         Route::get('/', [RecentlyWatchedMoviesController::class, 'index']);
         Route::get('/{recentlyWatchedMovie}', [RecentlyWatchedMoviesController::class, 'show']);
-        Route::post('/', [RecentlyWatchedMoviesController::class, 'store']);
-        Route::put('/{id}', [RecentlyWatchedMoviesController::class, 'update']);
-        Route::delete('/{id}', [RecentlyWatchedMoviesController::class, 'destroy']);
+        Route::post('/user-profiles/{userProfile}', [RecentlyWatchedMoviesController::class, 'store']);
+        Route::put('/', [RecentlyWatchedMoviesController::class, 'update']);
+        Route::delete('/', [RecentlyWatchedMoviesController::class, 'destroy']);
     });
 
     /**

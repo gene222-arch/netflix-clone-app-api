@@ -24,10 +24,12 @@ class RemindMesController extends Controller
      */
     public function toggle(Request $request)
     {
-        $remindMes = Auth::user()->remindMes();
+        $authUser = $request->user();
+
+        $remindMes = $authUser->remindMes();
 
         $findInMyListQuery = $remindMes->where([
-                [ 'user_id', Auth::user()->id ],
+                [ 'user_id', $authUser->id ],
                 [ 'user_profile_id', $request->user_profile_id ],
                 [ 'coming_soon_movie_id', $request->coming_soon_movie_id ]
             ]);
