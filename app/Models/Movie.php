@@ -105,7 +105,7 @@ class Movie extends Model
     }
 
     /**
-    * Define a many-to-many relationship with Model class
+    * Define a many-to-many relationship with UserRating class
     *
     * @return Illuminate\Database\Eloquent\Relations\HasMany
     */

@@ -33,16 +33,17 @@ class RecentlyWatchedMoviesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  integer $id
+     * @param  UserProfile $userProfile
      * @return \Illuminate\Http\JsonResponse
      */
-    public function findByUserProfileId(int $id) 
+    public function findByUserProfileId(UserProfile $userProfile) 
     {
-        $recentlyWatchedMovies = UserProfile::find($id)
+        $recentlyWatchedMovies = $userProfile
             ->recentlyWatchedMovies()
-            ->with('movie.userRatings')
-            ->get();
-            
+            ->with(['movie.userRatings' => fn($q) => $q->where('user_ratings.user_profile_id', $userProfile->id)])
+            ->get()
+            ->map
+            ->movie;
 
         return $this->success($recentlyWatchedMovies);
     }

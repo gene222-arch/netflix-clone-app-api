@@ -44,6 +44,7 @@ class RecentlyWatchedMoviesControllerTest extends TestCase
             $this->apiHeader()
         );
 
+        dd(json_decode($response->getContent()));
         $this->assertResponse($response);
     }
 

@@ -8,11 +8,11 @@ use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
 {
-    /** @test */
+    /** test */
     public function user_can_login()
     {
         $data = [
-            'email' => 'genephillip222@gmail.com',
+            'email' => 'genephillip222gmail.com',
             'password' => 'administrator'
         ];
 

@@ -8,11 +8,11 @@ use Tests\TestCase;
 
 class ForgotPasswordControllerTest extends TestCase
 {
-    /** @test */
+    /** test */
     public function user_can_request_forgot_password_via_email()
     {
         $data = [
-            'email' => 'genephillip222@gmail.com'
+            'email' => 'genephillip222gmail.com'
         ];
 
         $response = $this->post(
