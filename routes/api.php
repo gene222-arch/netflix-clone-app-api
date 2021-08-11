@@ -183,7 +183,6 @@ Route::middleware(['api'])->group(function ()
     {
         Route::get('/', [RecentlyWatchedMoviesController::class, 'index']);
         Route::get('/{recentlyWatchedMovie}', [RecentlyWatchedMoviesController::class, 'show']);
-        Route::get('/user-profiles/{userProfile}', [RecentlyWatchedMoviesController::class, 'findByUserProfileId']);
         Route::post('/', [RecentlyWatchedMoviesController::class, 'store']);
         Route::put('/{id}', [RecentlyWatchedMoviesController::class, 'update']);
         Route::delete('/{id}', [RecentlyWatchedMoviesController::class, 'destroy']);

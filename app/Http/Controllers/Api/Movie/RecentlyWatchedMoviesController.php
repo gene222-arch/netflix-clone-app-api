@@ -30,24 +30,6 @@ class RecentlyWatchedMoviesController extends Controller
             : $this->success($result);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  UserProfile $userProfile
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function findByUserProfileId(UserProfile $userProfile) 
-    {
-        $recentlyWatchedMovies = $userProfile
-            ->recentlyWatchedMovies()
-            ->with(['movie.userRatings' => fn($q) => $q->where('user_ratings.user_profile_id', $userProfile->id)])
-            ->get()
-            ->map
-            ->movie;
-
-        return $this->success($recentlyWatchedMovies);
-    }
-
 
     /**
      * Store a newly created resource in storage.

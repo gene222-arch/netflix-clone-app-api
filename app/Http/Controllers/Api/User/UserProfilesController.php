@@ -32,16 +32,22 @@ class UserProfilesController extends Controller
             : $this->success($profiles, 'User`s profiles fetched successfully.');
     }
 
-
     /**
      * Display the specified resource.
      *
-     * @param  UserProfile  $profile
+     * @param  UserProfile $userProfile
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(UserProfile $profile)
+    public function show(UserProfile $userProfile) 
     {
-        return !$profile ? $this->noContent() : $this->success($profile);
+        $recentlyWatchedMovies = $userProfile
+            ->recentlyWatchedMovies()
+            ->with(['movie.userRatings' => fn($q) => $q->where('user_ratings.user_profile_id', $userProfile->id)])
+            ->get()
+            ->map
+            ->movie;
+
+        return $this->success($recentlyWatchedMovies);
     }
 
 
