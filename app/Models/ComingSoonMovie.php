@@ -31,7 +31,8 @@ class ComingSoonMovie extends Model
         'wallpaper_path',
         'video_trailer_path',
         'title_logo_path',
-        'status'
+        'status',
+        'views'
     ];
 
 

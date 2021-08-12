@@ -31,7 +31,13 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $result = Movie::all();
+        $result = Movie::all()
+            ->map(function($movie) {
+                $currentMovie = $movie;
+                $currentMovie->other_movies = [];
+
+                return $currentMovie;
+            });
 
         return $this->success($result);
     }
@@ -109,6 +115,21 @@ class MoviesController extends Controller
         $result = $this->updateMovie($request, $movie);
 
         return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Movie updated successfully.');
+    }
+
+    /**
+     * Update the specified resource views field in storage.
+     *
+     * @param  Movie  $movie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function incrementViews(Movie $movie)
+    {
+        $result = $movie->increment('views');
+
+        return !$result 
             ? $this->error($result)
             : $this->success(null, 'Movie updated successfully.');
     }

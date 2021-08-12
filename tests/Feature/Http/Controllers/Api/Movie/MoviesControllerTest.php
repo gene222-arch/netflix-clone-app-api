@@ -134,6 +134,19 @@ class MoviesControllerTest extends TestCase
     }
 
     /** test */
+    public function user_can_increment_movie_views()
+    {
+        $id = 1;
+        $response = $this->put(
+            "/api/movies/$id/views",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_upload_movie_poster()
     {
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);

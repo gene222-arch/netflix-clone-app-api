@@ -34,7 +34,8 @@ class Movie extends Model
         'wallpaper_path',
         'video_path',
         'title_logo_path',
-        'video_size_in_mb'
+        'video_size_in_mb',
+        'views'
     ];
 
     protected $hidden = [
