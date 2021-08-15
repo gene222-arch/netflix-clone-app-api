@@ -26,7 +26,8 @@ class ComingSoonMoviesController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api', 'permission:Manage Coming Soon Movies']);
+        $this->middleware(['auth:api', 'permission:Manage Coming Soon Movies'])
+            ->except('index', 'incrementViews');
     }
 
     /**
@@ -36,7 +37,7 @@ class ComingSoonMoviesController extends Controller
      */
     public function index()
     {
-        $result = ComingSoonMovie::all();
+        $result = ComingSoonMovie::with('trailers')->get();
 
         return !$result->count()
             ? $this->noContent()

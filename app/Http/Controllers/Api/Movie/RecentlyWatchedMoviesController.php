@@ -14,6 +14,11 @@ class RecentlyWatchedMoviesController extends Controller
 {
     use ApiResponser;
 
+    public function __construct()
+    {
+        $this->middleware(['auth:api']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -43,7 +48,7 @@ class RecentlyWatchedMoviesController extends Controller
         $userProfile
             ->recentlyWatchedMovies()
             ->create([
-                'user_id' => Auth::user()->id,
+                'user_id' => $request->user()->id,
                 'movie_id' => $request->movie_id
             ]);
 
@@ -74,8 +79,8 @@ class RecentlyWatchedMoviesController extends Controller
     {
         RecentlyWatchedMovie::where([
             [ 'user_profile_id', $request->user_profile_id ],
-            [ 'movie_id' => $request->movie_id ],
-            [ 'user_id' => Auth::user()->id ]
+            [ 'movie_id', $request->movie_id ],
+            [ 'user_id', $request->user()->id ]
         ])
             ->update([
                 'recently_watched_at' => Carbon::now()
@@ -95,10 +100,26 @@ class RecentlyWatchedMoviesController extends Controller
     {
         RecentlyWatchedMovie::where([
             [ 'user_profile_id', $request->user_profile_id ],
-            [ 'movie_id' => $request->movie_id ],
-            [ 'user_id' => Auth::user()->id ]
+            [ 'movie_id', $request->movie_id ],
+            [ 'user_id', $request->user()->id ]
         ])->delete();
 
         return $this->success(null, 'Recently Watched Movie deleted successfully.');
+    }
+
+    /**
+     * Remove multiple resource from storage.
+     *
+     * @param  App\Http\Requests\Movie\RecentlyWatchedMovie\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function clear(Request $request)
+    {
+        $recentlyWatchedMovies = RecentlyWatchedMovie::where([
+            [ 'user_profile_id', $request->user_profile_id ],
+            [ 'user_id', $request->user()->id ]
+        ])->delete();
+
+        return $this->success(null, 'Recently Watched Movies deleted successfully.');
     }
 }

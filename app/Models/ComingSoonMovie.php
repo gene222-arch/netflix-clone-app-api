@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Cast;
 use App\Models\Genre;
 use App\Models\Director;
@@ -37,7 +38,6 @@ class ComingSoonMovie extends Model
 
 
     protected $hidden = [
-        'created_at',
         'updated_at'
     ];
 
@@ -51,6 +51,11 @@ class ComingSoonMovie extends Model
         self::created(function ($comingSoonMovie) {
             event(new \App\Events\ComingSoonMovieCreatedEvent($comingSoonMovie->with('trailers')->first()));
         });
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('yyyy');
     }
 
         

@@ -139,7 +139,20 @@ class MoviesControllerTest extends TestCase
         $id = 1;
         $response = $this->put(
             "/api/movies/$id/views",
-            $data,
+            [],
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_increment_movie_search_count()
+    {
+        $id = 1;
+        $response = $this->put(
+            "/api/movies/$id/search-count",
+            [],
             $this->apiHeader()
         );
 

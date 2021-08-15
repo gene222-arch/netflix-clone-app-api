@@ -14,6 +14,7 @@ use App\Http\Requests\Upload\UploadVideoRequest;
 use App\Http\Requests\Upload\UploadWallpaperRequest;
 use App\Traits\Movie\HasMovieCRUD;
 use App\Traits\Upload\HasUploadable;
+use Illuminate\Support\Facades\DB;
 
 class MoviesController extends Controller
 {
@@ -21,7 +22,14 @@ class MoviesController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api', 'permission:Manage Movies']);
+        $this->middleware(['auth:api', 'permission:Manage Movies'])
+            ->except(
+                'index',
+                'categorizedMovies',
+                'topSearches',
+                'getLatestTwenty',
+                'incrementViews',
+            );
     }
 
     /**
@@ -38,6 +46,21 @@ class MoviesController extends Controller
 
                 return $currentMovie;
             });
+
+        return $this->success($result);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function topSearches()
+    {
+        $result = Movie::select('*')
+            ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+            ->orderByDesc('movie_reports.search_count')
+            ->get();
 
         return $this->success($result);
     }
@@ -132,6 +155,28 @@ class MoviesController extends Controller
         return !$result 
             ? $this->error($result)
             : $this->success(null, 'Movie updated successfully.');
+    }
+
+    
+    /**
+     * Update the specified resource search count field in storage.
+     *
+     * @param  Movie  $movie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function incrementSearchCount(Movie $movie)
+    {
+        $reportExists = $movie->report;
+
+        if ($reportExists) {
+            $movie->report()->increment('search_count');
+
+            return $this->success(null, 'Movie report updated successfully.');
+        }
+        
+        $movie->report()->create();
+
+        return $this->success(null, 'Movie report created successfully.');
     }
 
     /**

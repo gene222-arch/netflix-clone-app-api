@@ -165,6 +165,7 @@ Route::middleware(['api'])->group(function ()
     {
         Route::get('/', [MoviesController::class, 'index']);
         Route::get('/categorized', [MoviesController::class, 'categorizedMovies']);
+        Route::get('/top-searches', [MoviesController::class, 'topSearches']);
         Route::get('/latest/20', [MoviesController::class, 'getLatestTwenty']);
         Route::get('/{movie}', [MoviesController::class, 'show']);
         Route::post('/', [MoviesController::class, 'store']);
@@ -174,6 +175,7 @@ Route::middleware(['api'])->group(function ()
         Route::post('/upload/video', [MoviesController::class, 'uploadVideo']);
         Route::put('/{movie}', [MoviesController::class, 'update']);
         Route::put('/{movie}/views', [MoviesController::class, 'incrementViews']);
+        Route::put('/{movie}/search-count', [MoviesController::class, 'incrementSearchCount']);
         Route::delete('/', [MoviesController::class, 'destroy']);
     });
 
@@ -190,6 +192,7 @@ Route::middleware(['api'])->group(function ()
         Route::post('/user-profiles/{userProfile}', [RecentlyWatchedMoviesController::class, 'store']);
         Route::put('/', [RecentlyWatchedMoviesController::class, 'update']);
         Route::delete('/', [RecentlyWatchedMoviesController::class, 'destroy']);
+        Route::delete('/clear', [RecentlyWatchedMoviesController::class, 'destroy']);
     });
 
     /**

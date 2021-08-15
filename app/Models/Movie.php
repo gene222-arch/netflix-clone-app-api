@@ -106,6 +106,17 @@ class Movie extends Model
     }
 
     /**
+     * Define a one-to-one relationship with MovieReport Class
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function report(): HasOne
+    {
+        return $this->hasOne(MovieReport::class);
+    }
+
+
+    /**
     * Define a many-to-many relationship with UserRating class
     *
     * @return Illuminate\Database\Eloquent\Relations\HasMany
