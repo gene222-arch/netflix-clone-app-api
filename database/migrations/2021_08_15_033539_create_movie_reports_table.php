@@ -15,7 +15,7 @@ class CreateMovieReportsTable extends Migration
     {
         Schema::create('movie_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('movie_id')->constrained();
+            $table->foreignId('movie_id')->unique()->constrained();
             $table->unsignedBigInteger('views')->default(0);
             $table->unsignedBigInteger('search_count')->default(0);
             $table->unsignedBigInteger('total_likes_within_a_day')->default(0);

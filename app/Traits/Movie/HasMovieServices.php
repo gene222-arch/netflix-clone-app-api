@@ -8,12 +8,69 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Movie\Movie\StoreRequest;
 use App\Http\Requests\Movie\Movie\UpdateRequest;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-trait HasMovieCRUD
+trait HasMovieServices
 {
     use HasUploadable;
+
+
+    public function getCategorizedMovies(): array
+    {
+        $recentlyAddedMovies = Movie::latest()->take(20)->get();
+
+        $trendingNow = Movie::selectRaw('
+                    movies.*, 
+                    (movie_reports.total_likes_within_a_week + movie_reports.total_views_within_a_week + movie_reports.search_count) 
+                AS trending_score
+            ')
+                ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+                ->orderByDesc('trending_score')
+                ->take(10)
+                ->get();
+
+        $topTen = Movie::selectRaw('
+                    movies.*, 
+                    (movie_reports.total_likes_within_a_day + movie_reports.total_views_within_a_day + movie_reports.search_count) 
+                AS top_ten_score
+            ')
+                ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+                ->orderByDesc('top_ten_score')
+                ->take(10)
+                ->get();
+
+        $popularity = Movie::selectRaw('
+                movies.*, 
+                (movie_reports.views + movie_reports.search_count + ratings.likes) as popularity
+        ')
+            ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+            ->leftJoin('ratings', 'ratings.movie_id', '=', 'movies.id')
+            ->orderByDesc('popularity')
+            ->take(10)
+            ->get();
+
+        $result = [
+            [
+                'title' => 'Recently Added Movies',
+                'movies' => $recentlyAddedMovies
+            ],
+            [
+                'title' => 'Trending Now',
+                'movies' => $trendingNow
+            ],
+            [
+                'title' => 'Top 10',
+                'movies' => $topTen
+            ],
+            [
+                'title' => 'Popularity',
+                'movies' => $popularity
+            ],
+        ];
+
+        return $result;
+    }
+
 
     public function createMovie(StoreRequest $request): bool|string
     {
@@ -39,9 +96,7 @@ trait HasMovieCRUD
         return true;
     }
 
-    /**
-     * 
-     */
+
     public function updateMovie(UpdateRequest $request, Movie $movie): bool|string
     {
         try {

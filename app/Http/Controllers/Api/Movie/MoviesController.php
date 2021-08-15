@@ -12,14 +12,14 @@ use App\Http\Requests\Upload\UploadPosterRequest;
 use App\Http\Requests\Upload\UploadTitleLogoRequest;
 use App\Http\Requests\Upload\UploadVideoRequest;
 use App\Http\Requests\Upload\UploadWallpaperRequest;
-use App\Traits\Movie\HasMovieCRUD;
+use App\Traits\Movie\HasMovieServices;
 use App\Traits\Upload\HasUploadable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class MoviesController extends Controller
 {
-    use ApiResponser, HasMovieCRUD, HasUploadable;
+    use ApiResponser, HasMovieServices, HasUploadable;
 
     public function __construct()
     {
@@ -73,26 +73,7 @@ class MoviesController extends Controller
      */
     public function categorizedMovies()
     {
-        $recentlyAddedMovies = Movie::latest()->take(20)->get();
-
-        $trendingNow = Movie::selectRaw('movies.*')
-            ->leftJoin('ratings', 'ratings.movie_id', '=', 'movies.id')
-            ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
-            ->orderByRaw('(movie_reports.views + ratings.likes) DESC')
-            ->get();
-
-        $result = [
-            [
-                'title' => '20 Recently Added Movies',
-                'movies' => $recentlyAddedMovies
-            ],
-            [
-                'title' => 'Trending Now',
-                'movies' => $trendingNow
-            ]
-        ];
-
-        return $this->success($result);
+        return $this->success($this->getCategorizedMovies());
     }
 
 
@@ -124,7 +105,7 @@ class MoviesController extends Controller
         return $result !== true 
             ? $this->error($result)
             : $this->success(null, 'Movie created successfully.');
-    }
+    } 
 
 
     /**
