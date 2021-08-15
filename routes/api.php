@@ -116,7 +116,6 @@ Route::middleware(['api'])->group(function ()
         Route::post('/upload/title-logo', [ComingSoonMoviesController::class, 'uploadTitleLogo']);
         Route::post('/upload/video-trailer', [ComingSoonMoviesController::class, 'uploadVideo']);
         Route::put('/{comingSoonMovie}', [ComingSoonMoviesController::class, 'update']);
-        Route::put('/{comingSoonMovie}/views', [ComingSoonMoviesController::class, 'incrementViews']);
         Route::put('/{comingSoonMovie}/status', [ComingSoonMoviesController::class, 'updateStatus']);
         Route::delete('/', [ComingSoonMoviesController::class, 'destroy']);
 
@@ -174,8 +173,8 @@ Route::middleware(['api'])->group(function ()
         Route::post('/upload/title-logo', [MoviesController::class, 'uploadTitleLogo']);
         Route::post('/upload/video', [MoviesController::class, 'uploadVideo']);
         Route::put('/{movie}', [MoviesController::class, 'update']);
-        Route::put('/{movie}/views', [MoviesController::class, 'incrementViews']);
-        Route::put('/{movie}/search-count', [MoviesController::class, 'incrementSearchCount']);
+        Route::match(['post', 'put'], '/{movie}/views', [MoviesController::class, 'incrementViews']);
+        Route::match(['post', 'put'], '/{movie}/search-count', [MoviesController::class, 'incrementSearchCount']);
         Route::delete('/', [MoviesController::class, 'destroy']);
     });
 

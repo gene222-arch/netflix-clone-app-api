@@ -145,18 +145,6 @@ class ComingSoonMoviesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-    /** test */
-    public function user_can_increment_coming_soon_movie_views()
-    {
-        $id = 1;
-        $response = $this->put(
-            "/api/coming-soon-movies/$id/views",
-            $data,
-            $this->apiHeader()
-        );
-
-        $this->assertResponse($response);
-    }
 
     /** test */
     public function user_can_update_coming_soon_movie_status()

@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Movie\UserRating\Request;
 use App\Http\Requests\Movie\UserRating\DestroyRequest;
+use App\Models\MovieReport;
 
 class UserRatingsController extends Controller
 {
@@ -57,15 +58,36 @@ class UserRatingsController extends Controller
                 {
                     case 'like':
                         Rating::incrementLike($movieID);
+
+                        $isMovieRated = MovieReport::where('movie_id', $movieID)->first();
+
+                        if (! $isMovieRated) {
+                            MovieReport::create([
+                                'movie_id' => $movieID,
+                                'total_likes_within_a_day' => 1,
+                                'total_likes_within_a_week' => 1
+                            ]);
+                        } else {
+                            $isMovieRated
+                                ->update([
+                                    'total_likes_within_a_day' => DB::raw('total_likes_within_a_day + 1'),
+                                    'total_likes_within_a_week' => DB::raw('total_likes_within_a_week + 1')
+                                ]);
+                        }
+
                         UserRating::liked($movieID, $userProfileID);
                         break;
-                    
+
                     case 'dislike':
                         Rating::incrementDislike($movieID);
                         UserRating::disliked($movieID, $userProfileID);
                         break;
 
                     default: 
+                        MovieReport::where('movie_id', $movieID)->update([
+                            'total_likes_within_a_day' => DB::raw('total_likes_within_a_day - 1'),
+                            'total_likes_within_a_week' => DB::raw('total_likes_within_a_week - 1')
+                        ]);
                         $previouseRate = UserRating::unrate($movieID, $userProfileID);
                         Rating::unrate($movieID, $previouseRate);
                 }
@@ -94,7 +116,7 @@ class UserRatingsController extends Controller
      */
     public function showByUserID()
     {
-        return $this->success(Auth::user()->userRatings()->get());
+        return $this->success(request()->user()->userRatings()->get());
     }
 
     /**
@@ -130,8 +152,7 @@ class UserRatingsController extends Controller
             ['user_id', $request->user()->id],
             ['user_profile_id', $request->user_profile_id],
             ['movie_id', $request->movie_id]
-        ])
-        ->first();
+        ])->first();
 
         if ($userRating->rate === 'like') {
             Rating::decrementLike($request->movie_id);

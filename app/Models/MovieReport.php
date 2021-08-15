@@ -13,7 +13,13 @@ class MovieReport extends Model
 
     protected $fillable = [
         'movie_id',
-        'search_count'
+        'search_count',
+        'views',
+        'total_likes_within_a_day',
+        'total_views_within_a_day',
+        'total_likes_within_a_week',
+        'total_views_within_a_week',
+        'current_date'
     ];
 
 }

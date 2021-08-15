@@ -16,7 +16,13 @@ class CreateMovieReportsTable extends Migration
         Schema::create('movie_reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('movie_id')->constrained();
-            $table->unsignedBigInteger('search_count')->default(1);
+            $table->unsignedBigInteger('views')->default(0);
+            $table->unsignedBigInteger('search_count')->default(0);
+            $table->unsignedBigInteger('total_likes_within_a_day')->default(0);
+            $table->unsignedBigInteger('total_views_within_a_day')->default(0);
+            $table->unsignedBigInteger('total_likes_within_a_week')->default(0);
+            $table->unsignedBigInteger('total_views_within_a_week')->default(0);
+            $table->timestamp('current_date')->default(now());
         });
     }
 

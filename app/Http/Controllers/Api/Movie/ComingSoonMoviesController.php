@@ -118,22 +118,6 @@ class ComingSoonMoviesController extends Controller
 
 
     /**
-     * Update the specified resource views field in storage.
-     *
-     * @param  App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest  $request
-     * @param  ComingSoonMovie  $comingSoonMovie
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function incrementViews(ComingSoonMovie $comingSoonMovie)
-    {
-        $result = $comingSoonMovie->increment('views');
-
-        return $result !== true 
-            ? $this->error($result)
-            : $this->success(null, 'Coming Soon Movie updated successfully.');
-    }
-
-    /**
      * Upload a file.
      *
      * @param  App\Http\Requests\Upload\UploadPosterRequest  $request
@@ -145,6 +129,7 @@ class ComingSoonMoviesController extends Controller
 
         return $this->success($poster);
     }
+
 
     /**
      * Upload a file.
@@ -238,11 +223,7 @@ class ComingSoonMoviesController extends Controller
         
         return $this->success($videoTrailer);
     }
-
-    /**
-     * !
-     */
-
+    
 
     /**
      * Update the specified resource in storage.

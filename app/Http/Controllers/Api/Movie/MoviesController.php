@@ -14,6 +14,7 @@ use App\Http\Requests\Upload\UploadVideoRequest;
 use App\Http\Requests\Upload\UploadWallpaperRequest;
 use App\Traits\Movie\HasMovieCRUD;
 use App\Traits\Upload\HasUploadable;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class MoviesController extends Controller
@@ -72,10 +73,22 @@ class MoviesController extends Controller
      */
     public function categorizedMovies()
     {
+        $recentlyAddedMovies = Movie::latest()->take(20)->get();
+
+        $trendingNow = Movie::selectRaw('movies.*')
+            ->leftJoin('ratings', 'ratings.movie_id', '=', 'movies.id')
+            ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+            ->orderByRaw('(movie_reports.views + ratings.likes) DESC')
+            ->get();
+
         $result = [
             [
                 'title' => '20 Recently Added Movies',
-                'movies' => Movie::latest()->take(20)->get()
+                'movies' => $recentlyAddedMovies
+            ],
+            [
+                'title' => 'Trending Now',
+                'movies' => $trendingNow
             ]
         ];
 
@@ -150,11 +163,30 @@ class MoviesController extends Controller
      */
     public function incrementViews(Movie $movie)
     {
-        $result = $movie->increment('views');
+        $reportExists = $movie->report;
 
-        return !$result 
-            ? $this->error($result)
-            : $this->success(null, 'Movie updated successfully.');
+        if ($reportExists) 
+        {
+            $movie
+                ->report()
+                ->update([
+                    'views' => DB::raw('views + 1'),
+                    'total_views_within_a_day' => DB::raw('total_views_within_a_day + 1'),
+                    'total_views_within_a_week' => DB::raw('total_views_within_a_week + 1'),
+                ]);
+
+            return $this->success(null, 'Movie report updated successfully.');
+        }
+        
+        $movie
+            ->report()
+            ->create([
+                'views' => 1,
+                'total_views_within_a_day' => 1,
+                'total_views_within_a_week' => 1
+            ]);
+
+        return $this->success(null, 'Movie report created successfully.');
     }
 
     
@@ -174,7 +206,7 @@ class MoviesController extends Controller
             return $this->success(null, 'Movie report updated successfully.');
         }
         
-        $movie->report()->create();
+        $movie->report()->create([ 'search_count' => 1 ]);
 
         return $this->success(null, 'Movie report created successfully.');
     }
