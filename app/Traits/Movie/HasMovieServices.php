@@ -15,7 +15,7 @@ trait HasMovieServices
     use HasUploadable;
 
 
-    public function getCategorizedMovies(): array
+    public function getCategorizedMovies($user): array
     {
         $recentlyAddedMovies = Movie::latest()->take(20)->get();
 
@@ -67,6 +67,27 @@ trait HasMovieServices
                 'movies' => $popularity
             ],
         ];
+
+        if ($user->address()->exists()) 
+        {
+            $country = $user->address->country;
+
+            $trendingNowByUserAddress = Movie::selectRaw('
+                    movies.*, 
+                    (movie_reports.total_likes_within_a_week + movie_reports.total_views_within_a_week + movie_reports.search_count) 
+                AS trending_score
+            ')
+                ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+                ->where('movies.country', $country)
+                ->orderByDesc('trending_score')
+                ->take(10)
+                ->get();
+
+            array_push($result, [
+                'title' => "Trending Now in the $country",
+                'movies' => $trendingNowByUserAddress
+            ]);
+        }
 
         return $result;
     }

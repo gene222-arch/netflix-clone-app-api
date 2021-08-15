@@ -73,7 +73,9 @@ class MoviesController extends Controller
      */
     public function categorizedMovies()
     {
-        return $this->success($this->getCategorizedMovies());
+        $user = request()->user('api');
+
+        return $this->success($this->getCategorizedMovies($user));
     }
 
 

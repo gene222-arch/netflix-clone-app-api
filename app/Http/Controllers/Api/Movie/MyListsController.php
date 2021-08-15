@@ -25,7 +25,7 @@ class MyListsController extends Controller
      */
     public function toggle(Request $request)
     {
-        $authUser = $request->user();
+        $authUser = $request->user('api');
 
         $myLists = $authUser->myLists();
 

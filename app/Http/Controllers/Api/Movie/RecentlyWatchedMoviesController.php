@@ -101,7 +101,7 @@ class RecentlyWatchedMoviesController extends Controller
         RecentlyWatchedMovie::where([
             [ 'user_profile_id', $request->user_profile_id ],
             [ 'movie_id', $request->movie_id ],
-            [ 'user_id', $request->user()->id ]
+            [ 'user_id', $request->user('api')->id ]
         ])->delete();
 
         return $this->success(null, 'Recently Watched Movie deleted successfully.');
@@ -115,9 +115,9 @@ class RecentlyWatchedMoviesController extends Controller
      */
     public function clear(Request $request)
     {
-        $recentlyWatchedMovies = RecentlyWatchedMovie::where([
+        RecentlyWatchedMovie::where([
             [ 'user_profile_id', $request->user_profile_id ],
-            [ 'user_id', $request->user()->id ]
+            [ 'user_id', $request->user('api')->id ]
         ])->delete();
 
         return $this->success(null, 'Recently Watched Movies deleted successfully.');

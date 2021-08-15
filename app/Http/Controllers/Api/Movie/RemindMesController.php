@@ -24,7 +24,7 @@ class RemindMesController extends Controller
      */
     public function toggle(Request $request)
     {
-        $authUser = $request->user();
+        $authUser = $request->user('api');
 
         $remindMes = $authUser->remindMes();
 

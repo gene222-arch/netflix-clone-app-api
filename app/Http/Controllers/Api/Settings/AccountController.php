@@ -43,12 +43,13 @@ class AccountController extends Controller
      */
     public function update(UpdateRequest $request)
     { 
-        Auth::user()->update([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        $request->user('api')
+            ->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
 
         return $this->success(null, 'User account updated successfully.');
     }

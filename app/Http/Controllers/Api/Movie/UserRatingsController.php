@@ -74,7 +74,7 @@ class UserRatingsController extends Controller
      */
     public function showByUserID()
     {
-        return $this->success(request()->user()->userRatings()->get());
+        return $this->success(request()->user('api')->userRatings()->get());
     }
 
 

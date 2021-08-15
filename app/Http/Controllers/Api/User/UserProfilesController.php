@@ -63,7 +63,7 @@ class UserProfilesController extends Controller
     public function store(StoreRequest $request)
     {
         $profile = UserProfile::create([
-            'user_id' => $request->user()->id,
+            'user_id' => $request->user('api')->id,
             'name' => $request->name,
             'is_for_kids' => $request->is_for_kids,
             'avatar' => $request->avatar
