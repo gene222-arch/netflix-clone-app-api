@@ -11,6 +11,7 @@ use App\Jobs\QueuePasswordResetNotification;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -66,6 +67,17 @@ class User extends Authenticatable
     }
     
     /** RELATIONSHIPS */
+
+    
+    /**
+     * Define a one-to-one relationship with UserAddress class
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function address(): HasOne
+    {
+        return $this->hasOne(UserAddress::class);
+    }
 
     /**
     * Define a many-to-many relationship with MyList class

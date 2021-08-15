@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\Validator;
+use Stevebauman\Location\Facades\Location;
 use App\Http\Requests\Auth\RegisterRequest;
 
 class RegisterController extends Controller
@@ -58,28 +58,44 @@ class RegisterController extends Controller
         try {
             DB::transaction(function () use ($request)
             {
-                User::create([
+                $userDetails = [
                     'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
+                    'last_name' => $request->lastName,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
-                ]);
+                ];
+
+                $user = User::create($userDetails);
+
+                /** Save user location if access is allowed */
+                if ( $request->allow_access_to_location && $address = Location::get($request->ip()) ) {
+
+                    $userAddressDetails = [
+                        'country' => $address['country'],
+                        'country_code' => $address['countryCode'],
+                        'region_code' => $address['regionCode'],
+                        'region_name' => $address['regionName'],
+                        'city_name' => $address['cityName'],
+                        'zip_code' => $address['zipCode'],
+                        'area_code' => $address['areaCode']
+                    ];
+
+                    $user->address()->create($userAddressDetails);
+                }
         
-                if (!Auth::attempt($request->only('email', 'password'))) {
+                if (! Auth::attempt($request->only('email', 'password'))) {
                     return $this->error('Credentials mismatch', 401);
                 }
+
+                return $this->token(
+                    $this->getPersonalAccessToken($request),
+                    'Successful Registration', [
+                        'user' => $user,
+                        'profiles' => $user->profiles
+                ]);
             });
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());
         }
-        
-        $auth = $request->user();
-
-        return $this->token(
-            $this->getPersonalAccessToken($request),
-            'Successful Registration', [
-                'user' => $auth->withoutRelations(),
-                'profiles' => $auth->profiles
-        ]);
     }
 }

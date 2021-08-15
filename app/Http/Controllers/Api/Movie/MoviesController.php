@@ -14,7 +14,6 @@ use App\Http\Requests\Upload\UploadVideoRequest;
 use App\Http\Requests\Upload\UploadWallpaperRequest;
 use App\Traits\Movie\HasMovieServices;
 use App\Traits\Upload\HasUploadable;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class MoviesController extends Controller
@@ -65,6 +64,7 @@ class MoviesController extends Controller
 
         return $this->success($result);
     }
+
 
     /**
      * Display a listing of the resource.

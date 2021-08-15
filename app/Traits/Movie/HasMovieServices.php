@@ -138,6 +138,7 @@ trait HasMovieServices
         return true;
     }
 
+    
     protected function filterMovieData($request)
     {
         return $request->except([

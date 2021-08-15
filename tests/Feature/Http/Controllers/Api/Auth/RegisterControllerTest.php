@@ -17,7 +17,8 @@ class RegisterControllerTest extends TestCase
             'last_name' => 'Paz',
             'email' => 'bryan.pgmail.com',
             'password' => 'bryan.pgmail.com',
-            'password_confirmation' => 'bryan.pgmail.com'
+            'password_confirmation' => 'bryan.pgmail.com',
+            'allow_access_to_location' => true
         ];
 
         $response = $this->post(
