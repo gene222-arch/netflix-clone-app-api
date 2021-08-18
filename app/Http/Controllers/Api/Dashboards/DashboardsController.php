@@ -13,7 +13,7 @@ class DashboardsController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api', 'role:Super Administrator', 'permission:View Dashboard']);
+        $this->middleware(['auth:api', 'permission:View Dashboard']);
     }
     
     /**
