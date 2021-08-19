@@ -60,7 +60,7 @@ class RegisterController extends Controller
             {
                 $userDetails = [
                     'first_name' => $request->first_name,
-                    'last_name' => $request->lastName,
+                    'last_name' => $request->last_name,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                 ];
