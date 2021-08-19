@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class UserProfilesControllerTest extends TestCase
@@ -75,6 +76,25 @@ class UserProfilesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_upload_avatar()
+    {
+        $avatar = UploadedFile::fake()
+            ->image('avatar.png', 330, 300)
+            ->size(3.1);
+
+        $data = [
+            'avatar' => $avatar
+        ];
+
+        $response = $this->post(
+            "/api/user-profiles/avatar-upload",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response); 
+    }
 
     /** test */
     public function user_can_delete_profile()
