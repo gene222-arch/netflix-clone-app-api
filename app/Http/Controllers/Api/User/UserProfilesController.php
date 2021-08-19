@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserProfile\StoreRequest;
-use App\Http\Requests\UserProfile\UpdateRequest;
 use App\Models\UserProfile;
 use App\Traits\Api\ApiResponser;
+use App\Http\Controllers\Controller;
+use App\Traits\Upload\HasUploadable;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UserProfile\StoreRequest;
+use App\Http\Requests\UserProfile\UpdateRequest;
+use App\Http\Requests\Upload\UploadAvatarRequest;
 
 class UserProfilesController extends Controller
 {
-    use ApiResponser;
+    use ApiResponser, HasUploadable;
 
     public function __construct()
     {
@@ -85,6 +87,23 @@ class UserProfilesController extends Controller
         $profile->update($request->validated());
 
         return $this->success(null, 'Profile updated successfully.');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  App\Http\Requests\Upload\UploadAvatarRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadAvatar(UploadAvatarRequest $request)
+    {
+        $path = $this->upload(
+            $request,
+            'avatar',
+            UserProfile::$FILE_PATH
+        );
+
+        return $this->success($path, 'Avatar uploaded successfully.');
     }
 
 

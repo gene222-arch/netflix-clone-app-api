@@ -202,6 +202,7 @@ Route::middleware(['api'])->group(function ()
         Route::get('/', [UserProfilesController::class, 'index']);
         Route::get('/{profile}', [UserProfilesController::class, 'show']);
         Route::post('/', [UserProfilesController::class, 'store']);
+        Route::post('/avatar-upload', [UserProfilesController::class, 'uploadAvatar']);
         Route::put('/{profile}', [UserProfilesController::class, 'update']);
         Route::delete('/{profile}', [UserProfilesController::class, 'destroy']);
     });
