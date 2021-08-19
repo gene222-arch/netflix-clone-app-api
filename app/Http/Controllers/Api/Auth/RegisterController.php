@@ -53,10 +53,10 @@ class RegisterController extends Controller
      * @param RegisterRequest $request
      * @return Illuminate\Http\JsonResponse
      */
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request, User $user)
     {
         try {
-            DB::transaction(function () use ($request)
+            DB::transaction(function () use ($request, $user)
             {
                 $userDetails = [
                     'first_name' => $request->first_name,
@@ -64,8 +64,7 @@ class RegisterController extends Controller
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                 ];
-
-                $user = User::create($userDetails);
+                $user->query()->create($userDetails);
 
                 /** Save user location if access is allowed */
                 if ( $request->allow_access_to_location && $address = Location::get($request->ip()) ) {
@@ -86,16 +85,15 @@ class RegisterController extends Controller
                 if (! Auth::attempt($request->only('email', 'password'))) {
                     return $this->error('Credentials mismatch', 401);
                 }
-
-                return $this->token(
-                    $this->getPersonalAccessToken($request),
-                    'Successful Registration', [
-                        'user' => $user,
-                        'profiles' => $user->profiles
-                ]);
             });
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());
         }
+
+        return $this->token(
+            $this->getPersonalAccessToken($request),
+            'Successful Registration', [
+                'user' => Auth::user()->withoutRelations()
+        ]);
     }
 }
