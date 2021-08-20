@@ -54,20 +54,20 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
 {
-        if (! hash_equals((string) $request->route('id'), (string) $request->user()->getKey())) {
+        if (! hash_equals((string) $request->route('id'), (string) $request->user('api')->getKey())) {
             throw new AuthorizationException;
         }
 
-        if (! hash_equals((string) $request->route('hash'), sha1($request->user()->getEmailForVerification()))) {
+        if (! hash_equals((string) $request->route('hash'), sha1($request->user('api')->getEmailForVerification()))) {
             throw new AuthorizationException;
         }
 
-        if ($request->user()->hasVerifiedEmail()) {
+        if ($request->user('api')->hasVerifiedEmail()) {
             return $this->success(null, 'Email already verified.');
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+        if ($request->user('api')->markEmailAsVerified()) {
+            event(new Verified($request->user('api')));
         }
 
         if ($response = $this->verified($request)) {
@@ -95,11 +95,11 @@ class VerificationController extends Controller
      */
     public function resend(Request $request)
     {
-        if ($request->user()->hasVerifiedEmail()) {
+        if ($request->user('api')->hasVerifiedEmail()) {
             return $this->success(null, 'Email already verified');
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        $request->user('api')->sendEmailVerificationNotification();
 
         return $this->success(null, 'Email verification is sent.');
     }

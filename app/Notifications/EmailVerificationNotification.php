@@ -39,8 +39,6 @@ class EmailVerificationNotification extends VerifyEmail implements ShouldQueue
             ]
         );
 
-        $url = str_replace('8000/api', '3000', $url);
-        
-        return str_replace("verify-email/{$id}/{$hash}?", "verify-email?id={$id}&hash={$hash}&", $url);
+        return str_replace('8000/api', '3000/auth', $url);
     }
 }
