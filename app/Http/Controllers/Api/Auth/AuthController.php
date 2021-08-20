@@ -12,13 +12,6 @@ class AuthController extends Controller
 {
     use ApiResponser, AuthServices;
 
-
-    public function __construct()
-    {
-        $this->middleware(['auth:api']);
-    }
-
-
     /**
      * Show the currently authenticated user
      * 

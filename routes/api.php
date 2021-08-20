@@ -62,9 +62,12 @@ Route::middleware(['api'])->group(function ()
     /**
      * * Logout
      */
-    Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:api');
-    Route::get('/auth', [AuthController::class, 'show']);
-
+    Route::middleware('auth:api')->group(function () 
+    {
+        Route::post('/logout', [LoginController::class, 'logout']);
+        Route::get('/auth', [AuthController::class, 'show']);
+    });
+    
     /**
      * * Access right
      */
