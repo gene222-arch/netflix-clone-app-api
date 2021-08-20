@@ -91,10 +91,6 @@ class RegisterController extends Controller
             return $this->error($th->getMessage());
         }
 
-        return $this->token(
-            $this->getPersonalAccessToken($request),
-            'Successful Registration', [
-                'user' => Auth::user()->withoutRelations()
-        ]);
+        return $this->success(null, 'Registered successfully, an email verification has been sent to your account.');
     }
 }
