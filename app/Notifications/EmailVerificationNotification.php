@@ -7,10 +7,13 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class EmailVerificationNotification extends VerifyEmail
+class EmailVerificationNotification extends VerifyEmail implements ShouldQueue
 {
     use Queueable;
+
+    public $delays = 5;
 
     /**
      * Get the verification URL for the given notifiable.
