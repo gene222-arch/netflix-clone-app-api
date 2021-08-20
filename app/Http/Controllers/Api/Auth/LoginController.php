@@ -51,6 +51,10 @@ class LoginController extends Controller
 
         $auth = Auth::user();
 
+        if (! $auth->hasVerifiedEmail()) {
+            return $this->error('Your email address is not verified.');
+        }
+
         return $this->token(
             $this->getPersonalAccessToken($request),
             'User logged in successfully.',
