@@ -65,9 +65,7 @@ class RegisterController extends Controller
                     'password' => Hash::make($request->password),
                 ];
 
-                $user->query()->create($userDetails);
-
-                $user->sendEmailVerificationNotification();
+                $user->query()->create($userDetails)->sendEmailVerificationNotification();
 
                 /** Save user location if access is allowed */
                 if ( $request->allow_access_to_location && $address = Location::get($request->ip()) ) 

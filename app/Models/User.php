@@ -68,6 +68,11 @@ class User extends Authenticatable implements MustVerifyEmail
             ->delay(now()->addSeconds(10));
     }
 
+    public function getKey(): int
+    {
+        return $this->id;
+    }
+
     /**
      * Send an email notification verification
      *
