@@ -38,7 +38,7 @@ use App\Http\Controllers\Api\User\UserProfilesController;
 /**
  * Auth Module
  */
-Route::middleware(['api'])->group(function () 
+Route::middleware(['api', 'verified'])->group(function () 
 {
 
     /**
@@ -48,7 +48,7 @@ Route::middleware(['api'])->group(function ()
     Route::prefix('auth')->group(function () 
     {
         Route::post('/login', [LoginController::class, 'login']);
-        Route::post('/register', [RegisterController::class, 'register']);
+        Route::post('/register', [RegisterController::class, 'register'])->withoutMiddleware('verified');
     });
 
     /**
@@ -57,13 +57,16 @@ Route::middleware(['api'])->group(function ()
     Route::prefix('forgot-password')->group(function () 
     {
         Route::post('/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
-        Route::post('/reset', [ResetPasswordController::class, 'reset']);
+        Route::post('/reset', [ResetPasswordController::class, 'reset'])->withoutMiddleware('verified');
     });
 
     Route::prefix('email')->group(function () 
     {
-        Route::get('/verify-email/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
-        Route::get('/resend', [VerificationController::class, 'resend'])->name('verification.resend');    
+        Route::get('/verify-email/{id}/{hash}', [VerificationController::class, 'verify'])
+            ->name('verification.verify')->withoutMiddleware('verified');
+
+        Route::get('/resend', [VerificationController::class, 'resend'])
+            ->name('verification.resend')->withoutMiddleware('verified');
     });
 
     /**
@@ -71,7 +74,7 @@ Route::middleware(['api'])->group(function ()
      */
     Route::middleware('auth:api')->group(function () 
     {
-        Route::post('/logout', [LoginController::class, 'logout']);
+        Route::post('/logout', [LoginController::class, 'logout'])->withoutMiddleware('verified');
         Route::get('/auth', [AuthController::class, 'show']);
     });
 
