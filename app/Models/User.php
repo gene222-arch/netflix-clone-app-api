@@ -9,12 +9,14 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use App\Jobs\QueuePasswordResetNotification;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Notifications\EmailVerificationNotification;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable, SoftDeletes, HasApiTokens, HasRoles;
 
@@ -65,10 +67,19 @@ class User extends Authenticatable
         dispatch(new QueuePasswordResetNotification($this, $token))
             ->delay(now()->addSeconds(10));
     }
+
+    /**
+     * Send an email notification verification
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification(): void 
+    {
+        $this->notify(new EmailVerificationNotification());
+    }
     
     /** RELATIONSHIPS */
 
-    
     /**
      * Define a one-to-one relationship with UserAddress class
      *

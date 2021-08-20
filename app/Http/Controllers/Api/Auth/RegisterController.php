@@ -64,11 +64,14 @@ class RegisterController extends Controller
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                 ];
+
                 $user->query()->create($userDetails);
 
-                /** Save user location if access is allowed */
-                if ( $request->allow_access_to_location && $address = Location::get($request->ip()) ) {
+                $user->sendEmailVerificationNotification();
 
+                /** Save user location if access is allowed */
+                if ( $request->allow_access_to_location && $address = Location::get($request->ip()) ) 
+                {
                     $userAddressDetails = [
                         'country' => $address['country'],
                         'country_code' => $address['countryCode'],

@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Settings\AccountController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\AccessRight\AccessRightsController;
+use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\Dashboards\DashboardsController;
 use App\Http\Controllers\Api\Movie\ComingSoonMoviesController;
 use App\Http\Controllers\Api\Exports\UserExportController;
@@ -59,6 +60,12 @@ Route::middleware(['api'])->group(function ()
         Route::post('/reset', [ResetPasswordController::class, 'reset']);
     });
 
+    Route::prefix('email')->group(function () 
+    {
+        Route::get('/verify-email/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+        Route::get('/resend', [VerificationController::class, 'resend'])->name('verification.resend');    
+    });
+
     /**
      * * Logout
      */
@@ -67,7 +74,7 @@ Route::middleware(['api'])->group(function ()
         Route::post('/logout', [LoginController::class, 'logout']);
         Route::get('/auth', [AuthController::class, 'show']);
     });
-    
+
     /**
      * * Access right
      */
