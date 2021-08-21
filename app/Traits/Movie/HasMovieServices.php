@@ -15,7 +15,7 @@ trait HasMovieServices
     use HasUploadable;
 
 
-    public function getCategorizedMovies($user): array
+    public function getCategorizedMovies($user, bool $isForKids): array
     {
         $recentlyAddedMovies = Movie::latest()->take(20)->get();
 
@@ -25,6 +25,7 @@ trait HasMovieServices
                 AS trending_score
             ')
                 ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+                ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
                 ->orderByDesc('trending_score')
                 ->take(10)
                 ->get();
@@ -35,6 +36,7 @@ trait HasMovieServices
                 AS top_ten_score
             ')
                 ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+                ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
                 ->orderByDesc('top_ten_score')
                 ->take(10)
                 ->get();
@@ -45,6 +47,7 @@ trait HasMovieServices
         ')
             ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
             ->leftJoin('ratings', 'ratings.movie_id', '=', 'movies.id')
+            ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
             ->orderByDesc('popularity')
             ->take(10)
             ->get();
@@ -79,6 +82,7 @@ trait HasMovieServices
             ')
                 ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                 ->where('movies.country', $country)
+                ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
                 ->orderByDesc('trending_score')
                 ->take(10)
                 ->get();

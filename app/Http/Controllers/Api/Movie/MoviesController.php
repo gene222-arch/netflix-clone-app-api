@@ -39,13 +39,19 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $result = Movie::all()
-            ->map(function($movie) {
-                $currentMovie = $movie;
-                $currentMovie->other_movies = [];
+        $query = Movie::query();
+        $isForKids = request()->input('isForKids', false);
+        
+        if ($isForKids) {
+            $query = $query->where('age_restriction', '<=', 12);
+        }
 
-                return $currentMovie;
-            });
+        $result = $query->get()->map(function($movie) {
+            $currentMovie = $movie;
+            $currentMovie->other_movies = [];
+
+            return $currentMovie;
+        });
 
         return $this->success($result);
     }
@@ -74,8 +80,9 @@ class MoviesController extends Controller
     public function categorizedMovies()
     {
         $user = request()->user('api');
+        $isForKids = request()->input('isForKids', false);
 
-        return $this->success($this->getCategorizedMovies($user));
+        return $this->success($this->getCategorizedMovies($user, $isForKids));
     }
 
 
