@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Movie;
 
+use App\Events\ComingSoonMovieReleasedEvent;
 use Carbon\Carbon;
 use App\Models\Trailer;
 use App\Models\ComingSoonMovie;
@@ -37,7 +38,8 @@ class ComingSoonMoviesController extends Controller
      */
     public function index()
     {
-        $result = ComingSoonMovie::with('trailers')->get();
+        $result = ComingSoonMovie::where('status', '!=', request()->input('status'))
+            ->with('trailers')->get();
 
         return !$result->count()
             ? $this->noContent()
@@ -237,6 +239,8 @@ class ComingSoonMoviesController extends Controller
             'status' => $comingSoonMovie->status === 'Released' ? 'Coming Soon' : 'Released',
             'released_at' => $comingSoonMovie->status === 'Released' ? null : Carbon::now()
         ]);
+
+        event(new ComingSoonMovieReleasedEvent($comingSoonMovie));
 
         return $this->success(null, 'Status updated successfully.');
     }
