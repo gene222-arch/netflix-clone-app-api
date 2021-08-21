@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Upload;
 
 use App\Http\Requests\BaseRequest;
+use App\Rules\MimeType;
 
 class UploadAvatarRequest extends BaseRequest
 {
@@ -17,7 +18,7 @@ class UploadAvatarRequest extends BaseRequest
             'avatar' => [
                 'required', 
                 'image', 
-                'mimes:jpeg,jpg', 
+                new MimeType(['jpg', 'jpeg']), 
                 'dimensions:min_width=320,min_height=320', 
                 'max:3'
             ],
