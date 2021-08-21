@@ -38,7 +38,7 @@ class ComingSoonMoviesController extends Controller
      */
     public function index()
     {
-        $result = ComingSoonMovie::where('status', '!=', request()->input('status'))
+        $result = ComingSoonMovie::where('status', request()->input('status'))
             ->with('trailers')->get();
 
         return !$result->count()
