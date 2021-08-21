@@ -2,13 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Traits\Api\ApiResponser;
 use Closure;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\URL;
 
 class EnsureEmailIsVerified
 {
+    use ApiResponser;
+
     /**
      * Handle an incoming request.
      *
@@ -25,8 +26,8 @@ class EnsureEmailIsVerified
             ($user instanceof MustVerifyEmail &&
             ! $user->hasVerifiedEmail())) {
             return $request->expectsJson()
-                    ? abort(403, 'Your email address is not verified.')
-                    : Redirect::guest(URL::route($redirectToRoute ?: 'verification.notice'));
+                    ? $this->error('Your email address is not verified.', 403)
+                    : $this->success('Your email address is verified.');
         }
 
         return $next($request);
