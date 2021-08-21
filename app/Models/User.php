@@ -72,6 +72,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->id;
     }
+    
+    public function scopeVerified($query)
+    {
+        return $query->whereNotNull('email_verified_at');
+    }
 
     /**
      * Send an email notification verification
