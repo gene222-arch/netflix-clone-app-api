@@ -40,10 +40,13 @@ class ComingSoonMoviesController extends Controller
     {
         $query = ComingSoonMovie::query();
         $status = request()->input('status');
+        $isForKids = request()->input('isForKids', false);
 
-        if ($status === 'Coming Soon') {
-            $query = $query->where('status', $status);
-        }
+        $query = $query->when($status === 'Coming Soon', function($q) use($status) {
+            return $q->where('status', $status);
+        });
+
+        $query = $query->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
         
         $result = $query->latest()->with('trailers')->get();
 
