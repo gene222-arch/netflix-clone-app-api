@@ -45,6 +45,17 @@ class MoviesControllerTest extends TestCase
     }
 
     /** test */
+    public function user_can_view_top_searched_movie()
+    {
+        $response = $this->get(
+            '/api/movies/top-searches?isForKids=1',
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_view_movie()
     {
         $id = 1;
