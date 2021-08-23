@@ -66,6 +66,7 @@ class MoviesController extends Controller
         $result = Movie::select('*')
             ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
             ->orderByDesc('movie_reports.search_count')
+            ->take(42)
             ->get();
 
         return $this->success($result);
