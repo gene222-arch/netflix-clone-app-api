@@ -30,25 +30,33 @@ trait HasUserRatingServices
                 switch ($rate) 
                 {
                     case 'like':
-                        Rating::incrementLike($movieId);
+                        $movieReport = MovieReport::where('movie_id', $movieId);
 
-                        $isMovieRated = MovieReport::where('movie_id', $movieId)->first();
-
-                        if (! $isMovieRated) {
+                        if (! $movieReport) {
                             MovieReport::create([
                                 'movie_id' => $movieId,
                                 'total_likes_within_a_day' => 1,
                                 'total_likes_within_a_week' => 1
-                            ]);
+                            ]); 
                         } else {
-                            $isMovieRated
+                            $movieReport
                                 ->update([
                                     'total_likes_within_a_day' => DB::raw('total_likes_within_a_day + 1'),
                                     'total_likes_within_a_week' => DB::raw('total_likes_within_a_week + 1')
                                 ]);
                         }
 
-                        UserRating::liked($movieId, $userProfileId);
+                        Rating::incrementLike($movieId);
+
+                        UserRating::create([
+                            'movie_id' => $movieId,
+                            'user_id' => $request->user('api')->id,
+                            'user_profile_id' => $userProfileId,
+                            'like' => true,
+                            'dislike' => false,
+                            'rate' => 'like'
+                        ]);
+                        
                         break;
 
                     case 'dislike':

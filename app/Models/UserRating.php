@@ -22,18 +22,6 @@ class UserRating extends Model
 
     public $timestamps = false;
 
-    protected static function liked(int $movieID, int $userProfileID): UserRating
-    {
-        return self::create([
-            'movie_id' => $movieID,
-            'user_id' => Auth::user()->id,
-            'user_profile_id' => $userProfileID,
-            'like' => true,
-            'dislike' => false,
-            'rate' => 'like'
-        ]);
-    }
-
     protected static function disliked(int $movieID, int $userProfileID): UserRating
     {
         return self::create([
