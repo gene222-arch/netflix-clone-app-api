@@ -35,7 +35,7 @@ class MyDownloadsController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        MyDownload::create($request->validated());
+        $request->user('api')->myDownloads()->create($request->validated());
 
         return $this->success(null, 'Downloaded successfully.');
     }
@@ -55,13 +55,14 @@ class MyDownloadsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Http\Requests\Movie\MyDownload\DestroyRequest $request
+     * @param \App\Http\Requests\Movie\MyDownload\DestroyRequest  $request
+     * @param integer  $userProfileId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(DestroyRequest $request)
+    public function destroy(DestroyRequest $request, int $userProfileId)
     {
         $request->user('api')
-            ->findDownloadsByProfileId($request->user_profile_id)
+            ->findDownloadsByProfileId($userProfileId)
             ->delete($request->ids);
 
         return $this->success(null, 'Downloads deleted successfully.');

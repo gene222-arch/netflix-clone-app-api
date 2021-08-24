@@ -16,4 +16,6 @@ class MyDownload extends Model
         'uri',
         'downloaded_at'
     ];
+
+    public $timestamps = false;
 }

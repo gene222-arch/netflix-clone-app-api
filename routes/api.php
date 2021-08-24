@@ -203,7 +203,7 @@ Route::middleware(['api', 'verified'])->group(function ()
           Route::get('/', [MyDownloadsController::class, 'index']);
           Route::get('/{myDownload}', [MyDownloadsController::class, 'show']);
           Route::post('/', [MyDownloadsController::class, 'store']);
-          Route::delete('/', [MyDownloadsController::class, 'destroy']);
+          Route::delete('/user-profiles/{userProfileId}', [MyDownloadsController::class, 'destroy']);
       });
 
     /**
