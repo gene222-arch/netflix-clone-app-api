@@ -134,9 +134,6 @@ trait HasMovieServices
                 $directorIDs = $request->director_ids;
                 $genreIDs = $request->genre_ids;
 
-                $oldPath = 'public/movies/' . str_replace(' ', '-', Str::lower($movie->title));
-                $newPath = 'public/movies/' . str_replace(' ', '-', Str::lower($request->title));
-
                 /** Delete a file only if it exist within the request */
                 $this->deleteFile($request, [
                     'poster_path' => $movie->poster_path,
@@ -144,10 +141,6 @@ trait HasMovieServices
                     'title_logo_path' => $movie->title_logo_path,
                     'video_path' => $movie->video_path
                 ]);
-
-                if ($oldPath !== $newPath) {
-                    Storage::rename($oldPath, $newPath);
-                }
 
                 /** Update */
                 $movie->update($movieData);

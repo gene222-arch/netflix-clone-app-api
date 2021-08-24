@@ -35,7 +35,7 @@ class RecentlyWatchedMoviesControllerTest extends TestCase
     }
 
 
-    /** @test */
+    /** test */
     public function user_can_create_recently_watched_movie()
     {
         $userProfileId = 4;

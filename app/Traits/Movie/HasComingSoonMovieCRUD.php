@@ -52,10 +52,7 @@ trait HasComingSoonMovieCRUD
                 $castIDs = $request->cast_ids;
                 $directorIDs = $request->director_ids;
                 $genreIDs = $request->genre_ids;
-
-                $oldPath = 'public/coming-soon-movies/' . str_replace(' ', '-', Str::lower($comingSoonMovie->title));
-                $newPath = 'public/coming-soon-movies/' . str_replace(' ', '-', Str::lower($request->title));
-
+                
                 /** Delete a file only if it exist within the request */
                 $this->deleteFile($request, [
                     'poster' => $comingSoonMovie->poster_path,
@@ -63,10 +60,6 @@ trait HasComingSoonMovieCRUD
                     'title_logo' => $comingSoonMovie->title_logo_path,
                     'video_trailer' => $comingSoonMovie->video_trailer_path
                 ]);
-
-                if ($oldPath !== $newPath) {
-                    Storage::rename($oldPath, $newPath);
-                }
 
                 $comingSoonMovie->update($comingSoonMovieData);
                 $comingSoonMovie->authors()->sync($authorIDs);
