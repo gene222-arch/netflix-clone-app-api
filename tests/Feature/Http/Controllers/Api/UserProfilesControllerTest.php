@@ -22,7 +22,7 @@ class UserProfilesControllerTest extends TestCase
     }
 
 
-    /** @test */
+    /** test */
     public function user_can_view_profile()
     {
         $id = 1;
@@ -31,8 +31,6 @@ class UserProfilesControllerTest extends TestCase
             "/api/user-profiles/${id}",
             $this->apiHeader()
         );
-
-        dd(json_decode($response->getContent()));
 
         $this->assertResponse($response);
     }

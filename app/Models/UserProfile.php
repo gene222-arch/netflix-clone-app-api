@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\MyList;
 use App\Models\RemindMe;
+use App\Models\MyDownload;
 use App\Models\RecentlyWatchedMovie;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -31,6 +32,17 @@ class UserProfile extends Model
     /** RELATIONSHIPS */
 
     /**
+    * Define a one-to-many relationship with MyDownload class
+    *
+    * @return Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function myDownloads(): HasMany
+    {
+        return $this->hasMany(MyDownload::class);
+    }
+
+
+    /**
     * Define a many-to-many relationship with MyList class
     *
     * @return Illuminate\Database\Eloquent\Relations\HasMany
@@ -51,6 +63,7 @@ class UserProfile extends Model
         return $this->hasMany(RecentlyWatchedMovie::class);
     }
 
+
     /**
     * Define a many-to-many relationship with RemindMe class
     *
@@ -61,6 +74,7 @@ class UserProfile extends Model
         return $this->hasMany(RemindMe::class);
     }
 
+
     /**
      * Define an inverse one-to-one or many relationship with User Class.
      *
@@ -70,6 +84,7 @@ class UserProfile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
 
     /**
     * Define a many-to-many relationship with Model class
