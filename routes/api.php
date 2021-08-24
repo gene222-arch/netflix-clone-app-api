@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\Movie\CastsController;
 use App\Http\Controllers\Api\Movie\DirectorsController;
 use App\Http\Controllers\Api\Movie\GenresController;
 use App\Http\Controllers\Api\Movie\MoviesController;
+use App\Http\Controllers\Api\Movie\MyDownloadsController;
 use App\Http\Controllers\Api\Movie\MyListsController;
 use App\Http\Controllers\Api\Movie\RecentlyWatchedMoviesController;
 use App\Http\Controllers\Api\Movie\RemindMesController;
@@ -193,6 +194,17 @@ Route::middleware(['api', 'verified'])->group(function ()
 
     Route::post('my-lists', [MyListsController::class, 'toggle']);
     Route::post('remind-mes', [RemindMesController::class, 'toggle']);
+
+    /**
+      * My Downloads
+      */
+      Route::prefix('my-downloads')->group(function () 
+      {
+          Route::get('/', [MyDownloadsController::class, 'index']);
+          Route::get('/{myDownload}', [MyDownloadsController::class, 'show']);
+          Route::post('/', [MyDownloadsController::class, 'store']);
+          Route::delete('/', [MyDownloadsController::class, 'destroy']);
+      });
 
     /**
       * Recently Watched Movie

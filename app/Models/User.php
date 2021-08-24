@@ -4,15 +4,16 @@ namespace App\Models;
 
 use App\Models\MyList;
 use App\Models\RemindMe;
+use App\Models\MyDownload;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use App\Jobs\QueuePasswordResetNotification;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Notifications\EmailVerificationNotification;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -135,6 +136,21 @@ class User extends Authenticatable implements MustVerifyEmail
     public function findProfileById(int $id): UserProfile
     {
         return $this->profiles()->find($id);
+    }
+
+    /**
+     * Define a one-to-many relationship with MyDownload Class
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function myDownloads(): HasMany
+    {
+        return $this->hasMany(MyDownload::class);
+    }
+
+    public function findDownloadsByProfileId(int $id): HasMany
+    {
+        return $this->myDownloads()->where('user_profile_id', $id);
     }
 
     /**
