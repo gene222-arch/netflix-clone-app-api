@@ -15,6 +15,7 @@ class UserRating extends Model
         'user_id',
         'user_profile_id',
         'movie_id',
+        'model_type',
         'like',
         'dislike',
         'rate'
@@ -22,7 +23,7 @@ class UserRating extends Model
 
     public $timestamps = false;
 
-    protected static function disliked(int $movieID, int $userProfileID): UserRating
+    protected static function disliked(int $movieID, int $userProfileID, int $userId, string $modelType): UserRating
     {
         return self::create([
             'movie_id' => $movieID,
@@ -34,10 +35,11 @@ class UserRating extends Model
         ]);
     }
 
-    protected static function unrate(int $movieID, int $userProfileID): string
+    protected static function unrate(int $movieID, int $userProfileID, string $modelType): string
     {
         $userRatedMovie = self::where([
                 [ 'movie_id', $movieID ],
+                [ 'model_type', $modelType ],
                 [ 'user_profile_id', $userProfileID ]
             ])
             ->first();

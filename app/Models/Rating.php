@@ -28,13 +28,13 @@ class Rating extends Model
         return $this->belongsTo(Movie::class);
     }
 
-    public static function incrementLike(int $movieId)
+    public static function incrementLike(int $movieID)
     {
-        $rating = Rating::where('movie_id', $movieId)->first();
+        $rating = Rating::where('movie_id', $movieID)->first();
 
         if (!$rating) {
             return Rating::create([
-                'movie_id' => $movieId,
+                'movie_id' => $movieID,
                 'likes' => 1,
                 'total_votes' => 1
             ]);
@@ -47,13 +47,13 @@ class Rating extends Model
         }
     }
 
-    public static function incrementDislike(int $movieId)
+    public static function incrementDislike(int $movieID)
     {
-        $rating = Rating::where('movie_id', $movieId)->first();
+        $rating = Rating::where('movie_id', $movieID)->first();
 
-        if (! $rating) {
+        if (!$rating) {
             return Rating::create([
-                'movie_id' => $movieId,
+                'movie_id' => $movieID,
                 'dislikes' => 1,
                 'total_votes' => 1
             ]);
@@ -66,25 +66,25 @@ class Rating extends Model
         }
     }
 
-    public static function decrementLike(int $movieId)
+    public static function decrementLike(int $movieID)
     {
-        return Rating::where('movie_id', $movieId)->update([
+        return Rating::where('movie_id', $movieID)->update([
             'likes' => DB::raw('likes - 1'),
             'total_votes' => DB::raw('total_votes -1')
         ]);
     }
 
-    public static function decrementDislike(int $movieId)
+    public static function decrementDislike(int $movieID)
     {
-        return Rating::where('movie_id', $movieId)->update([
+        return Rating::where('movie_id', $movieID)->update([
             'dislikes' => DB::raw('dislikes - 1'),
             'total_votes' => DB::raw('total_votes - 1')
         ]);
     }
 
-    public static function unrate(int $movieId, string $previousRate)
+    public static function unrate(int $movieID, string $previousRate)
     {
-        $rating = Rating::where('movie_id', $movieId)->first();
+        $rating = Rating::where('movie_id', $movieID)->first();
 
         if ($previousRate === 'like') {
             return $rating->update([
