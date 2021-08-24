@@ -73,12 +73,13 @@ class UserRatingsControllerTest extends TestCase
 
 
     /** test */
-    public function user_can_create_user_rating()
+    public function user_can_rate_a_movie()
     {
         $data = [
-            'movie_id' => 1,
+            'movie_id' => 5,
             'user_profile_id' => 1,
-            'rate' => 'dislike'
+            'rate' => 'like',
+            'model_type' => 'ComingSoonMovie'
         ];
 
         $response = $this->post(
@@ -87,7 +88,6 @@ class UserRatingsControllerTest extends TestCase
             $this->apiHeader()
         );
 
-        dd(json_decode($response->getContent()));
         $this->assertResponse($response);
     }
 

@@ -18,6 +18,7 @@ class CreateUserRatingsTable extends Migration
             $table->foreignId('user_id');
             $table->foreignId('user_profile_id');
             $table->foreignId('movie_id');
+            $table->char('model_type', 60);
             $table->boolean('like')->default(0);
             $table->boolean('dislike')->default(0);
             $table->char('rate', 10)->default('unrated');
@@ -25,8 +26,9 @@ class CreateUserRatingsTable extends Migration
 
             $table->unique([
                 'user_profile_id',
-                'movie_id'
-            ]);
+                'movie_id',
+                'model_type'
+            ], 'unique_rating');
             
             $table->foreign('user_id')
                 ->references('id')

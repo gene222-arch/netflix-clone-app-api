@@ -13,8 +13,10 @@ class Request extends BaseRequest
      */
     public function rules()
     {
+        $movieExists = $this->model_type === 'Movie' ? 'exists:movies,id' : 'exists:coming_soon_movies,id';
+
         return [
-            'movie_id' => ['required', 'integer', 'exists:movies,id'],
+            'movie_id' => ['required', 'integer', $movieExists],
             'user_profile_id' => ['required', 'integer', 'exists:user_profiles,id'],
             'rate' => ['nullable', 'string', 'in:like,dislike'],
             'model_type' => ['required', 'string', 'in:Movie,ComingSoonMovie']
