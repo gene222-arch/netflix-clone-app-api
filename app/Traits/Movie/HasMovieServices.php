@@ -47,6 +47,7 @@ trait HasMovieServices
         ')
             ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
             ->leftJoin('ratings', 'ratings.movie_id', '=', 'movies.id')
+            ->where('ratings.model_type', 'Movie')
             ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
             ->orderByDesc('popularity')
             ->take(10)
