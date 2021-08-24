@@ -40,18 +40,22 @@ class RecentlyWatchedMoviesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\Movie\RecentlyWatchedMovie\Request  $request
-     * @param  UserProfile  $userProfile
+     * @param  integer  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request, UserProfile $userProfile)
+    public function store(Request $request, int $id)
     {
-        $userProfile
+        $request->user('api')
             ->recentlyWatchedMovies()
-            ->create([
-                'user_id' => $request->user()->id,
-                'movie_id' => $request->movie_id
-            ]);
-
+            ->updateOrCreate(
+                [
+                    'user_profile_id' => $id,
+                    'movie_id' => $request->movie_id
+                ],
+                [
+                    'recently_watched_at' => Carbon::now()
+                ]
+            );
 
         return $this->success(null, 'Recently Watched Movie created successfully.');
     }

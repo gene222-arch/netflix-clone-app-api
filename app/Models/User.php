@@ -110,6 +110,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(MyList::class);
     }
 
+    public function findProfileMyList(int $id)
+    {
+        return $this->myLists()->where('user_profile_id', $id);
+    }
+
     /**
      * Define a one-to-many relationship with UserProfile Class
      *
@@ -131,6 +136,22 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->profiles()->find($id);
     }
+
+    /**
+    * Define a many-to-many relationship with RemindMe class
+    *
+    * @return Illuminate\Database\Eloquent\Relations\HasMany
+    */
+    public function recentlyWatchedMovies(): HasMany
+    {
+        return $this->hasMany(RecentlyWatchedMovie::class);
+    }
+
+    public function findRecentWatchesByProfileId(int $id): HasMany
+    {
+        return $this->recentlyWatchedMovies()->where('user_profile_id', $id);
+    }
+
 
     /**
     * Define a many-to-many relationship with RemindMe class

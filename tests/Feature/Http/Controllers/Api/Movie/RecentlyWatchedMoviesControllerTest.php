@@ -35,16 +35,17 @@ class RecentlyWatchedMoviesControllerTest extends TestCase
     }
 
 
-    /** test */
+    /** @test */
     public function user_can_create_recently_watched_movie()
     {
+        $userProfileId = 4;
+
         $data = [
             'movie_id' => 5,
-            'user_profile_id' => 1
         ];
 
         $response = $this->post(
-            '/api/recently-watched-movies/' . $data['user_profile_id'],
+            '/api/recently-watched-movies/user-profiles/' . $userProfileId,
             $data,
             $this->apiHeader()
         );

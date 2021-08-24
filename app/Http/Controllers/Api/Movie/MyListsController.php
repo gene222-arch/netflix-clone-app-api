@@ -27,22 +27,16 @@ class MyListsController extends Controller
     {
         $authUser = $request->user('api');
 
-        $myLists = $authUser->myLists();
+        $movie = $authUser
+            ->findProfileMyList($request->user_profile_id)
+            ->where('movie_id', $request->movie_id);
 
-        $findInMyListQuery = $myLists->where([
-                [ 'user_id', $authUser->id ],
-                [ 'user_profile_id', $request->user_profile_id ],
-                [ 'movie_id', $request->movie_id ]
-            ]);
-                
-        if ($findInMyListQuery->exists()) 
+        if ($movie->exists() && $movie->delete()) 
         {
-            $findInMyListQuery->delete();
-
             return $this->success(null, 'Removed to My List.');
         }
 
-        $myLists->create($request->validated());
+        $authUser->myLists()->create($request->validated());
 
         return $this->success(null, 'Added to My List.');
     }

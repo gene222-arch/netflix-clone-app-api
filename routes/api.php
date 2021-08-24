@@ -201,7 +201,7 @@ Route::middleware(['api', 'verified'])->group(function ()
     {
         Route::get('/', [RecentlyWatchedMoviesController::class, 'index']);
         Route::get('/{recentlyWatchedMovie}', [RecentlyWatchedMoviesController::class, 'show']);
-        Route::post('/user-profiles/{userProfile}', [RecentlyWatchedMoviesController::class, 'store']);
+        Route::post('/user-profiles/{id}', [RecentlyWatchedMoviesController::class, 'store']);
         Route::put('/', [RecentlyWatchedMoviesController::class, 'update']);
         Route::delete('/', [RecentlyWatchedMoviesController::class, 'destroy']);
         Route::delete('/clear', [RecentlyWatchedMoviesController::class, 'destroy']);

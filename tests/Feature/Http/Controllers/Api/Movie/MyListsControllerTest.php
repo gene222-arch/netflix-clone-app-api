@@ -9,12 +9,12 @@ use Tests\TestCase;
 class MyListsControllerTest extends TestCase
 {
 
-    /** test */
+    /** @test */
     public function user_can_toggle_my_list()
     {
         $data = [
             'user_profile_id' => 3,
-            'movie_id' => 1
+            'movie_id' => 4
         ];
 
         $response = $this->post(

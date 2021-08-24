@@ -14,7 +14,6 @@ class Request extends BaseRequest
     public function rules()
     {
         return [
-            'user_profile_id' => [ 'required', 'integer', 'exists:user_profiles,id' ],
             'movie_id' => [ 'required', 'integer', 'exists:movies,id' ],
         ];
     }
