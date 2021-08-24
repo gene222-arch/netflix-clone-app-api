@@ -15,7 +15,8 @@ class Request extends BaseRequest
     {
         return [
             'user_profile_id' => ['required', 'integer', 'exists:user_profiles,id'],
-            'movie_id' => ['required', 'integer', 'exists:movies,id']
+            'movie_id' => ['required', 'integer', 'exists:movies,id'],
+            'model_type' => [ 'required', 'string', 'in:Movie,ComingSoonMovie' ]
         ];
     }
 }

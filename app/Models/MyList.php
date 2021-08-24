@@ -12,7 +12,8 @@ class MyList extends Model
     protected $fillable = [
         'user_id',
         'user_profile_id',
-        'movie_id'
+        'movie_id',
+        'model_type'
     ];
 
     public $timestamps = false;

@@ -29,7 +29,10 @@ class MyListsController extends Controller
 
         $movie = $authUser
             ->findProfileMyList($request->user_profile_id)
-            ->where('movie_id', $request->movie_id);
+            ->where([
+                [ 'movie_id', $request->movie_id ],
+                [ 'model_type', $request->model_type ]
+            ]);
 
         if ($movie->exists() && $movie->delete()) 
         {

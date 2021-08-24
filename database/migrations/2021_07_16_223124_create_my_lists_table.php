@@ -18,6 +18,7 @@ class CreateMyListsTable extends Migration
             $table->foreignId('user_id');
             $table->foreignId('user_profile_id');
             $table->foreignId('movie_id');
+            $table->char('model_type', 60);
 
             $table->unique([
                 'user_profile_id',
