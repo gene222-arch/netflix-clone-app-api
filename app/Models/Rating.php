@@ -13,6 +13,7 @@ class Rating extends Model
 
     protected $fillable = [
         'movie_id',
+        'model_type',
         'likes',
         'dislikes',
         'total_votes'
@@ -28,63 +29,80 @@ class Rating extends Model
         return $this->belongsTo(Movie::class);
     }
 
-    public static function incrementLike(int $movieID)
+    public static function incrementLike(int $movieId, string $modelType): Rating|bool
     {
-        $rating = Rating::where('movie_id', $movieID)->first();
+        $rating = Rating::where([
+            [ 'movie_id', $movieId ],
+            [ 'model_type', $modelType ]
+        ])->first();
 
-        if (!$rating) {
+        if (! $rating) {
             return Rating::create([
-                'movie_id' => $movieID,
+                'movie_id' => $movieId,
+                'model_type' => $modelType,
                 'likes' => 1,
                 'total_votes' => 1
             ]);
         }
-        else {
-            return $rating->update([
-                'likes' => DB::raw('likes + 1'),
-                'total_votes' => DB::raw('total_votes + 1')
-            ]);
-        }
+
+        return $rating->update([
+            'likes' => DB::raw('likes + 1'),
+            'total_votes' => DB::raw('total_votes + 1')
+        ]);
     }
 
-    public static function incrementDislike(int $movieID)
+    public static function incrementDislike(int $movieId, string $modelType)
     {
-        $rating = Rating::where('movie_id', $movieID)->first();
+        $rating = Rating::where([
+            [ 'movie_id', $movieId ],
+            [ 'model_type', $modelType ],
+        ])->first();
 
         if (!$rating) {
             return Rating::create([
-                'movie_id' => $movieID,
+                'movie_id' => $movieId,
+                'model_type' => $modelType,
                 'dislikes' => 1,
                 'total_votes' => 1
             ]);
         }
-        else {
-            return $rating->update([
-                'dislikes' => DB::raw('dislikes + 1'),
-                'total_votes' => DB::raw('total_votes + 1')
+        
+        return $rating->update([
+            'dislikes' => DB::raw('dislikes + 1'),
+            'total_votes' => DB::raw('total_votes + 1')
+        ]);
+    }
+
+    public static function decrementLike(int $movieId, string $modelType)
+    {
+        return Rating::where([
+            [ 'movie_id', $movieId ],
+            [ 'model_type', $modelType ]
+        ])
+            ->update([
+                'likes' => DB::raw('likes - 1'),
+                'total_votes' => DB::raw('total_votes -1')
             ]);
-        }
     }
 
-    public static function decrementLike(int $movieID)
+    public static function decrementDislike(int $movieId, string $modelType)
     {
-        return Rating::where('movie_id', $movieID)->update([
-            'likes' => DB::raw('likes - 1'),
-            'total_votes' => DB::raw('total_votes -1')
-        ]);
+        return Rating::where([
+            [ 'movie_id', $movieId ],
+            [ 'model_type', $modelType ]
+        ])
+            ->update([
+                'dislikes' => DB::raw('dislikes - 1'),
+                'total_votes' => DB::raw('total_votes - 1')
+            ]);
     }
 
-    public static function decrementDislike(int $movieID)
+    public static function unrate(int $movieId, string $previousRate, string $modelType)
     {
-        return Rating::where('movie_id', $movieID)->update([
-            'dislikes' => DB::raw('dislikes - 1'),
-            'total_votes' => DB::raw('total_votes - 1')
-        ]);
-    }
-
-    public static function unrate(int $movieID, string $previousRate)
-    {
-        $rating = Rating::where('movie_id', $movieID)->first();
+        $rating = Rating::where([
+            [ 'movie_id', $movieId ],
+            [ 'model_type', $modelType ]
+        ])->first();
 
         if ($previousRate === 'like') {
             return $rating->update([

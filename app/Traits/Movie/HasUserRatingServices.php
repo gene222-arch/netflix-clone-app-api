@@ -51,7 +51,7 @@ trait HasUserRatingServices
                             }
                         }
 
-                        Rating::incrementLike($movieId);
+                        Rating::incrementLike($movieId, $modelType);
 
                         UserRating::create([
                             'movie_id' => $movieId,
@@ -66,7 +66,8 @@ trait HasUserRatingServices
                         break;
 
                     case 'dislike':
-                        Rating::incrementDislike($movieId);
+                        Rating::incrementDislike($movieId, $modelType);
+                        
                         UserRating::create([
                             'movie_id' => $movieId,
                             'model_type' => $modelType,
@@ -89,8 +90,8 @@ trait HasUserRatingServices
                                 ]);
                         }
 
-                        $previouseRate = UserRating::unrate($movieId, $userProfileId);
-                        Rating::unrate($movieId, $previouseRate);
+                        $previouseRate = UserRating::unrate($movieId, $userProfileId, $modelType);
+                        Rating::unrate($movieId, $previouseRate, $modelType);
                 }
             });
         } catch (\Throwable $th) {
@@ -110,6 +111,7 @@ trait HasUserRatingServices
         $userId = $request->user()->id;
         $userProfileId = $request->user_profile_id;
         $movieId = $request->movie_id;
+        $modelType = $request->model_type;
 
         $userRating = UserRating::where([
             ['user_id', $userId],
@@ -119,10 +121,10 @@ trait HasUserRatingServices
 
         /** Check for previous rate to a movie then decrement it accordingly */
         if ($userRating->rate === 'like') {
-            Rating::decrementLike($movieId);
+            Rating::decrementLike($movieId, $modelType);
         }
         if ($userRating->rate === 'dislike') {
-            Rating::decrementDislike($movieId);
+            Rating::decrementDislike($movieId, $modelType);
         }
 
         $userRating->delete();
