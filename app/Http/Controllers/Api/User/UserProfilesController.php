@@ -42,17 +42,15 @@ class UserProfilesController extends Controller
      */
     public function show(UserProfile $profile) 
     {
-        $recentlyWatchedMovies = $profile
-            ->recentlyWatchedMovies()
-            ->with(['movie.userRatings' => fn($q) => $q->where('user_ratings.user_profile_id', $profile->id)])
-            ->get()
-            ->map
-            ->movie;
+        $profileDetails = $profile
+            ->with([
+                'myLists',
+                'recentlyWatchedMovies.movie.userRatings' => fn($q) => $q->where('user_ratings.user_profile_id', $profile->id),
+                'remindedComingSoonMovies'
+            ])
+            ->first();
 
-        return $this->success([
-            'profile' => $profile,
-            'recently_watched_movies' => $recentlyWatchedMovies
-        ]);
+        return $this->success($profileDetails);
     }
 
 

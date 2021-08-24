@@ -56,7 +56,7 @@ class UserProfile extends Model
     *
     * @return Illuminate\Database\Eloquent\Relations\HasMany
     */
-    public function remindMes(): HasMany
+    public function remindedComingSoonMovies(): HasMany
     {
         return $this->hasMany(RemindMe::class);
     }
