@@ -47,7 +47,9 @@ class UserProfilesController extends Controller
                 'myLists',
                 'recentlyWatchedMovies.movie.userRatings' => fn($q) => $q->where('user_ratings.user_profile_id', $profile->id),
                 'remindedComingSoonMovies',
-                'myDownloads'
+                'myDownloads',
+                'likedMovies',
+                'likedComingSoonMovies'
             ])
             ->first();
 

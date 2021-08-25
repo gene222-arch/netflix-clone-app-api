@@ -180,7 +180,7 @@ class MoviesControllerTest extends TestCase
             'poster' => $poster
         ];
 
-        $response = $this->put(
+        $response = $this->post(
             "/api/movies/upload/poster",
             $data,
             $this->apiHeader()

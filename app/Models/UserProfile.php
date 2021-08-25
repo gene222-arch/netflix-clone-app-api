@@ -95,4 +95,24 @@ class UserProfile extends Model
     {
         return $this->hasMany(UserRating::class);
     }
+
+    public function likedMovies()
+    {
+        return $this
+            ->userRatings()
+            ->where([
+                ['model_type', 'Movie'],
+                [ 'rate', 'like' ]
+            ]);
+    }
+
+    public function likedComingSoonMovies()
+    {
+        return $this
+            ->userRatings()
+            ->where([
+                ['model_type', 'ComingSoonMovie'],
+                [ 'rate', 'like' ]
+            ]);
+    }
 }
