@@ -14,8 +14,7 @@ class MyListsControllerTest extends TestCase
     {
         $data = [
             'user_profile_id' => 3,
-            'movie_id' => 4,
-            'model_type' => 'ComingSoonMovie'
+            'movie_id' => 4
         ];
 
         $response = $this->post(
