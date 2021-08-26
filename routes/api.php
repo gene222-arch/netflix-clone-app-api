@@ -178,6 +178,7 @@ Route::middleware(['api', 'verified'])->group(function ()
     {
         Route::get('/', [MoviesController::class, 'index']);
         Route::get('/categorized', [MoviesController::class, 'categorizedMovies']);
+        Route::get('/most-liked-movies', [MoviesController::class, 'mostLikedMovies']);
         Route::get('/top-searches', [MoviesController::class, 'topSearches']);
         Route::get('/latest/20', [MoviesController::class, 'getLatestTwenty']);
         Route::get('/{movie}', [MoviesController::class, 'show']);
