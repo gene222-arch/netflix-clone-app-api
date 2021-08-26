@@ -45,7 +45,12 @@ class UserProfilesController extends Controller
         $profileDetails = $profile
             ->with([
                 'myLists',
-                'recentlyWatchedMovies.movie.userRatings' => fn($q) => $q->where('user_ratings.user_profile_id', $profile->id),
+                'recentlyWatchedMovies.movie.userRatings' => function($q) use($profile) {
+                    return $q->where([
+                        [ 'user_ratings.user_profile_id', $profile->id ],
+                        [ 'user_ratings.model_type', 'Movie' ],
+                    ]);
+                },
                 'remindedComingSoonMovies',
                 'myDownloads',
                 'likedMovies',
@@ -53,8 +58,9 @@ class UserProfilesController extends Controller
             ])
             ->first();
 
-        $recentlyWatchedMovies = $profileDetails->recentlyWatchedMovies->map->movie;
-        $profileDetails->recentlyWatchedMovies = $recentlyWatchedMovies;
+        unset($profileDetails->recentlyWatchedMovies);
+
+        $profileDetails->recently_watched_movies = $profileDetails->recentlyWatchedMovies->map->movie;
         
         return $this->success($profileDetails);
     }
