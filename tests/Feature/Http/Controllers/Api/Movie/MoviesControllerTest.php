@@ -45,6 +45,17 @@ class MoviesControllerTest extends TestCase
     }
 
     /** test */
+    public function user_can_view_any_most_liked_movies()
+    {
+        $response = $this->get(
+            '/api/movies/most-liked-movies',
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_view_top_searched_movie()
     {
         $response = $this->get(

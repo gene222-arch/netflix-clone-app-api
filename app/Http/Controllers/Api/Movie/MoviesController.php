@@ -67,10 +67,10 @@ class MoviesController extends Controller
         $result = DB::select("SELECT 
                 movies.id,
                 movies.title,
-                (
+                FORMAT((
                     ((avg_vote * avg_rating) + ((likes + dislikes) * (likes - dislikes)) ) / (avg_vote + (likes + dislikes))
                     + (movie_reports.views + movie_reports.search_count)
-                ) AS score 
+                ), 2) AS score 
             FROM 
                 movies  
             INNER JOIN 
@@ -107,7 +107,7 @@ class MoviesController extends Controller
             "
         );
 
-        return $this->success(reset($result));
+        return $this->success($result);
     }
 
     /**
