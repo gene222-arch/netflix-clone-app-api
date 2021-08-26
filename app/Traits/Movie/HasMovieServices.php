@@ -21,9 +21,11 @@ trait HasMovieServices
 
         $trendingNow = Movie::selectRaw('
                     movies.*, 
+                    coming_soon_movies.video_trailer_path,
                     (movie_reports.total_likes_within_a_week + movie_reports.total_views_within_a_week + movie_reports.search_count) 
                 AS trending_score
             ')
+                ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
                 ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                 ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
                 ->orderByDesc('trending_score')
@@ -31,10 +33,12 @@ trait HasMovieServices
                 ->get();
 
         $topTen = Movie::selectRaw('
-                    movies.*, 
+                    movies.*,
+                    coming_soon_movies.video_trailer_path, 
                     (movie_reports.total_likes_within_a_day + movie_reports.total_views_within_a_day + movie_reports.search_count) 
                 AS top_ten_score
             ')
+                ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
                 ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                 ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
                 ->orderByDesc('top_ten_score')
@@ -42,9 +46,11 @@ trait HasMovieServices
                 ->get();
 
         $popularity = Movie::selectRaw('
-                movies.*, 
+                movies.*,
+                coming_soon_movies.video_trailer_path, 
                 (movie_reports.views + movie_reports.search_count + ratings.likes) as popularity
         ')
+            ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
             ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
             ->leftJoin('ratings', 'ratings.movie_id', '=', 'movies.id')
             ->where('ratings.model_type', 'Movie')
@@ -77,10 +83,12 @@ trait HasMovieServices
             $country = $user->address->country;
 
             $trendingNowByUserAddress = Movie::selectRaw('
-                    movies.*, 
+                    movies.*,
+                    coming_soon_movies.video_trailer_path, 
                     (movie_reports.total_likes_within_a_week + movie_reports.total_views_within_a_week + movie_reports.search_count) 
                 AS trending_score
             ')
+                ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
                 ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                 ->where('movies.country', $country)
                 ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
