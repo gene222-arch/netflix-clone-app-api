@@ -53,6 +53,9 @@ class UserProfilesController extends Controller
             ])
             ->first();
 
+        $recentlyWatchedMovies = $profileDetails->recentlyWatchedMovies->map->movie;
+        $profileDetails->recentlyWatchedMovies = $recentlyWatchedMovies;
+        
         return $this->success($profileDetails);
     }
 
