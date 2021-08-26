@@ -124,4 +124,9 @@ class Movie extends Model
     {
         return $this->hasMany(UserRating::class);
     }
+
+    public function trailer()
+    {
+        return $this->hasOne(ComingSoonMovie::class, 'title', 'title');
+    }
 }
