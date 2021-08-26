@@ -37,17 +37,16 @@ class UserProfilesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  UserProfile $userProfile
+     * @param  integer $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(UserProfile $profile) 
+    public function show(int $id) 
     {
-        $profileDetails = $profile
-            ->with([
+        $profileDetails = UserProfile::with([
                 'myLists',
-                'recentlyWatchedMovies.movie.userRatings' => function($q) use($profile) {
+                'recentlyWatchedMovies.movie.userRatings' => function($q) use($id) {
                     return $q->where([
-                        [ 'user_ratings.user_profile_id', $profile->id ],
+                        [ 'user_ratings.user_profile_id', $id ],
                         [ 'user_ratings.model_type', 'Movie' ],
                     ]);
                 },
@@ -56,7 +55,7 @@ class UserProfilesController extends Controller
                 'likedMovies',
                 'likedComingSoonMovies'
             ])
-            ->first();
+            ->find($id);
 
         $profileDetails->recently_watched_movies = $profileDetails->recentlyWatchedMovies->map->movie;
 

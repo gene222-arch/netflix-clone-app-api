@@ -225,7 +225,7 @@ Route::middleware(['api', 'verified'])->group(function ()
     Route::prefix('user-profiles')->group(function () 
     {
         Route::get('/', [UserProfilesController::class, 'index']);
-        Route::get('/{profile}', [UserProfilesController::class, 'show']);
+        Route::get('/{id}', [UserProfilesController::class, 'show']);
         Route::post('/', [UserProfilesController::class, 'store']);
         Route::post('/avatar-upload', [UserProfilesController::class, 'uploadAvatar']);
         Route::put('/{profile}', [UserProfilesController::class, 'update']);
