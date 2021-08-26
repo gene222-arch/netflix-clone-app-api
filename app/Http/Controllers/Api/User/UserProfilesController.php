@@ -58,10 +58,10 @@ class UserProfilesController extends Controller
             ])
             ->first();
 
+        $profileDetails->recently_watched_movies = $profileDetails->recentlyWatchedMovies->map->movie;
+
         unset($profileDetails->recentlyWatchedMovies);
 
-        $profileDetails->recently_watched_movies = $profileDetails->recentlyWatchedMovies->map->movie;
-        
         return $this->success($profileDetails);
     }
 
