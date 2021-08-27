@@ -8,7 +8,7 @@ use App\Models\Trailer;
 use App\Models\ComingSoonMovie;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
-use App\Traits\Movie\HasComingSoonMovieCRUD;
+use App\Traits\Movie\HasComingSoonMovieServices;
 use App\Http\Requests\Upload\UploadVideoRequest;
 use App\Http\Requests\Upload\UploadPosterRequest;
 use App\Http\Requests\Upload\UploadTitleLogoRequest;
@@ -23,7 +23,7 @@ use App\Traits\Upload\HasUploadable;
 
 class ComingSoonMoviesController extends Controller
 {
-    use ApiResponser, HasComingSoonMovieCRUD, HasUploadable;
+    use ApiResponser, HasComingSoonMovieServices, HasUploadable;
 
     public function __construct()
     {

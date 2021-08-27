@@ -13,7 +13,7 @@ use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Models\Trailer;
 
-trait HasComingSoonMovieCRUD
+trait HasComingSoonMovieServices
 {
     use HasUploadable;
 
