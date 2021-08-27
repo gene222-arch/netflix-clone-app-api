@@ -19,7 +19,11 @@ trait HasComingSoonMovieServices
 {
     use HasUploadable;
     
-    public function getComingSoonMovies($isForKids)// null
+    /**
+     * ! Problem: is for kids filter not working
+     * Todo: cache result if is for kids param has the same value as before
+     */
+    public function getComingSoonMovies($isForKids, $status)// null
     {
         $isForKidsCacheKey = 'is.for.kids';
 
@@ -38,10 +42,8 @@ trait HasComingSoonMovieServices
         {
             Cache::forget($isForKidsCacheKey);
 
-            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids) {
+            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($status, $isForKids) {
                 $query = ComingSoonMovie::query();
-                $status = request()->input('status');
-                $isForKids = request()->input('isForKids', false);
 
                 $query->when($status === 'Coming Soon', function($q) use($status) {
                     return $q->where('status', $status);

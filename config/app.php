@@ -170,6 +170,9 @@ return [
         App\Providers\HelperServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Spatie\Backup\BackupServiceProvider::class,
+        App\Providers\GoogleDriveServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
