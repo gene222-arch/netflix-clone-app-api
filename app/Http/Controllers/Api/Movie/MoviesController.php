@@ -52,48 +52,7 @@ class MoviesController extends Controller
      */
     public function mostLikedMovies()
     {
-        $result = DB::select("SELECT 
-                movies.id,
-                movies.title,
-                (
-                    ((avg_vote * avg_rating) + ((likes + dislikes) * (likes - dislikes)) ) / (avg_vote + (likes + dislikes))
-                    + (movie_reports.views + movie_reports.search_count)
-                ) AS score 
-            FROM 
-                movies  
-            INNER JOIN 
-                ratings
-            ON 
-                ratings.movie_id = movies.id
-            INNER JOIN 
-                movie_reports
-            ON 
-                movie_reports.movie_id = movies.id 
-            INNER JOIN 	
-                (
-                    SELECT 
-                        (SUM(likes + dislikes) / COUNT(id)) AS avg_vote 
-                    FROM 
-                        ratings
-                    WHERE 
-                        model_type = 'Movie'
-                ) as table_1
-            INNER JOIN 	
-                (
-                    SELECT 
-                        (SUM(likes - dislikes) / COUNT(id)) AS avg_rating 
-                    FROM 
-                        ratings
-                    WHERE 
-                        model_type = 'Movie'
-                ) as table_2
-                
-            WHERE 
-                ratings.model_type = 'Movie'
-            LIMIT 
-                250
-            "
-        );
+        $result = $this->getMostLikedMovies();
 
         return $this->success($result);
     }
