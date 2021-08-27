@@ -36,6 +36,27 @@ trait HasUploadable
 
         return Storage::disk('public')->url($path);
     }
+
+
+    public function videoUpload($request, string $property, string $pathToStore): string
+    {
+        $path = '';
+        
+        if ($request->hasFile($property))
+        {
+            $file = $request->{$property};
+
+            $originalFilename = $file->getClientOriginalName();
+            $fileName = pathinfo($originalFilename, PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+
+            $newFileName = $fileName .'-'. time() . ".${extension}";
+
+            $path = $file->storeAs($pathToStore, $newFileName, 'public');
+        }
+
+        return Storage::disk('public')->url($path);
+    }
     
     /**
      * deleteFile
