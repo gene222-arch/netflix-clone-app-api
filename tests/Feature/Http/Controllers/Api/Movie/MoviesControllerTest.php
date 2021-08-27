@@ -235,10 +235,10 @@ class MoviesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-    /** test */
+    /** @test */
     public function user_can_upload_movie_video()
     {
-        $video = UploadedFile::fake()->image('video.mp4')->size(10000);
+        $video = UploadedFile::fake()->image('video.mp4')->size(2000000);
 
         $data = [
             'video' => $video
