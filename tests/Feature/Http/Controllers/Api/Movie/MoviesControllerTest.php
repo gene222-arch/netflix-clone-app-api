@@ -227,10 +227,12 @@ class MoviesControllerTest extends TestCase
         ];
 
         $response = $this->post(
-            "/api/movies/upload/title_logo",
+            "/api/movies/upload/title-logo",
             $data,
             $this->apiHeader()
         );
+
+        dd(json_decode($response->getContent()));
 
         $this->assertResponse($response);
     }
