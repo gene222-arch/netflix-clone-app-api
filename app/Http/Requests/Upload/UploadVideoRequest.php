@@ -14,7 +14,7 @@ class UploadVideoRequest extends BaseRequest
     public function rules()
     {
         return [
-            'video' => ['required', 'file', 'mimes:mp4,ogx,oga,ogv,ogg,webm', 'max:1000000'],
+            'video' => ['required', 'file', 'mimes:mp4,ogx,oga,ogv,ogg,webm', 'max:2000000'],
         ];
     }
 }
