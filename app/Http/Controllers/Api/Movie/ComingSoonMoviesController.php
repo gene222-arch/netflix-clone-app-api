@@ -252,7 +252,7 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadVideo(UploadVideoRequest $request)
     {
-        $video = $this->upload(
+        $video = $this->videoUpload(
             $request, 
             'video', 
             ComingSoonMovie::$FILE_PATH
