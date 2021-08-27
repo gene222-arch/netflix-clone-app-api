@@ -139,7 +139,9 @@ class ComingSoonMoviesController extends Controller
         $poster = $this->upload(
             $request, 
             'poster', 
-            ComingSoonMovie::$FILE_PATH
+            ComingSoonMovie::$FILE_PATH,
+            264, 
+            406
         );
 
         return $this->success($poster);
@@ -158,7 +160,9 @@ class ComingSoonMoviesController extends Controller
         $poster = $this->upload(
             $request, 
             'poster', 
-            ComingSoonMovie::$TRAILER_FILE_PATH
+            ComingSoonMovie::$TRAILER_FILE_PATH, 
+            264, 
+            406
         );
 
         return $this->success($poster);
@@ -175,7 +179,9 @@ class ComingSoonMoviesController extends Controller
         $wallpaper = $this->upload(
             $request, 
             'wallpaper', 
-            ComingSoonMovie::$FILE_PATH
+            ComingSoonMovie::$FILE_PATH,
+            521,
+            293
         );
         
         return $this->success($wallpaper);
@@ -192,7 +198,9 @@ class ComingSoonMoviesController extends Controller
         $wallpaper = $this->upload(
             $request, 
             'wallpaper', 
-            ComingSoonMovie::$TRAILER_FILE_PATH
+            ComingSoonMovie::$TRAILER_FILE_PATH,
+            521,
+            293
         );
         
         return $this->success($wallpaper);
@@ -209,7 +217,9 @@ class ComingSoonMoviesController extends Controller
         $title_logo = $this->upload(
             $request, 
             'title_logo', 
-            ComingSoonMovie::$FILE_PATH
+            ComingSoonMovie::$FILE_PATH, 
+            706, 
+            135
         );
         
         return $this->success($title_logo);
@@ -226,7 +236,9 @@ class ComingSoonMoviesController extends Controller
         $title_logo = $this->upload(
             $request, 
             'title_logo', 
-            ComingSoonMovie::$TRAILER_FILE_PATH
+            ComingSoonMovie::$TRAILER_FILE_PATH, 
+            706, 
+            135
         );
         
         return $this->success($title_logo);
