@@ -3,14 +3,13 @@
 namespace App\Traits\Movie;
 
 use App\Models\Movie;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Movie\Movie\StoreRequest;
 use App\Http\Requests\Movie\Movie\UpdateRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
+
 
 trait HasMovieServices
 {
@@ -32,7 +31,7 @@ trait HasMovieServices
                 {
                     $currentMovie = $movie;
                     $currentMovie->other_movies = [];
-                    
+
                     return $currentMovie;
                 });
             });
