@@ -47,7 +47,7 @@ class MoviesController extends Controller
         $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
         $query->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title');
 
-        $result = $query->get()->map(function($movie) {
+        $result = $query->latest()->get()->map(function($movie) {
             $currentMovie = $movie;
             $currentMovie->other_movies = [];
 
