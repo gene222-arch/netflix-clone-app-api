@@ -136,7 +136,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadPoster(UploadPosterRequest $request)
     {   
-        $poster = $this->upload($request, 'poster', ComingSoonMovie::$FILE_PATH);
+        $poster = $this->upload(
+            $request, 
+            'poster', 
+            ComingSoonMovie::$FILE_PATH
+        );
 
         return $this->success($poster);
     }
@@ -151,7 +155,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadTrailerPoster(ComingSoonMovie $comingSoonMovie, UploadPosterRequest $request)
     {   
-        $poster = $this->upload($request, 'poster', ComingSoonMovie::$TRAILER_FILE_PATH);
+        $poster = $this->upload(
+            $request, 
+            'poster', 
+            ComingSoonMovie::$TRAILER_FILE_PATH
+        );
 
         return $this->success($poster);
     }
@@ -164,7 +172,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadWallpaper(UploadWallpaperRequest $request)
     {
-        $wallpaper = $this->upload($request, 'wallpaper', ComingSoonMovie::$FILE_PATH);
+        $wallpaper = $this->upload(
+            $request, 
+            'wallpaper', 
+            ComingSoonMovie::$FILE_PATH
+        );
         
         return $this->success($wallpaper);
     }
@@ -177,7 +189,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadTrailerWallpaper(UploadWallpaperRequest $request)
     {
-        $wallpaper = $this->upload($request, 'wallpaper', ComingSoonMovie::$TRAILER_FILE_PATH);
+        $wallpaper = $this->upload(
+            $request, 
+            'wallpaper', 
+            ComingSoonMovie::$TRAILER_FILE_PATH
+        );
         
         return $this->success($wallpaper);
     }
@@ -190,7 +206,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadTitleLogo(UploadTitleLogoRequest $request)
     {
-        $title_logo = $this->upload($request, 'title_logo', ComingSoonMovie::$FILE_PATH);
+        $title_logo = $this->upload(
+            $request, 
+            'title_logo', 
+            ComingSoonMovie::$FILE_PATH
+        );
         
         return $this->success($title_logo);
     }
@@ -203,7 +223,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadTrailerTitleLogo(UploadTitleLogoRequest $request)
     {
-        $title_logo = $this->upload($request, 'title_logo', ComingSoonMovie::$TRAILER_FILE_PATH);
+        $title_logo = $this->upload(
+            $request, 
+            'title_logo', 
+            ComingSoonMovie::$TRAILER_FILE_PATH
+        );
         
         return $this->success($title_logo);
     }
@@ -216,7 +240,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadVideo(UploadVideoRequest $request)
     {
-        $video = $this->upload($request, 'video', ComingSoonMovie::$FILE_PATH);
+        $video = $this->upload(
+            $request, 
+            'video', 
+            ComingSoonMovie::$FILE_PATH
+        );
         
         return $this->success($video);
     }
@@ -230,7 +258,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadTrailerVideo(UploadVideoRequest $request)
     {
-        $videoTrailer = $this->upload($request, 'video', ComingSoonMovie::$TRAILER_FILE_PATH);
+        $videoTrailer = $this->upload(
+            $request, 
+            'video', 
+            ComingSoonMovie::$TRAILER_FILE_PATH
+        );
         
         return $this->success($videoTrailer);
     }
