@@ -91,7 +91,7 @@ class MoviesController extends Controller
      */
     public function getLatestTwenty()
     {
-        $result = Movie::latest()->take(20)->get();
+        $result = $this->getLatestTwentyMovies();
 
         return !$result->count()
             ? $this->noContent()

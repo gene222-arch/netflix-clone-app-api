@@ -145,6 +145,18 @@ trait HasMovieServices
         return Cache::get($cacheKey);
     }
 
+
+    public function getLatestTwentyMovies()
+    {
+        $cacheKey = 'movies.latestTwenty';
+
+        if (! Cache::has($cacheKey)) {
+            return Cache::remember($cacheKey, Carbon::now()->endOfDay(), fn() => Movie::latest()->take(20)->get());
+        }
+
+        return Cache::get($cacheKey);
+    }
+
     
     public function getMostLikedMovies()
     {
