@@ -22,16 +22,13 @@ trait HasUploadable
             $originalFilename = $file->getClientOriginalName();
             $fileName = pathinfo($originalFilename, PATHINFO_FILENAME);
             $extension = $file->getClientOriginalExtension();
-            $destinationPath = public_path('/' . $pathToStore);
 
             $newFileName = $fileName .'-'. time() . ".${extension}";
-            $path = $destinationPath . $newFileName;
+            $path = $pathToStore . '/' . $newFileName;
 
-            $prepareImgIntervention = Image::make($file->path());
-            $prepareImgIntervention->resize($width, $height, fn($constraint) => $constraint->aspectRatio())
-                ->save($destinationPath . '/' . $newFileName);
-
-            // $path = $file->storeAs($pathToStore, $fileToStore, 'public');
+            $imageResize = Image::make($file->getRealPath());
+            $imageResize->resize($width, $height, fn($constraint) => $constraint->aspectRatio());
+            $imageResize->save(storage_path('app/public/' . $path));
         }
 
         return Storage::disk('public')->url($path);
