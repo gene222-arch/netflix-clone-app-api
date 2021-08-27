@@ -64,19 +64,7 @@ class MoviesController extends Controller
      */
     public function topSearches()
     {
-        $query = Movie::query();
-        $isForKids = request()->input('isForKids', false);
-
-        $query->select('movies.*', 'coming_soon_movies.video_trailer_path', 'movie_reports.*');
-        $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
-
-        $result = $query
-            ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
-            ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
-            ->where('movie_reports.search_count', '>', 0)
-            ->orderByDesc('movie_reports.search_count')
-            ->take(42)
-            ->get();
+        $result = $this->getTopSearches(request()->input('isForKids'));
 
         return $this->success($result);
     }

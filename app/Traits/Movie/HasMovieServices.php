@@ -194,6 +194,37 @@ trait HasMovieServices
     }
 
 
+    public function getTopSearches($isForKids)
+    {
+        $cacheKey = 'movies.topSearches';
+
+        if (! Cache::has($cacheKey)) 
+        {
+            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids)
+            {
+                $query = Movie::query();
+
+                $query->select('movies.*', 'coming_soon_movies.video_trailer_path', 'movie_reports.*');
+                $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
+
+                $query = $query
+                    ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+                    ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
+                    ->where('movie_reports.search_count', '>', 0)
+                    ->orderByDesc('movie_reports.search_count')
+                    ->take(42)
+                    ->get();
+
+                return $query;
+            });
+
+            return $result;
+        }
+
+        return Cache::get($cacheKey);
+    }
+
+
     public function createMovie(StoreRequest $request): bool|string
     {
         try {
