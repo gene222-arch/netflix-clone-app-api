@@ -7,6 +7,7 @@ use App\Models\Author;
 use App\Models\Director;
 use Illuminate\Support\Str;
 use App\Traits\Upload\HasUploadable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -48,7 +49,12 @@ class Movie extends Model
     {
         parent::boot();
 
-        static::created(function ($movie) {
+        static::created(function ($movie) 
+        {
+            Cache::forget('movies.index');
+            Cache::forget('movies.categorizedMovies');
+            Cache::forget('movies.latestTwenty');
+            
             event(new \App\Events\MovieCreatedEvent($movie));
         });
     }
