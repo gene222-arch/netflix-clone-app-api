@@ -19,11 +19,25 @@ trait HasComingSoonMovieServices
 {
     use HasUploadable;
     
-    public function getComingSoonMovies($isForKids)
+    public function getComingSoonMovies($isForKids)// null
     {
+        $isForKidsCacheKey = 'is.for.kids';
+
+        if (! Cache::has($isForKidsCacheKey)) {
+            $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), function () use($isForKids) {
+                return $isForKids;
+            });
+        }
+        else {
+            $cachedIsForKids = Cache::get($isForKidsCacheKey);
+        }
+
         $cacheKey = 'coming.soon.movies.index';
 
-        if (! Cache::has($cacheKey)) {
+        if ((! Cache::has($cacheKey)) || ( $cachedIsForKids !== $isForKids )) 
+        {
+            Cache::forget($isForKidsCacheKey);
+
             $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids) {
                 $query = ComingSoonMovie::query();
                 $status = request()->input('status');

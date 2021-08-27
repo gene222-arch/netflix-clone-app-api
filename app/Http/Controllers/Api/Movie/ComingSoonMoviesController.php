@@ -20,6 +20,7 @@ use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
 use App\Traits\Upload\HasUploadable;
+use Illuminate\Support\Facades\Cache;
 
 class ComingSoonMoviesController extends Controller
 {
@@ -38,7 +39,7 @@ class ComingSoonMoviesController extends Controller
      */
     public function index()
     {
-        $result = $this->getComingSoonMovies(request()->input('isForKids'));
+        $result = $this->getComingSoonMovies(request()->input('isForKids', 'empty'));
 
         return !$result->count()
             ? $this->noContent()
