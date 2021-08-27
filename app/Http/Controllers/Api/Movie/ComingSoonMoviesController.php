@@ -38,17 +38,7 @@ class ComingSoonMoviesController extends Controller
      */
     public function index()
     {
-        $query = ComingSoonMovie::query();
-        $status = request()->input('status');
-        $isForKids = request()->input('isForKids', false);
-
-        $query->when($status === 'Coming Soon', function($q) use($status) {
-            return $q->where('status', $status);
-        });
-
-        $query->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
-        
-        $result = $query->latest()->with('trailers')->get();
+        $result = $this->getComingSoonMovies(request()->input('isForKids'));
 
         return !$result->count()
             ? $this->noContent()

@@ -12,10 +12,37 @@ use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Models\Trailer;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 trait HasComingSoonMovieServices
 {
     use HasUploadable;
+    
+    public function getComingSoonMovies($isForKids)
+    {
+        $cacheKey = 'coming.soon.movies.index';
+
+        if (! Cache::has($cacheKey)) {
+            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids) {
+                $query = ComingSoonMovie::query();
+                $status = request()->input('status');
+                $isForKids = request()->input('isForKids', false);
+
+                $query->when($status === 'Coming Soon', function($q) use($status) {
+                    return $q->where('status', $status);
+                });
+
+                $query->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
+                
+                return $query->latest()->with('trailers')->get();
+            });
+
+            return $result;
+        }
+
+        return Cache::get($cacheKey);
+    }
 
     public function createComingSoonMovie(StoreRequest $request): bool|string
     {
