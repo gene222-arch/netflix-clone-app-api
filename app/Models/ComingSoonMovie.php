@@ -8,6 +8,7 @@ use App\Models\Genre;
 use App\Models\Director;
 use Illuminate\Support\Str;
 use App\Traits\Upload\HasUploadable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,8 +49,21 @@ class ComingSoonMovie extends Model
         parent::boot();
 
         self::created(function ($comingSoonMovie) {
+            static::cacheToForget();
             event(new \App\Events\ComingSoonMovieCreatedEvent($comingSoonMovie));
         });
+
+        static::updating(function() {
+            static::cacheToForget();
+        });
+
+        static::deleting(function() {
+            static::cacheToForget();
+        });
+    }
+
+    private static function cacheToForget() {
+        Cache::forget('coming.soon.movies.index');
     }
 
     public function getCreatedAtAttribute($value)
