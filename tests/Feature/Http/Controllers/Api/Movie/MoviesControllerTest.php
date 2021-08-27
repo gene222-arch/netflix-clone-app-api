@@ -187,7 +187,6 @@ class MoviesControllerTest extends TestCase
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
 
         $data = [
-            'title' => '',
             'poster' => $poster
         ];
 
@@ -206,7 +205,6 @@ class MoviesControllerTest extends TestCase
         $wallpaper = UploadedFile::fake()->image('wallpaper.jpg', 2000, 1500)->size(100);
 
         $data = [
-            'title' => '',
             'wallpaper' => $wallpaper
         ];
 
@@ -225,7 +223,6 @@ class MoviesControllerTest extends TestCase
         $titleLogo = UploadedFile::fake()->image('title_logo.png', 1280, 288)->size(100);
 
         $data = [
-            'title' => '',
             'title_logo' => $titleLogo
         ];
 
@@ -244,7 +241,6 @@ class MoviesControllerTest extends TestCase
         $video = UploadedFile::fake()->image('video.mp4')->size(10000);
 
         $data = [
-            'title' => '',
             'video' => $video
         ];
 
