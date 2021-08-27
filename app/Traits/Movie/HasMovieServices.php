@@ -45,92 +45,104 @@ trait HasMovieServices
 
     public function getCategorizedMovies($user, bool $isForKids): array
     {
-        $recentlyAddedMovies = Movie::latest()->take(20)->get();
+        $cacheKey = 'movies.categorizedMovies';
 
-        $trendingNow = Movie::selectRaw('
-                    movies.*, 
-                    coming_soon_movies.video_trailer_path,
-                    (movie_reports.total_likes_within_a_week + movie_reports.total_views_within_a_week + movie_reports.search_count) 
-                AS trending_score
-            ')
-                ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
-                ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
-                ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
-                ->orderByDesc('trending_score')
-                ->take(10)
-                ->get();
-
-        $topTen = Movie::selectRaw('
-                    movies.*,
-                    coming_soon_movies.video_trailer_path, 
-                    (movie_reports.total_likes_within_a_day + movie_reports.total_views_within_a_day + movie_reports.search_count) 
-                AS top_ten_score
-            ')
-                ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
-                ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
-                ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
-                ->orderByDesc('top_ten_score')
-                ->take(10)
-                ->get();
-
-        $popularity = Movie::selectRaw('
-                movies.*,
-                coming_soon_movies.video_trailer_path, 
-                (movie_reports.views + movie_reports.search_count + ratings.likes) as popularity
-        ')
-            ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
-            ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
-            ->leftJoin('ratings', 'ratings.movie_id', '=', 'movies.id')
-            ->where('ratings.model_type', 'Movie')
-            ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
-            ->orderByDesc('popularity')
-            ->take(10)
-            ->get();
-
-        $result = [
-            [
-                'title' => 'Recently Added Movies',
-                'movies' => $recentlyAddedMovies
-            ],
-            [
-                'title' => 'Trending Now',
-                'movies' => $trendingNow
-            ],
-            [
-                'title' => 'Top 10',
-                'movies' => $topTen
-            ],
-            [
-                'title' => 'Popularity',
-                'movies' => $popularity
-            ],
-        ];
-
-        if ($user->address()->exists()) 
+        if (! Cache::has($cacheKey)) 
         {
-            $country = $user->address->country;
+            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($user, $isForKids)
+            {
+                $recentlyAddedMovies = Movie::latest()->take(20)->get();
 
-            $trendingNowByUserAddress = Movie::selectRaw('
-                    movies.*,
-                    coming_soon_movies.video_trailer_path, 
-                    (movie_reports.total_likes_within_a_week + movie_reports.total_views_within_a_week + movie_reports.search_count) 
-                AS trending_score
-            ')
-                ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
-                ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
-                ->where('movies.country', $country)
-                ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
-                ->orderByDesc('trending_score')
-                ->take(10)
-                ->get();
+                $trendingNow = Movie::selectRaw('
+                            movies.*, 
+                            coming_soon_movies.video_trailer_path,
+                            (movie_reports.total_likes_within_a_week + movie_reports.total_views_within_a_week + movie_reports.search_count) 
+                        AS trending_score
+                    ')
+                        ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
+                        ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+                        ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
+                        ->orderByDesc('trending_score')
+                        ->take(10)
+                        ->get();
+        
+                $topTen = Movie::selectRaw('
+                            movies.*,
+                            coming_soon_movies.video_trailer_path, 
+                            (movie_reports.total_likes_within_a_day + movie_reports.total_views_within_a_day + movie_reports.search_count) 
+                        AS top_ten_score
+                    ')
+                        ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
+                        ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+                        ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
+                        ->orderByDesc('top_ten_score')
+                        ->take(10)
+                        ->get();
+        
+                $popularity = Movie::selectRaw('
+                        movies.*,
+                        coming_soon_movies.video_trailer_path, 
+                        (movie_reports.views + movie_reports.search_count + ratings.likes) as popularity
+                ')
+                    ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
+                    ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+                    ->leftJoin('ratings', 'ratings.movie_id', '=', 'movies.id')
+                    ->where('ratings.model_type', 'Movie')
+                    ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
+                    ->orderByDesc('popularity')
+                    ->take(10)
+                    ->get();
+        
+                $result = [
+                    [
+                        'title' => 'Recently Added Movies',
+                        'movies' => $recentlyAddedMovies
+                    ],
+                    [
+                        'title' => 'Trending Now',
+                        'movies' => $trendingNow
+                    ],
+                    [
+                        'title' => 'Top 10',
+                        'movies' => $topTen
+                    ],
+                    [
+                        'title' => 'Popularity',
+                        'movies' => $popularity
+                    ],
+                ];
+        
+                if ($user->address()->exists()) 
+                {
+                    $country = $user->address->country;
+        
+                    $trendingNowByUserAddress = Movie::selectRaw('
+                            movies.*,
+                            coming_soon_movies.video_trailer_path, 
+                            (movie_reports.total_likes_within_a_week + movie_reports.total_views_within_a_week + movie_reports.search_count) 
+                        AS trending_score
+                    ')
+                        ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
+                        ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+                        ->where('movies.country', $country)
+                        ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
+                        ->orderByDesc('trending_score')
+                        ->take(10)
+                        ->get();
+        
+                    array_push($result, [
+                        'title' => "Trending Now in the $country",
+                        'movies' => $trendingNowByUserAddress
+                    ]);
+                }
+        
+                return $result;
+            });
 
-            array_push($result, [
-                'title' => "Trending Now in the $country",
-                'movies' => $trendingNowByUserAddress
-            ]);
+            return $result;
         }
 
-        return $result;
+        return Cache::get($cacheKey);
     }
 
     
