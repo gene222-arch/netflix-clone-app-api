@@ -16,7 +16,7 @@ trait HasMovieServices
 {
     use HasUploadable;
 
-    public function getMovies(bool $isForKids)
+    public function getMovies($isForKids)
     {
         $cacheKey = 'movies.index';
 
@@ -28,20 +28,19 @@ trait HasMovieServices
                 $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
                 $query->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title');
     
-                return $query->latest()->get()->map('addOtherMovieProps');
+                return $query->latest()->get()->map(function($movie) 
+                {
+                    $currentMovie = $movie;
+                    $currentMovie->other_movies = [];
+                    
+                    return $currentMovie;
+                });
             });
 
             return $result;
         }
 
         return Cache::get($cacheKey);
-    }
-
-    public function addOtherMovieProps($movie) 
-    {
-        $currentMovie = $movie;
-        $currentMovie->other_movies = [];
-        return $currentMovie;
     }
 
     public function getCategorizedMovies($user, bool $isForKids): array
