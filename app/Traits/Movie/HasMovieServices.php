@@ -8,12 +8,41 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Movie\Movie\StoreRequest;
 use App\Http\Requests\Movie\Movie\UpdateRequest;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 trait HasMovieServices
 {
     use HasUploadable;
 
+    public function getMovies(bool $isForKids)
+    {
+        $cacheKey = 'movies.index';
+
+        if (! Cache::has($cacheKey)) {
+            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids) {
+                $query = Movie::query();
+            
+                $query->select('movies.*', 'coming_soon_movies.video_trailer_path');
+                $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
+                $query->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title');
+    
+                return $query->latest()->get()->map('addOtherMovieProps');
+            });
+
+            return $result;
+        }
+
+        return Cache::get($cacheKey);
+    }
+
+    public function addOtherMovieProps($movie) 
+    {
+        $currentMovie = $movie;
+        $currentMovie->other_movies = [];
+        return $currentMovie;
+    }
 
     public function getCategorizedMovies($user, bool $isForKids): array
     {

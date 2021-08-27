@@ -40,19 +40,7 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $query = Movie::query();
-        $isForKids = request()->input('isForKids', false);
-        
-        $query->select('movies.*', 'coming_soon_movies.video_trailer_path');
-        $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
-        $query->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title');
-
-        $result = $query->latest()->get()->map(function($movie) {
-            $currentMovie = $movie;
-            $currentMovie->other_movies = [];
-
-            return $currentMovie;
-        });
+        $result = $this->getMovies(request()->input('isForKids'));
 
         return $this->success($result);
     }
