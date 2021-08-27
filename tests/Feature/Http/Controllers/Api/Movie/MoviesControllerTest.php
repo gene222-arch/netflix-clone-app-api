@@ -208,7 +208,7 @@ class MoviesControllerTest extends TestCase
             'wallpaper' => $wallpaper
         ];
 
-        $response = $this->put(
+        $response = $this->post(
             "/api/movies/upload/wallpaper",
             $data,
             $this->apiHeader()
@@ -226,7 +226,7 @@ class MoviesControllerTest extends TestCase
             'title_logo' => $titleLogo
         ];
 
-        $response = $this->put(
+        $response = $this->post(
             "/api/movies/upload/title_logo",
             $data,
             $this->apiHeader()
@@ -244,7 +244,7 @@ class MoviesControllerTest extends TestCase
             'video' => $video
         ];
 
-        $response = $this->put(
+        $response = $this->post(
             "/api/movies/upload/video",
             $data,
             $this->apiHeader()
