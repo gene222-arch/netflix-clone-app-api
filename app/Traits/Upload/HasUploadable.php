@@ -3,21 +3,15 @@
 namespace App\Traits\Upload;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 use function PHPUnit\Framework\isEmpty;
+use Illuminate\Support\Facades\Storage;
 
 trait HasUploadable
 {
-    /**
-     * File upload
-     *
-     * @param  $request
-     * @param  string $property
-     * @param  string $pathToStore
-     * @return string
-     */
-    public function upload($request, string $property, string $pathToStore): string
+    
+    public function upload($request, string $property, string $pathToStore, int $width, int $height): string
     {
         $path = '';
         
@@ -25,13 +19,19 @@ trait HasUploadable
         {
             $file = $request->{$property};
 
-            $original = $file->getClientOriginalName();
-            $ext = $file->getClientOriginalExtension();
-            $fileName = pathinfo($original, PATHINFO_FILENAME);
+            $originalFilename = $file->getClientOriginalName();
+            $fileName = pathinfo($originalFilename, PATHINFO_FILENAME);
+            $extension = $file->getClientOriginalExtension();
+            $destinationPath = public_path('/' . $pathToStore);
 
-            $fileToStore = "${fileName}_" . time() . ".${ext}";
+            $newFileName = $fileName .'-'. time() . ".${extension}";
+            $path = $destinationPath . $newFileName;
 
-            $path = $file->storeAs($pathToStore, $fileToStore, 'public');
+            $prepareImgIntervention = Image::make($file->path());
+            $prepareImgIntervention->resize($width, $height, fn($constraint) => $constraint->aspectRatio())
+                ->save($destinationPath . '/' . $newFileName);
+
+            // $path = $file->storeAs($pathToStore, $fileToStore, 'public');
         }
 
         return Storage::disk('public')->url($path);
