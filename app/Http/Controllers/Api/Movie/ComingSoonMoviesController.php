@@ -270,7 +270,7 @@ class ComingSoonMoviesController extends Controller
      */
     public function uploadTrailerVideo(UploadVideoRequest $request)
     {
-        $videoTrailer = $this->upload(
+        $videoTrailer = $this->videoUpload(
             $request, 
             'video', 
             ComingSoonMovie::$TRAILER_FILE_PATH
