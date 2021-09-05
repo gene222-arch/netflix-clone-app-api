@@ -26,10 +26,10 @@ trait HasUploadable
             $newFileName = $fileName .'-'. time() . ".${extension}";
             $path = $pathToStore . '/' . $newFileName;
 
-            $dir = storage_path('app/public/' . $pathToStore);
+            $dir = storage_path('app/public/' . $pathToStore . '/');
 
             if (! File::isDirectory($dir)) {
-                File::makeDirectory($dir);
+                File::makeDirectory($dir, 493, true);
             }
 
             $imageResize = Image::make($file->getRealPath());
