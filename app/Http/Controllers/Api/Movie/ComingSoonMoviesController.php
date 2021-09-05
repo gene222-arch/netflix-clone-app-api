@@ -40,13 +40,14 @@ class ComingSoonMoviesController extends Controller
     public function index()
     {
         $result = $this->getComingSoonMovies(
-            request()->input('isForKids', 'empty'),
+            request()->input('isForKids', false),
             request()->input('status')
         );
 
-        return !$result->count()
-            ? $this->noContent()
-            : $this->success($result);
+        return $result;
+        // return !$result->count()
+        //     ? $this->noContent()
+        //     : $this->success($result);
     }
 
     

@@ -23,32 +23,29 @@ trait HasComingSoonMovieServices
      * ! Problem: is for kids filter not working
      * Todo: cache result if is for kids param has the same value as before
      */
-    public function getComingSoonMovies($isForKids, $status)// null
+    public function getComingSoonMovies(bool $isForKids, ?string $status) // null
     {
+        $cacheKey = 'coming.soon.movies.index';
         $isForKidsCacheKey = 'is.for.kids';
 
         if (! Cache::has($isForKidsCacheKey)) {
-            $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), function () use($isForKids) {
-                return $isForKids;
-            });
-        }
-        else {
+            $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
+        } else {
             $cachedIsForKids = Cache::get($isForKidsCacheKey);
         }
 
-        $cacheKey = 'coming.soon.movies.index';
-
-        if ((! Cache::has($cacheKey)) || ( $cachedIsForKids !== $isForKids )) 
+        if (! Cache::has($cacheKey) || $cachedIsForKids !== $isForKids) 
         {
             Cache::forget($isForKidsCacheKey);
+            Cache::forget($cacheKey);
 
-            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($status, $isForKids) {
+            Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
+
+            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($status, $isForKids) 
+            {
                 $query = ComingSoonMovie::query();
 
-                $query->when($status === 'Coming Soon', function($q) use($status) {
-                    return $q->where('status', $status);
-                });
-
+                $query->when($status === 'Coming Soon', fn($q) => $q->where('status', $status));
                 $query->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
                 
                 return $query->latest()->with('trailers')->get();
