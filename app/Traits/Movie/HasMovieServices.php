@@ -30,7 +30,8 @@ trait HasMovieServices
         {
             Cache::forget($isForKidsCacheKey);
             Cache::forget($cacheKey);
-
+            
+            Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
             $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids) 
             {
                 $query = Movie::query();
@@ -58,9 +59,21 @@ trait HasMovieServices
     public function getCategorizedMovies($user, bool $isForKids): array
     {
         $cacheKey = 'movies.categorizedMovies';
+        $isForKidsCacheKey = 'is.for.kids';
 
-        if (! Cache::has($cacheKey)) 
+        if (! Cache::has($isForKidsCacheKey)) {
+            $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
+        } else {
+            $cachedIsForKids = Cache::get($isForKidsCacheKey);
+        }
+
+        if (! Cache::has($cacheKey) || $cachedIsForKids !== $isForKids) 
         {
+            Cache::forget($isForKidsCacheKey);
+            Cache::forget($cacheKey);
+
+            Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
+
             $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($user, $isForKids)
             {
                 $recentlyAddedMovies = Movie::latest()->take(20)->get();
