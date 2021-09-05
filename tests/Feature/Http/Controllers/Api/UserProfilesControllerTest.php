@@ -22,7 +22,7 @@ class UserProfilesControllerTest extends TestCase
     }
 
 
-    /** @test */
+    /** test */
     public function user_can_view_profile()
     {
         $id = 1;
@@ -31,8 +31,6 @@ class UserProfilesControllerTest extends TestCase
             "/api/user-profiles/${id}",
             $this->apiHeader()
         );
-
-        dd(json_decode($response->getContent()));
 
         $this->assertResponse($response);
     }
@@ -78,12 +76,12 @@ class UserProfilesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-    /** test */
+    /** @test */
     public function user_can_upload_avatar()
     {
         $avatar = UploadedFile::fake()
-            ->image('avatar.png', 330, 300)
-            ->size(3.1);
+            ->image('avatar.jpg', 400, 400)
+            ->size(3);
 
         $data = [
             'avatar' => $avatar
@@ -95,6 +93,7 @@ class UserProfilesControllerTest extends TestCase
             $this->apiHeader()
         );
 
+        dd(json_decode($response->getContent()));
         $this->assertResponse($response); 
     }
 

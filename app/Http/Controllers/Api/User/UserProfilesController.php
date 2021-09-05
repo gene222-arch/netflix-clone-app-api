@@ -44,16 +44,16 @@ class UserProfilesController extends Controller
     {
         $profileDetails = UserProfile::with([
                 'myLists',
+                'remindedComingSoonMovies',
+                'myDownloads',
+                'likedMovies',
+                'likedComingSoonMovies',
                 'recentlyWatchedMovies.movie.userRatings' => function($q) use($id) {
                     return $q->where([
                         [ 'user_ratings.user_profile_id', $id ],
                         [ 'user_ratings.model_type', 'Movie' ],
                     ]);
                 },
-                'remindedComingSoonMovies',
-                'myDownloads',
-                'likedMovies',
-                'likedComingSoonMovies'
             ])
             ->find($id);
 
@@ -109,7 +109,9 @@ class UserProfilesController extends Controller
         $path = $this->upload(
             $request,
             'avatar',
-            UserProfile::$FILE_PATH
+            UserProfile::$FILE_PATH,
+            320,
+            320
         );
 
         return $this->success($path, 'Avatar uploaded successfully.');

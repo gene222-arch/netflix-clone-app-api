@@ -27,7 +27,7 @@ class UserProfile extends Model
         'updated_at'
     ];
 
-    public static string $FILE_PATH = 'images/user-profiles';
+    public static string $FILE_PATH = 'images/avatars';
 
     /** RELATIONSHIPS */
 
