@@ -19,10 +19,6 @@ trait HasComingSoonMovieServices
 {
     use HasUploadable;
     
-    /**
-     * ! Problem: is for kids filter not working
-     * Todo: cache result if is for kids param has the same value as before
-     */
     public function getComingSoonMovies(bool $isForKids, ?string $status) // null
     {
         $cacheKey = 'coming.soon.movies.index';

@@ -44,10 +44,9 @@ class ComingSoonMoviesController extends Controller
             request()->input('status')
         );
 
-        return $result;
-        // return !$result->count()
-        //     ? $this->noContent()
-        //     : $this->success($result);
+        return !$result->count()
+            ? $this->noContent()
+            : $this->success($result);
     }
 
     
