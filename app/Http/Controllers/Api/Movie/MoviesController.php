@@ -64,7 +64,7 @@ class MoviesController extends Controller
      */
     public function topSearches()
     {
-        $result = $this->getTopSearches(request()->input('isForKids'));
+        $result = $this->getTopSearches(request()->input('isForKids', false));
 
         return $this->success($result);
     }
