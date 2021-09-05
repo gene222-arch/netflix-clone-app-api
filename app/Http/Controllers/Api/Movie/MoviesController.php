@@ -40,7 +40,7 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $result = $this->getMovies(request()->input('isForKids'));
+        $result = $this->getMovies(request()->input('isForKids', false));
 
         return $this->success($result);
     }

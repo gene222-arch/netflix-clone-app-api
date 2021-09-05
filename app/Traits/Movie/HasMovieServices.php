@@ -15,12 +15,24 @@ trait HasMovieServices
 {
     use HasUploadable;
 
-    public function getMovies($isForKids)
+    public function getMovies(bool $isForKids)
     {
         $cacheKey = 'movies.index';
+        $isForKidsCacheKey = 'is.for.kids';
 
-        if (! Cache::has($cacheKey)) {
-            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids) {
+        if (! Cache::has($isForKidsCacheKey)) {
+            $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
+        } else {
+            $cachedIsForKids = Cache::get($isForKidsCacheKey);
+        }
+
+        if (! Cache::has($cacheKey) || $cachedIsForKids !== $isForKids) 
+        {
+            Cache::forget($isForKidsCacheKey);
+            Cache::forget($cacheKey);
+
+            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids) 
+            {
                 $query = Movie::query();
             
                 $query->select('movies.*', 'coming_soon_movies.video_trailer_path');
