@@ -15,9 +15,9 @@ class CreateMyDownloadsTable extends Migration
     {
         Schema::create('my_downloads', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('user_profile_id')->constrained();
-            $table->foreignId('movie_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_profile_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('movie_id')->constrained()->cascadeOnDelete();
             $table->string('uri');
             $table->timestamp('downloaded_at')->default(now());
 

@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\Cache;
 
 trait HasMovieServices
 {
-    use HasUploadable;
+    use HasUploadable; 
 
     public function getMovies(bool $isForKids)
     {
         $cacheKey = 'movies.index';
-        $isForKidsCacheKey = 'is.for.kids';
+        $isForKidsCacheKey = 'is.for.kids.movies';
 
         if (! Cache::has($isForKidsCacheKey)) {
             $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
@@ -59,7 +59,7 @@ trait HasMovieServices
     public function getCategorizedMovies($user, bool $isForKids): array
     {
         $cacheKey = 'movies.categorizedMovies';
-        $isForKidsCacheKey = 'is.for.kids';
+        $isForKidsCacheKey = 'is.for.kids.caregorized.movies';
 
         if (! Cache::has($isForKidsCacheKey)) {
             $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
@@ -246,7 +246,7 @@ trait HasMovieServices
     public function getTopSearches(bool $isForKids)
     {
         $cacheKey = 'movies.topSearches';
-        $isForKidsCacheKey = 'is.for.kids';
+        $isForKidsCacheKey = 'is.for.kids.top.searches';
 
         if (! Cache::has($isForKidsCacheKey)) {
             $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);

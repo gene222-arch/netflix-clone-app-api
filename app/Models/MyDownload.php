@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Movie;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MyDownload extends Model
 {
@@ -18,4 +19,9 @@ class MyDownload extends Model
     ];
 
     public $timestamps = false;
+
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class);
+    }
 }

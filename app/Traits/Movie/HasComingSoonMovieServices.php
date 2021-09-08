@@ -22,7 +22,7 @@ trait HasComingSoonMovieServices
     public function getComingSoonMovies(bool $isForKids, ?string $status) // null
     {
         $cacheKey = 'coming.soon.movies.index';
-        $isForKidsCacheKey = 'is.for.kids';
+        $isForKidsCacheKey = 'is.for.kids.coming.soon.movies';
 
         if (! Cache::has($isForKidsCacheKey)) {
             $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);

@@ -43,9 +43,9 @@ class UserProfilesController extends Controller
     public function show(int $id) 
     {
         $profileDetails = UserProfile::with([
-                'myLists',
+                'myLists.movie',
                 'remindedComingSoonMovies',
-                'myDownloads',
+                'myDownloads.movie',
                 'likedMovies',
                 'likedComingSoonMovies',
                 'recentlyWatchedMovies.movie.userRatings' => function($q) use($id) {
