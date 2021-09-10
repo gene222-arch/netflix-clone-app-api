@@ -4,17 +4,18 @@ namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Movie;
 use App\Traits\Api\ApiResponser;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Movie\Movie\DestroyRequest;
+use App\Traits\Upload\HasUploadable;
+use App\Traits\Movie\HasMovieServices;
 use App\Http\Requests\Movie\Movie\StoreRequest;
 use App\Http\Requests\Movie\Movie\UpdateRequest;
+use App\Http\Requests\Upload\UploadVideoRequest;
+use App\Http\Requests\Movie\Movie\DestroyRequest;
 use App\Http\Requests\Upload\UploadPosterRequest;
 use App\Http\Requests\Upload\UploadTitleLogoRequest;
-use App\Http\Requests\Upload\UploadVideoRequest;
 use App\Http\Requests\Upload\UploadWallpaperRequest;
-use App\Traits\Movie\HasMovieServices;
-use App\Traits\Upload\HasUploadable;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Upload\UploadVideoPreviewRequest;
 
 class MoviesController extends Controller
 {
@@ -265,6 +266,19 @@ class MoviesController extends Controller
     public function uploadVideo(UploadVideoRequest $request)
     {
         $video = $this->videoUpload($request, 'video', Movie::$FILE_PATH);
+        
+        return $this->success($video);
+    }
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadVideoPreviewRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadVideoPreview(UploadVideoPreviewRequest $request)
+    {
+        $video = $this->videoUpload($request, 'video_preview', Movie::$FILE_PATH);
         
         return $this->success($video);
     }

@@ -34,6 +34,7 @@ class Movie extends Model
         'poster_path',
         'wallpaper_path',
         'video_path',
+        'video_preview_path',
         'title_logo_path',
         'video_size_in_mb'
     ];

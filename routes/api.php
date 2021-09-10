@@ -187,6 +187,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::post('/upload/wallpaper', [MoviesController::class, 'uploadWallpaper']);
         Route::post('/upload/title-logo', [MoviesController::class, 'uploadTitleLogo']);
         Route::post('/upload/video', [MoviesController::class, 'uploadVideo']);
+        Route::post('/upload/video-preview', [MoviesController::class, 'uploadVideoPreview']);
         Route::put('/{movie}', [MoviesController::class, 'update']);
         Route::match(['post', 'put'], '/{movie}/views', [MoviesController::class, 'incrementViews']);
         Route::match(['post', 'put'], '/{movie}/search-count', [MoviesController::class, 'incrementSearchCount']);
