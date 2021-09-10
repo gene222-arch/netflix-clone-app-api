@@ -14,7 +14,7 @@ class UploadVideoPreviewRequest extends BaseRequest
     public function rules()
     {
         return [
-            'video' => ['required', 'file', 'mimes:mp4,ogx,oga,ogv,ogg,webm', 'max:100000'],
+            'video_preview' => ['required', 'file', 'mimes:mp4,ogx,oga,ogv,ogg,webm', 'max:100000'],
         ];
     }
 }

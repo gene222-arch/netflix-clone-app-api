@@ -253,6 +253,23 @@ class MoviesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_upload_movie_video_preview()
+    {
+        $video = UploadedFile::fake()->image('video-preview.mp4')->size(10000);
+
+        $data = [
+            'video_preview' => $video
+        ];
+
+        $response = $this->post(
+            "/api/movies/upload/video-preview",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
 
     /** test */
     public function user_can_delete_movies()
