@@ -24,9 +24,7 @@ trait HasUploadable
             $extension = $file->getClientOriginalExtension();
 
             $newFileName = $fileName .'-'. time() . ".${extension}";
-
-            $imageResize = Image::make($file->getRealPath())->encode($extension);
-            $imageResize->resize($width, $height, fn($constraint) => $constraint->aspectRatio());
+            $imageResize = Image::make($file->getRealPath())->fit($width, $height)->encode($extension);
             
             Storage::disk('s3')->put($pathToStore . $newFileName, $imageResize->getEncoded());
         }
