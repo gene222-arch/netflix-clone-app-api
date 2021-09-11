@@ -133,7 +133,7 @@ class ComingSoonMoviesController extends Controller
         $poster = $this->upload(
             $request, 
             'poster', 
-            ComingSoonMovie::$FILE_PATH,
+            'coming-soon-movies/posters/',
             264, 
             406
         );
@@ -154,7 +154,7 @@ class ComingSoonMoviesController extends Controller
         $poster = $this->upload(
             $request, 
             'poster', 
-            ComingSoonMovie::$TRAILER_FILE_PATH, 
+            'coming-soon-movies/trailers/posters/',
             264, 
             406
         );
@@ -173,7 +173,7 @@ class ComingSoonMoviesController extends Controller
         $wallpaper = $this->upload(
             $request, 
             'wallpaper', 
-            ComingSoonMovie::$FILE_PATH,
+            'coming-soon-movies/wallpapers/',
             521,
             293
         );
@@ -192,7 +192,7 @@ class ComingSoonMoviesController extends Controller
         $wallpaper = $this->upload(
             $request, 
             'wallpaper', 
-            ComingSoonMovie::$TRAILER_FILE_PATH,
+            'coming-soon-movies/trailers/wallpapers/',
             521,
             293
         );
@@ -211,7 +211,7 @@ class ComingSoonMoviesController extends Controller
         $title_logo = $this->upload(
             $request, 
             'title_logo', 
-            ComingSoonMovie::$FILE_PATH, 
+            'coming-soon-movies/title-logos/',
             706, 
             135
         );
@@ -230,7 +230,7 @@ class ComingSoonMoviesController extends Controller
         $title_logo = $this->upload(
             $request, 
             'title_logo', 
-            ComingSoonMovie::$TRAILER_FILE_PATH, 
+            'coming-soon-movies/trailers/title-logos/',
             706, 
             135
         );
@@ -249,7 +249,7 @@ class ComingSoonMoviesController extends Controller
         $video = $this->videoUpload(
             $request, 
             'video', 
-            ComingSoonMovie::$FILE_PATH
+            'coming-soon-movies/videos/'
         );
         
         return $this->success($video);
@@ -267,7 +267,7 @@ class ComingSoonMoviesController extends Controller
         $videoTrailer = $this->videoUpload(
             $request, 
             'video', 
-            ComingSoonMovie::$TRAILER_FILE_PATH
+            'coming-soon-movies/trailers/videos/'
         );
         
         return $this->success($videoTrailer);
