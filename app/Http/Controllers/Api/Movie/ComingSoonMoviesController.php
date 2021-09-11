@@ -249,7 +249,7 @@ class ComingSoonMoviesController extends Controller
         $video = $this->videoUpload(
             $request, 
             'video', 
-            'coming-soon-movies/videos/'
+            'coming-soon-movies/video'
         );
         
         return $this->success($video);
@@ -267,7 +267,7 @@ class ComingSoonMoviesController extends Controller
         $videoTrailer = $this->videoUpload(
             $request, 
             'video', 
-            'coming-soon-movies/trailers/videos/'
+            'coming-soon-movies/trailers/video'
         );
         
         return $this->success($videoTrailer);

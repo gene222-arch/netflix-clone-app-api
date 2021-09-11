@@ -268,7 +268,7 @@ class MoviesController extends Controller
         $video = $this->videoUpload(
             $request, 
             'video',
-        'movies/videos/', 
+        'movies/videos', 
     );
         
         return $this->success($video);
@@ -285,7 +285,7 @@ class MoviesController extends Controller
         $video = $this->videoUpload(
             $request, 
             'video_preview', 
-            'movies/video-previews/'
+            'movies/video-previews'
         );
         
         return $this->success($video);
