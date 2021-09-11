@@ -41,8 +41,8 @@ class ComingSoonMovie extends Model
         'updated_at'
     ];
 
-    public static string $FILE_PATH = 'videos/coming-soon-movies';
-    public static string $TRAILER_FILE_PATH = 'videos/coming-soon-movies/trailers';
+    public static string $FILE_PATH = 'coming-soon-movies';
+    public static string $TRAILER_FILE_PATH = 'coming-soon-movies/trailers';
 
     protected static function boot()
     {

@@ -24,20 +24,14 @@ trait HasUploadable
             $extension = $file->getClientOriginalExtension();
 
             $newFileName = $fileName .'-'. time() . ".${extension}";
-            $path = $pathToStore . '/' . $newFileName;
 
-            $dir = storage_path('app/public/' . $pathToStore . '/');
-
-            if (! File::isDirectory($dir)) {
-                File::makeDirectory($dir, 493, true);
-            }
-
-            $imageResize = Image::make($file->getRealPath());
+            $imageResize = Image::make($file->getRealPath())->encode($extension);
             $imageResize->resize($width, $height, fn($constraint) => $constraint->aspectRatio());
-            $imageResize->save(storage_path('app/public/' . $path));
+            
+            Storage::disk('s3')->put($pathToStore . $newFileName, $imageResize->getEncoded());
         }
 
-        return Storage::disk('public')->url($path);
+        return Storage::disk('s3')->url($pathToStore . $newFileName);
     }
 
 
@@ -55,10 +49,10 @@ trait HasUploadable
 
             $newFileName = $fileName .'-'. time() . ".${extension}";
 
-            $path = $file->storeAs($pathToStore, $newFileName, 'public');
+            $path = $file->storeAs($pathToStore, $newFileName, 's3');
         }
 
-        return Storage::disk('public')->url($path);
+        return Storage::disk('s3')->url($path);
     }
     
     /**
