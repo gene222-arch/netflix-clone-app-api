@@ -44,8 +44,6 @@ class Movie extends Model
         'updated_at'
     ];
 
-    public static string $FILE_PATH = 'videos/movies';
-
     protected static function boot()
     {
         parent::boot();

@@ -211,7 +211,7 @@ class MoviesController extends Controller
         $poster = $this->upload(
             $request, 
             'poster', 
-            Movie::$FILE_PATH, 
+            'movies/posters/', 
             264, 
             406
         );
@@ -230,7 +230,7 @@ class MoviesController extends Controller
         $wallpaper = $this->upload(
             $request, 
             'wallpaper', 
-            Movie::$FILE_PATH,
+            'movies/wallpapers/', 
             521,
             293
         );
@@ -249,7 +249,7 @@ class MoviesController extends Controller
         $title_logo = $this->upload(
             $request, 
             'title_logo', 
-            Movie::$FILE_PATH, 
+            'movies/title-logos/', 
             706, 
             135
         );
@@ -265,7 +265,11 @@ class MoviesController extends Controller
      */
     public function uploadVideo(UploadVideoRequest $request)
     {
-        $video = $this->videoUpload($request, 'video', Movie::$FILE_PATH);
+        $video = $this->videoUpload(
+            $request, 
+            'video',
+        'movies/videos/', 
+    );
         
         return $this->success($video);
     }
@@ -278,7 +282,11 @@ class MoviesController extends Controller
      */
     public function uploadVideoPreview(UploadVideoPreviewRequest $request)
     {
-        $video = $this->videoUpload($request, 'video_preview', Movie::$FILE_PATH);
+        $video = $this->videoUpload(
+            $request, 
+            'video_preview', 
+            'movies/video-previews/'
+        );
         
         return $this->success($video);
     }
