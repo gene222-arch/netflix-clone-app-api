@@ -45,6 +45,8 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
+        $withRoles = (bool) $request->input('withRoles', false);
+
         if (!Auth::attempt($request->validated())) {
             return $this->error('Credentials mismatch');
         }
@@ -55,13 +57,21 @@ class LoginController extends Controller
             return $this->error('Your email address is not verified.');
         }
 
+        $data = [
+            'user' => $auth->withoutRelations(),
+            'profiles' => $auth->profiles
+        ];
+
+        if ($withRoles) {
+            $data = array_merge($data, [
+                'role' => $auth->roles->first()->withoutRelations()->name
+            ]);
+        }
+
         return $this->token(
             $this->getPersonalAccessToken($request),
             'User logged in successfully.',
-            [
-                'user' => $auth->withoutRelations(),
-                'profiles' => $auth->profiles
-            ]
+            $data
         );
     }
 
