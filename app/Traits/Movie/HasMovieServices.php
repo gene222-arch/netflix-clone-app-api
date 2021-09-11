@@ -36,9 +36,8 @@ trait HasMovieServices
             {
                 $query = Movie::query();
             
-                $query->select('movies.*', 'coming_soon_movies.video_trailer_path');
+                $query->select('*');
                 $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
-                $query->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title');
     
                 return $query->latest()->get()->map(function($movie) 
                 {
@@ -80,11 +79,9 @@ trait HasMovieServices
 
                 $trendingNow = Movie::selectRaw('
                             movies.*, 
-                            coming_soon_movies.video_trailer_path,
                             (movie_reports.total_likes_within_a_week + movie_reports.total_views_within_a_week + movie_reports.search_count) 
                         AS trending_score
                     ')
-                        ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
                         ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                         ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
                         ->orderByDesc('trending_score')
@@ -93,11 +90,9 @@ trait HasMovieServices
         
                 $topTen = Movie::selectRaw('
                             movies.*,
-                            coming_soon_movies.video_trailer_path, 
                             (movie_reports.total_likes_within_a_day + movie_reports.total_views_within_a_day + movie_reports.search_count) 
                         AS top_ten_score
                     ')
-                        ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
                         ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                         ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
                         ->orderByDesc('top_ten_score')
@@ -106,10 +101,8 @@ trait HasMovieServices
         
                 $popularity = Movie::selectRaw('
                         movies.*,
-                        coming_soon_movies.video_trailer_path, 
                         (movie_reports.views + movie_reports.search_count + ratings.likes) as popularity
                 ')
-                    ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
                     ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                     ->leftJoin('ratings', 'ratings.movie_id', '=', 'movies.id')
                     ->where('ratings.model_type', 'Movie')
@@ -143,11 +136,9 @@ trait HasMovieServices
         
                     $trendingNowByUserAddress = Movie::selectRaw('
                             movies.*,
-                            coming_soon_movies.video_trailer_path, 
                             (movie_reports.total_likes_within_a_week + movie_reports.total_views_within_a_week + movie_reports.search_count) 
                         AS trending_score
                     ')
-                        ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
                         ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                         ->where('movies.country', $country)
                         ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
@@ -264,12 +255,11 @@ trait HasMovieServices
             {
                 $query = Movie::query();
 
-                $query->select('movies.*', 'coming_soon_movies.video_trailer_path', 'movie_reports.*');
+                $query->select('movies.*', 'movie_reports.*');
                 $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
 
                 $query = $query
                     ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
-                    ->leftJoin('coming_soon_movies', 'coming_soon_movies.title', '=', 'movies.title')
                     ->where('movie_reports.search_count', '>', 0)
                     ->orderByDesc('movie_reports.search_count')
                     ->take(42)
