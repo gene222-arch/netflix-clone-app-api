@@ -6,11 +6,13 @@ use App\Models\Director;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\Director\Request;
+use App\Http\Requests\Upload\UploadAvatarRequest;
 use App\Http\Requests\Movie\Director\DestroyRequest;
+use App\Traits\Upload\HasUploadable;
 
 class DirectorsController extends Controller
 {
-    use ApiResponser;
+    use ApiResponser, HasUploadable;
 
     public function __construct()
     {
@@ -71,6 +73,27 @@ class DirectorsController extends Controller
 
         return $this->success(null, 'Director updated successfully.');
     }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  pp\Http\Requests\Upload\UploadAvatarRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadAvatar(UploadAvatarRequest $request)
+    {
+        $path = $this->upload(
+            $request,
+            'avatar',
+            'directors/avatars/',
+            360,
+            360
+        );
+        
+        return $this->success($path, 'Avatar uploaded successfully.');
+    }
+
 
     /**
      * Display the specified resource.

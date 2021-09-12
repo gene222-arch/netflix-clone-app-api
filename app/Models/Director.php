@@ -11,6 +11,7 @@ class Director extends Model
     use HasFactory;
 
     protected $fillable = [
+        'avatar_path',
         'pseudonym',
         'birth_name',
         'gender',

@@ -14,6 +14,7 @@ class Request extends BaseRequest
     public function rules()
     {
         return [
+            'avatar_path' => ['required', 'string'],
             'pseudonym' => ['nullable', 'string'],
             'birth_name' => ['required', 'string'],
             'gender' => ['required', 'string', 'in:Male,Female'],
