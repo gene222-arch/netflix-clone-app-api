@@ -103,8 +103,8 @@ class CastsController extends Controller
             $request,
             'avatar',
             'casts/avatars/',
-            360,
-            360
+            264, 
+            406
         );
         
         return $this->success($path, 'Avatar uploaded successfully.');

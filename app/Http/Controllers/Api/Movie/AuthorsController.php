@@ -101,8 +101,8 @@ class AuthorsController extends Controller
             $request,
             'avatar',
             'authors/avatars/',
-            360,
-            360
+            264, 
+            406
         );
         
         return $this->success($path, 'Avatar uploaded successfully.');

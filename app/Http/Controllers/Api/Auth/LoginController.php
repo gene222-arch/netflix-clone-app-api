@@ -64,7 +64,7 @@ class LoginController extends Controller
 
         if ($withRoles) {
             $data = array_merge($data, [
-                'role' => $auth->roles->first()->withoutRelations()->name
+                'role' => $auth->roles->first()?->withoutRelations()->name
             ]);
         }
 

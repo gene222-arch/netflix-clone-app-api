@@ -11,7 +11,7 @@ class Author extends Model
     use HasFactory;
 
     protected $fillable = [
-        'avatar',
+        'avatar_path',
         'pseudonym',
         'birth_name',
         'gender',
