@@ -27,7 +27,7 @@ class AccessRightsController extends Controller
      */
     public function index()
     {
-        $result = Role::all(['id', 'name']);
+        $result = Role::orderBy('created_at')->with('users')->get(['id', 'name']);
 
         return !$result->count()
             ? $this->noContent()
@@ -41,7 +41,7 @@ class AccessRightsController extends Controller
      */
     public function permissions()
     {
-        $result = Permission::orderBy('name')->get(['id', 'name']);
+        $result = Permission::orderBy('name')->get(['id', 'name', 'description']);
 
         return !$result->count()
             ? $this->noContent()
