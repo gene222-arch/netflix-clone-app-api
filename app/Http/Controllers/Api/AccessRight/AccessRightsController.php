@@ -98,11 +98,9 @@ class AccessRightsController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        $this->deleteAccessRights(
-            $request->roleIds
-        );
+        Role::whereIn('id', $request->ids)->delete();
 
-        return $this->success();
+        return $this->success(null, 'Role\s deleted successfully.');
     }
 
 }

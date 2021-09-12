@@ -61,16 +61,5 @@ trait AccessRightServices
             return $th->getMessage();
         }
     }
-    
-    /**
-     * Delete one or multiple roles with it's associated permissions
-     *
-     * @param  array $ids
-     * @return void
-     */
-    public function deleteAccessRights (array $ids)
-    {
-       return Role::whereIn('id', $ids)->delete();
-    }
 
 }
