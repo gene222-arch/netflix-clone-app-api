@@ -46,6 +46,7 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
         $withRoles = (bool) $request->input('withRoles', false);
+        $withPermissions = (bool) $request->input('withPermissions', false);
 
         if (!Auth::attempt($request->validated())) {
             return $this->error('Credentials mismatch');
@@ -63,9 +64,15 @@ class LoginController extends Controller
         ];
 
         if ($withRoles) {
-            $data = array_merge($data, [
+            $data = $data + [
                 'role' => $auth->roles->first()?->withoutRelations()->name
-            ]);
+            ];
+        }
+
+        if ($withPermissions) {
+            $data = $data + [
+                'permissions' => $this->authPermissionViaRoles()
+            ];
         }
 
         return $this->token(
