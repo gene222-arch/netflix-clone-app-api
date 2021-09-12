@@ -31,9 +31,21 @@ class AccessRightsController extends Controller
 
         return !$result->count()
             ? $this->noContent()
-            : $this->success([
-                'roles' => $result
-            ]);
+            : $this->success($result);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function permissions()
+    {
+        $result = Permission::orderBy('name')->get(['id', 'name']);
+
+        return !$result->count()
+            ? $this->noContent()
+            : $this->success($result);
     }
 
     /**
@@ -49,11 +61,7 @@ class AccessRightsController extends Controller
             $request->permissions
         );
 
-        return $this->success(
-            [],
-            '',
-            201
-        );
+        return $this->success(null, 'Access Right created successfully.');
     }
 
     /**

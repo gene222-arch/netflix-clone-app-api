@@ -27,7 +27,7 @@ trait AccessRightServices
                     'updated_at' => null
                 ]);
         
-                $role->givePermissionTo(...$permissions);
+                $role->givePermissionTo($permissions);
             });
 
             return true;
