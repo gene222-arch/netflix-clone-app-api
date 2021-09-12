@@ -9,10 +9,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\Cast\Request;
 use App\Http\Requests\Movie\Cast\DestroyRequest;
 use App\Http\Requests\Upload\UploadAvatarRequest;
+use App\Traits\Upload\HasUploadable;
 
 class CastsController extends Controller
 {
-    use ApiResponser;
+    use ApiResponser, HasUploadable;
 
     public function __construct()
     {

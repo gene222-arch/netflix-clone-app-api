@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Http\Controllers\Api\Movie;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CastsControllerTest extends TestCase
 {
@@ -97,6 +98,23 @@ class CastsControllerTest extends TestCase
         $response = $this->put(
             "/api/casts/$id/enabled",
             [],
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+
+    /** test */
+    public function user_can_upload_casts_avatar()
+    {
+        $data = [
+            'avatar' => UploadedFile::fake()->image('avatar.jpg', 400, 600)
+        ];
+
+        $response = $this->post(
+            "/api/casts/upload-avatar",
+            $data,
             $this->apiHeader()
         );
 
