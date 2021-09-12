@@ -18,8 +18,7 @@ class UploadAvatarRequest extends BaseRequest
             'avatar' => [
                 'required', 
                 'image', 
-                new MimeType(['jpg', 'jpeg']),
-                'max:3'
+                new MimeType(['jpg', 'jpeg'])
             ],
         ];
     }

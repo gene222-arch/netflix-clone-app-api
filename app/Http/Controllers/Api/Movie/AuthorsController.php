@@ -100,12 +100,12 @@ class AuthorsController extends Controller
         $path = $this->upload(
             $request,
             'avatar',
-            'casts/authors/',
+            'authors/avatars/',
             360,
             360
         );
         
-        return $this->success($path, 'Updated enabled successfully.');
+        return $this->success($path, 'Avatar uploaded successfully.');
     }
     
     /**

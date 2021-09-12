@@ -99,6 +99,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/', [AuthorsController::class, 'index']);
         Route::get('/{author}', [AuthorsController::class, 'show']);
         Route::post('/', [AuthorsController::class, 'store']);
+        Route::post('/upload-avatar', [AuthorsController::class, 'uploadAvatar']);
         Route::put('/{author}', [AuthorsController::class, 'update']);
         Route::put('/{author}/enabled', [AuthorsController::class, 'updateEnabledStatus']);
         Route::delete('/', [AuthorsController::class, 'destroy']);
