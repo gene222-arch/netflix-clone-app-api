@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Cast;
+use App\Models\Movie;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Movie\Cast\DestroyRequest;
 use App\Http\Requests\Movie\Cast\Request;
-use App\Models\Movie;
+use App\Http\Requests\Movie\Cast\DestroyRequest;
+use App\Http\Requests\Upload\UploadAvatarRequest;
 
 class CastsController extends Controller
 {
@@ -87,6 +88,25 @@ class CastsController extends Controller
         ]);
         
         return $this->success(null, 'Updated enabled successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  pp\Http\Requests\Upload\UploadAvatarRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadAvatar(UploadAvatarRequest $request)
+    {
+        $path = $this->upload(
+            $request,
+            'avatar',
+            'casts/avatars/',
+            360,
+            360
+        );
+        
+        return $this->success($path, 'Avatar uploaded successfully.');
     }
 
     /**
