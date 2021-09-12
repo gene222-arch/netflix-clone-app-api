@@ -87,7 +87,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/', [AccessRightsController::class, 'index']);
         Route::get('/{role}', [AccessRightsController::class, 'show']);
         Route::post('/', [AccessRightsController::class, 'store']);
-        Route::put('/', [AccessRightsController::class, 'update']);
+        Route::put('/{role}', [AccessRightsController::class, 'update']);
         Route::delete('/', [AccessRightsController::class, 'destroy']);
     });
     
