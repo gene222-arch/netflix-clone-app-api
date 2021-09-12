@@ -40,6 +40,7 @@ class DirectorsControllerTest extends TestCase
     public function user_can_create_director()
     {
         $data = [
+            'avatar_path' => 'test',
             'pseudonym' => 'Makoto Shinkai',
             'birth_name' => 'Makoto Niitsu',
             'gender' => 'Male',
@@ -69,6 +70,7 @@ class DirectorsControllerTest extends TestCase
         $id = 1;
 
         $data = [
+            'avatar_path' => 'test',
             'pseudonym' => 'Makoto Shinkai',
             'birth_name' => 'Makoto Niitsu',
             'gender' => 'Male',

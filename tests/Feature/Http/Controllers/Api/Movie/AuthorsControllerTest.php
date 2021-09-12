@@ -40,6 +40,7 @@ class AuthorsControllerTest extends TestCase
     public function user_can_create_author()
     {
         $data = [
+            'avatar_path' => 'test',
             'pseudonym' => '',
             'birth_name' => 'Makoto Shinkai',
             'gender' => 'Male',
@@ -69,6 +70,7 @@ class AuthorsControllerTest extends TestCase
         $id = 1;
 
         $data = [
+            'avatar_path' => 'test',
             'birth_name' => 'Makoto Shinkai',
             'gender' => 'Male',
             'height_in_cm' => '180.34',

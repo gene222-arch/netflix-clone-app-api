@@ -40,6 +40,7 @@ class CastsControllerTest extends TestCase
     public function user_can_create_cast()
     {
         $data = [
+            'avatar_path' => 'test',
             'pseudonym' => '',
             'birth_name' => 'Kotaro Daigo',
             'gender' => 'Male',
@@ -69,6 +70,7 @@ class CastsControllerTest extends TestCase
         $id = 1;
 
         $data = [
+            'avatar_path' => 'test',
             'birth_name' => 'Mone Kamishiraishi',
             'gender' => 'Female',
             'height_in_cm' => '152',
