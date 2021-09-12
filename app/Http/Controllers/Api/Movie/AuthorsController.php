@@ -7,10 +7,12 @@ use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\Author\Request;
 use App\Http\Requests\Movie\Author\DestroyRequest;
+use App\Http\Requests\Upload\UploadAvatarRequest;
+use App\Traits\Upload\HasUploadable;
 
 class AuthorsController extends Controller
 {
-    use ApiResponser;
+    use ApiResponser, HasUploadable;
 
     public function __construct()
     {
@@ -85,6 +87,25 @@ class AuthorsController extends Controller
         ]);
         
         return $this->success(null, 'Updated enabled successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Author  $author
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadAvatar(UploadAvatarRequest $request)
+    {
+        $path = $this->upload(
+            $request,
+            'avatar',
+            'casts/authors/',
+            360,
+            360
+        );
+        
+        return $this->success($path, 'Updated enabled successfully.');
     }
     
     /**
