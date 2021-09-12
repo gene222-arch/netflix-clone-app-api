@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Http\Controllers\Api\Movie;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DirectorsControllerTest extends TestCase
 {
@@ -103,6 +104,24 @@ class DirectorsControllerTest extends TestCase
 
         $this->assertResponse($response);
     }
+
+    
+    /** test */
+    public function user_can_upload_directors_avatar()
+    {
+        $data = [
+            'avatar' => UploadedFile::fake()->image('avatar.jpg', 400, 600)
+        ];
+
+        $response = $this->post(
+            "/api/directors/upload-avatar",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
 
     /** test */
     public function user_can_delete_directors()
