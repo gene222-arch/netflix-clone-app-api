@@ -59,18 +59,16 @@ class AccessRightsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Role  $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        $result = Role::find($id);
-
-        return !$result
+        return !$role
             ? $this->noContent()
             : $this->success([
-                'role' => $result->name,
-                'permissions' => $result->permissions
+                'role' => $role->name,
+                'permissions' => $role->permissions
             ]);
     }
 
