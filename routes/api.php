@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\Movie\RecentlyWatchedMoviesController;
 use App\Http\Controllers\Api\Movie\RemindMesController;
 use App\Http\Controllers\Api\Movie\UserRatingsController;
 use App\Http\Controllers\Api\User\UserProfilesController;
+use App\Http\Controllers\Api\User\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -224,6 +225,13 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::delete('/clear', [RecentlyWatchedMoviesController::class, 'destroy']);
     });
 
+/**
+     * User Profile
+    */
+    Route::prefix('users')->group(function () 
+    {
+        Route::get('/', [UsersController::class, 'index']);
+    });
     /**
       * User Profile
       */
@@ -236,6 +244,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::put('/{profile}', [UserProfilesController::class, 'update']);
         Route::delete('/{profile}', [UserProfilesController::class, 'destroy']);
     });
+
 
     /**
      * * Settings
