@@ -76,7 +76,26 @@ class UserProfilesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-    /** @test */
+    /** test */
+    public function user_can_manage_user_profile_pin_code()
+    {
+        $id = 1;
+
+        $data = [
+            'user_profile_id' => $id,
+            'pin_code' => '8425'
+        ];
+
+        $response = $this->put(
+            "/api/user-profiles/${id}/pin-code",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_upload_avatar()
     {
         $avatar = UploadedFile::fake()
@@ -93,7 +112,6 @@ class UserProfilesControllerTest extends TestCase
             $this->apiHeader()
         );
 
-        dd(json_decode($response->getContent()));
         $this->assertResponse($response); 
     }
 

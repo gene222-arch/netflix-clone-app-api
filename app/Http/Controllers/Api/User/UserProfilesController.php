@@ -88,12 +88,12 @@ class UserProfilesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\UserProfile\ManagePinCodeRequest  $request
-     * @param UserProfile  $userProfile
+     * @param UserProfile  $profile
      * @return \Illuminate\Http\JsonResponse
      */
-    public function managePinCode(ManagePinCodeRequest $request, UserProfile $userProfile)
+    public function managePinCode(ManagePinCodeRequest $request, UserProfile $profile)
     {
-        $userProfile->update([
+        $profile->update([
             'pin_code' => $request->pin_code
         ]);
 
