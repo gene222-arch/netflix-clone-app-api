@@ -29,9 +29,9 @@ class AccessRightsController extends Controller
      */
     public function assign(AssignRoleToUsersRequest $request, Role $role)
     {
-        $role->users()->attach($request->user_ids);
+        $this->assignRole($role, $request->user_ids);
 
-        return $this->success(null, 'Access Right created successfully.');
+        return $this->success(null, 'Role assigned successfully.');
     }
 
 
