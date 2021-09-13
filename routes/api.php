@@ -85,6 +85,7 @@ Route::middleware(['api', 'verified'])->group(function ()
     Route::prefix('access-rights')->group(function () 
     {
         Route::get('/permissions', [AccessRightsController::class, 'permissions']);
+        Route::get('/assign', [AccessRightsController::class, 'assign']);
         Route::get('/', [AccessRightsController::class, 'index']);
         Route::get('/{role}', [AccessRightsController::class, 'show']);
         Route::post('/', [AccessRightsController::class, 'store']);

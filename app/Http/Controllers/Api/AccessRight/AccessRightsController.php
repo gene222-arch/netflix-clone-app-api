@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\AccessRight;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AccessRight\AssignRoleToUsersRequest;
 use App\Http\Requests\AccessRight\DestroyRequest;
 use App\Http\Requests\AccessRight\StoreRequest;
 use App\Http\Requests\AccessRight\UpdateRequest;
@@ -19,6 +20,20 @@ class AccessRightsController extends Controller
     {
         $this->middleware(['auth:api', 'role:Super Administrator|super admin']);
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  App\Http\Requests\AccessRight\AssignRoleToUsersRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function assign(AssignRoleToUsersRequest $request, Role $role)
+    {
+        $role->users()->attach($request->user_ids);
+
+        return $this->success(null, 'Access Right created successfully.');
+    }
+
 
     /**
      * Display a listing of the resource.
