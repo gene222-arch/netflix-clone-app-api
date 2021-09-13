@@ -35,6 +35,25 @@ class AccessRightsControllerTest extends TestCase
     }
 
     /** test */
+    public function user_can_assign_access_rights()
+    {
+        $roleId = 2;
+        $data = [
+            'user_ids' => [
+                59
+            ]
+        ];
+
+        $response = $this->post(
+            "/api/access-rights/$roleId/assign",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_create_access_right()
     {
         $data = [
