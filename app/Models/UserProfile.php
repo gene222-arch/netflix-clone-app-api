@@ -19,7 +19,8 @@ class UserProfile extends Model
         'user_id',
         'name',
         'avatar',
-        'is_for_kids'  
+        'is_for_kids',
+        'pin_code'
     ];
     
     protected $hidden = [

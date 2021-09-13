@@ -24,7 +24,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::doesnthave('roles')->get();
+        $users = User::all()->except(1);
 
         return !$users->count()
             ? $this->noContent()

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserProfile\StoreRequest;
 use App\Http\Requests\UserProfile\UpdateRequest;
 use App\Http\Requests\Upload\UploadAvatarRequest;
+use App\Http\Requests\UserProfile\ManagePinCodeRequest;
 
 class UserProfilesController extends Controller
 {
@@ -81,6 +82,22 @@ class UserProfilesController extends Controller
         ]);
 
         return $this->success($profile, 'Profile created successfully.');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  App\Http\Requests\UserProfile\ManagePinCodeRequest  $request
+     * @param UserProfile  $userProfile
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function managePinCode(ManagePinCodeRequest $request, UserProfile $userProfile)
+    {
+        $userProfile->update([
+            'pin_code' => $request->pin_code
+        ]);
+
+        return $this->success(null, 'Profile pin code successfully.');
     }
 
 
