@@ -93,9 +93,7 @@ class UserProfilesController extends Controller
      */
     public function managePinCode(ManagePinCodeRequest $request, UserProfile $profile)
     {
-        $profile->update([
-            'pin_code' => $request->pin_code
-        ]);
+        $profile->update($request->validated());
 
         return $this->success(null, 'Profile pin code successfully.');
     }

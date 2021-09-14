@@ -83,7 +83,8 @@ class UserProfilesControllerTest extends TestCase
 
         $data = [
             'user_profile_id' => $id,
-            'pin_code' => '8425'
+            'pin_code' => '8425',
+            'is_profile_locked' => true
         ];
 
         $response = $this->put(
