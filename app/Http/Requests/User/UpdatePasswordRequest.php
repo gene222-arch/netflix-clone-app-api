@@ -14,7 +14,15 @@ class UpdatePasswordRequest extends BaseRequest
     public function rules()
     {
         return [
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'current_password' => ['required', 'string', 'min:8', 'current_password:api'],
+            'password' => ['required', 'string', 'min:8', 'confirmed']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'current_password.current_password' => 'Current password is incorrect'
         ];
     }
 }

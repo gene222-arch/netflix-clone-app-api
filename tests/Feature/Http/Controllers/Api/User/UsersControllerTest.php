@@ -33,5 +33,23 @@ class UsersControllerTest extends TestCase
         );
 
         $this->assertResponse($response);
+}
+
+    /** test */
+    public function user_can_update_password()
+    {
+        $data = [
+            'current_password' => 'minorkayls@gmail.com',
+            'password' => 'minorkayls@gmail.com',
+            'password_confirmation' => 'minorkayls@gmail.com'
+        ];
+
+        $response = $this->put(
+            '/api/users/password',
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
     }
 }
