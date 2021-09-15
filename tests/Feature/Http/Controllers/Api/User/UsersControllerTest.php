@@ -18,4 +18,20 @@ class UsersControllerTest extends TestCase
 
         $this->assertResponse($response);
     }
+
+    /** test */
+    public function user_can_update_email()
+    {
+        $data = [
+            'email' => 'minorkayls@gmail.com'
+        ];
+
+        $response = $this->put(
+            '/api/users',
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
 }
