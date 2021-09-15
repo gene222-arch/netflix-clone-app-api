@@ -52,4 +52,19 @@ class UsersControllerTest extends TestCase
 
         $this->assertResponse($response);
     }
+
+    /** test */
+    public function user_can_receive_email_verification_code()
+    {
+        $data = [];
+
+        $response = $this->post(
+            '/api/users/email-verification-code',
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
 }
