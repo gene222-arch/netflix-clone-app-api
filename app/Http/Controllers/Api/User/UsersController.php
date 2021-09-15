@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Http\Requests\User\UpdateEmailRequest;
 
 class UsersController extends Controller
 {
@@ -29,5 +30,21 @@ class UsersController extends Controller
         return !$users->count()
             ? $this->noContent()
             : $this->success($users, 'Users fetched successfully.');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  UpdateEmailRequest  $request
+     * @param  UserProfile  $profile
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateEmail(UpdateEmailRequest $request)
+    {
+        $request->user('api')->update([
+            'email' => $request->email
+        ]);
+
+        return $this->success(null, 'Account email updated successfully.');
     }
 }

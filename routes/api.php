@@ -230,13 +230,15 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::delete('/clear', [RecentlyWatchedMoviesController::class, 'destroy']);
     });
 
-/**
+    /**
      * User Profile
-    */
+     */
     Route::prefix('users')->group(function () 
     {
         Route::get('/', [UsersController::class, 'index']);
+        Route::put('/', [UsersController::class, 'updateEmail']);
     });
+
     /**
       * User Profile
       */
