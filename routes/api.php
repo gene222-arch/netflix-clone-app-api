@@ -77,6 +77,7 @@ Route::middleware(['api', 'verified'])->group(function ()
     {
         Route::post('/logout', [LoginController::class, 'logout'])->withoutMiddleware('verified');
         Route::get('/auth', [AuthController::class, 'show']);
+        Route::post('/check-password', [AuthController::class, 'checkPassword']);
     });
 
     /**
