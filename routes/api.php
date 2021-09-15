@@ -50,6 +50,11 @@ Route::middleware(['api', 'verified'])->group(function ()
     {
         Route::post('/login', [LoginController::class, 'login'])->withoutMiddleware('verified');
         Route::post('/register', [RegisterController::class, 'register'])->withoutMiddleware('verified');
+
+        Route::middleware(['auth:api'])->group(function () {
+            Route::get('/', [AuthController::class, 'show']);
+            Route::post('/check-password', [AuthController::class, 'checkPassword']);
+        });
     });
 
     /**
@@ -76,8 +81,6 @@ Route::middleware(['api', 'verified'])->group(function ()
     Route::middleware('auth:api')->group(function () 
     {
         Route::post('/logout', [LoginController::class, 'logout'])->withoutMiddleware('verified');
-        Route::get('/auth', [AuthController::class, 'show']);
-        Route::post('/check-password', [AuthController::class, 'checkPassword']);
     });
 
     /**
