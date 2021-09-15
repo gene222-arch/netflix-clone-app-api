@@ -15,7 +15,7 @@ class ManagePinCodeRequest extends BaseRequest
     {
         return [
             'user_profile_id' => ['required', 'integer', 'exists:user_profiles,id'],
-            'pin_code' => ['required', 'string', 'max:4', 'unique:user_profiles,pin_code'],
+            'pin_code' => ['nullable', 'string', 'max:4', 'unique:user_profiles,pin_code'],
             'is_profile_locked' => ['required', 'boolean']
         ];
     }

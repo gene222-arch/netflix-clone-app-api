@@ -95,7 +95,7 @@ class UserProfilesController extends Controller
     {
         $profile->update($request->validated());
 
-        return $this->success(null, 'Profile pin code successfully.');
+        return $this->success(null, 'Profile Lock updated successfully.');
     }
 
 
