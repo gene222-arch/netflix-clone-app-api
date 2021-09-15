@@ -238,6 +238,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/', [UsersController::class, 'index']);
         Route::put('/email', [UsersController::class, 'updateEmail'])->withoutMiddleware('permission:Manage Users');
         Route::put('/password', [UsersController::class, 'updatePassword'])->withoutMiddleware('permission:Manage Users');
+        Route::post('/email-verification-code', [UsersController::class, 'sendEmailVerificationCode'])->withoutMiddleware('permission:Manage Users');
     });
 
     /**

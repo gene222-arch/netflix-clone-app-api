@@ -8,6 +8,7 @@ use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateEmailRequest;
 use App\Http\Requests\User\UpdatePasswordRequest;
+use App\Notifications\ChangeEmailVerificationNotification;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
@@ -62,5 +63,22 @@ class UsersController extends Controller
         ]);
 
         return $this->success(null, 'Account password updated successfully.');
+    }
+
+    /**
+     * Send an email message.
+     *
+     * @param  App\Http\Requests\User\UpdatePasswordRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendEmailVerificationCode()
+    {
+        $code = \random_int(100000, 999999);
+        
+        request()
+            ->user('api')
+            ->notify(new ChangeEmailVerificationNotification($code));
+
+        return $this->success($code, 'Verification code is sent.');
     }
 }
