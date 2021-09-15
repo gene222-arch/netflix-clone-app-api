@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UpdateEmailRequest;
+use App\Http\Requests\User\UpdatePasswordRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -35,16 +37,30 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateEmailRequest  $request
-     * @param  UserProfile  $profile
+     * @param  App\Http\Requests\User\UpdateEmailRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function updateEmail(UpdateEmailRequest $request)
     {
         $request->user('api')->update([
-            'email' => $request->email
+            'password' => $request->password
         ]);
 
-        return $this->success(null, 'Account email updated successfully.');
+        return $this->success(null, 'Account password updated successfully.');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  App\Http\Requests\User\UpdatePasswordRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $request->user('api')->update([
+            'password' => Hash::make($request->password)
+        ]);
+
+        return $this->success(null, 'Account password updated successfully.');
     }
 }

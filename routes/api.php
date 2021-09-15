@@ -236,7 +236,8 @@ Route::middleware(['api', 'verified'])->group(function ()
     Route::prefix('users')->group(function () 
     {
         Route::get('/', [UsersController::class, 'index']);
-        Route::put('/', [UsersController::class, 'updateEmail'])->withoutMiddleware('permission:Manage Users');
+        Route::put('/email', [UsersController::class, 'updateEmail'])->withoutMiddleware('permission:Manage Users');
+        Route::put('/password', [UsersController::class, 'updatePassword'])->withoutMiddleware('permission:Manage Users');
     });
 
     /**

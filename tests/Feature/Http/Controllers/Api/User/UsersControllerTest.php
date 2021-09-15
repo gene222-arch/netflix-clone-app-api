@@ -27,7 +27,7 @@ class UsersControllerTest extends TestCase
         ];
 
         $response = $this->put(
-            '/api/users',
+            '/api/users/email',
             $data,
             $this->apiHeader()
         );
