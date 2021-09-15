@@ -44,10 +44,10 @@ class UsersController extends Controller
     public function updateEmail(UpdateEmailRequest $request)
     {
         $request->user('api')->update([
-            'password' => $request->password
+            'email' => $request->email
         ]);
 
-        return $this->success(null, 'Account password updated successfully.');
+        return $this->success(null, 'Account email updated successfully.');
     }
 
     /**
@@ -79,6 +79,6 @@ class UsersController extends Controller
             ->user('api')
             ->notify(new ChangeEmailVerificationNotification($code));
 
-        return $this->success($code, 'Verification code is sent.');
+        return $this->success($code, 'An Email Verification is being sent to you within a few seconds.');
     }
 }
