@@ -4,7 +4,7 @@ namespace App\Traits\Dashboards;
 
 use Illuminate\Support\Facades\DB;
 
-trait HasDashboardCRUD
+trait DashboardServices
 {
 
     public function dashboard(): array
