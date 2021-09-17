@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Api\Movie;
 
-use App\Events\ComingSoonMovieReleasedEvent;
 use Carbon\Carbon;
+use App\Models\Movie;
 use App\Models\Trailer;
 use App\Models\ComingSoonMovie;
 use App\Traits\Api\ApiResponser;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Traits\Movie\HasComingSoonMovieServices;
+use App\Traits\Upload\HasUploadable;
+use Illuminate\Support\Facades\Cache;
+use App\Events\ComingSoonMovieReleasedEvent;
 use App\Http\Requests\Upload\UploadVideoRequest;
+use App\Traits\Movie\HasComingSoonMovieServices;
 use App\Http\Requests\Upload\UploadPosterRequest;
 use App\Http\Requests\Upload\UploadTitleLogoRequest;
 use App\Http\Requests\Upload\UploadWallpaperRequest;
@@ -17,10 +21,9 @@ use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\DestroyRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
+use App\Http\Requests\Movie\ComingSoonMovie\UpdateStatusRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
-use App\Traits\Upload\HasUploadable;
-use Illuminate\Support\Facades\Cache;
 
 class ComingSoonMoviesController extends Controller
 {
@@ -280,14 +283,52 @@ class ComingSoonMoviesController extends Controller
      * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateStatus(ComingSoonMovie $comingSoonMovie)
+    public function updateStatus(UpdateStatusRequest $request, ComingSoonMovie $comingSoonMovie)
     {
-        $comingSoonMovie->update([
-            'status' => $comingSoonMovie->status === 'Released' ? 'Coming Soon' : 'Released',
-            'released_at' => $comingSoonMovie->status === 'Released' ? null : Carbon::now()
-        ]);
+        try {
+            DB::transaction(function () use ($request, $comingSoonMovie) 
+            {
+                $currentDate = Carbon::today();
 
-        event(new ComingSoonMovieReleasedEvent($comingSoonMovie));
+                $status = $comingSoonMovie->status === 'Released' ? 'Coming Soon' : 'Released';
+                $releasedAt = $comingSoonMovie->status === 'Released' ? null : $currentDate;
+        
+                $comingSoonMovie->update([
+                    'status' => $status,
+                    'released_at' => $releasedAt
+                ]);
+        
+                if ($status === 'Released') 
+                {
+                    $movie = array_merge(
+                        $comingSoonMovie->toArray(),
+                        [
+                            'year_of_release' => $currentDate->format('Y'),
+                            'date_of_release' => $currentDate,
+                            'duration_in_minutes' => $request->duration_in_minutes,
+                            'video_path' => $request->video_path,
+                            'video_preview_path' => $comingSoonMovie->video_trailer_path,
+                            'video_size_in_mb' => $request->video_size_in_mb
+                        ]
+                    );
+        
+                    $authorIds = $comingSoonMovie->authors()->get();
+                    $castIds = $comingSoonMovie->casts()->get();
+                    $directorIds = $comingSoonMovie->directors()->get();
+                    $genreIds = $comingSoonMovie->genres()->get();
+        
+                    $movie = Movie::create($movie);
+                    $movie->authors()->attach($authorIds);
+                    $movie->casts()->attach($castIds);
+                    $movie->directors()->attach($directorIds);
+                    $movie->genres()->attach($genreIds);
+
+                    event(new ComingSoonMovieReleasedEvent($comingSoonMovie));
+                }
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Status updated successfully.');
     }

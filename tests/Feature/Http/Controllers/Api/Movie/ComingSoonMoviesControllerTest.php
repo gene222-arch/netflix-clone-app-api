@@ -151,9 +151,15 @@ class ComingSoonMoviesControllerTest extends TestCase
     {
         $id = 1;
 
+        $data = [
+            'video_path' => 'https://laravel-flicklify-files.s3.ap-southeast-1.amazonaws.com/movies/videos/Demon%20Slayer%20Season%202%20-%20Official%20Trailer_720P%20HD-1631719414.mp4',
+            'duration_in_minutes' => 134,
+            'video_size_in_mb' => 123124.1523
+        ];
+
         $response = $this->put(
             "/api/coming-soon-movies/$id/status",
-            [],
+            $data,
             $this->apiHeader()
         );
 
