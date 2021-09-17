@@ -44,7 +44,11 @@ trait HasComingSoonMovieServices
                 $query->when($status === 'Coming Soon', fn($q) => $q->where('status', $status));
                 $query->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
                 
-                return $query->latest()->with('trailers')->get();
+                return $query
+                            ->orderBy('status')
+                            ->orderBy('created_at', 'desc')
+                            ->with('trailers')
+                            ->get();
             });
 
             return $result;
