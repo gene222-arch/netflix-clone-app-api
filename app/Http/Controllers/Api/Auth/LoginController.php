@@ -49,7 +49,7 @@ class LoginController extends Controller
         $withPermissions = (bool) $request->input('withPermissions', false);
 
         if (!Auth::attempt($request->validated())) {
-            return $this->error('Credentials mismatch');
+            return $this->error('Login Failed! Your email or password is incorrect');
         }
 
         $auth = Auth::user();

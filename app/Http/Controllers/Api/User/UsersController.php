@@ -36,6 +36,21 @@ class UsersController extends Controller
     }
 
     /**
+     * Get specified resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserByToken()
+    {
+        $auth = request()->user('api');
+
+        return $this->success([
+            'user' => $auth->withoutRelations(),
+            'profiles' => $auth->profiles
+        ]);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  App\Http\Requests\User\UpdateEmailRequest  $request
