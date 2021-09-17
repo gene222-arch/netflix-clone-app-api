@@ -13,10 +13,20 @@ class UpdateStatusRequest extends BaseRequest
      */
     public function rules()
     {
+        $isRequired = $this->status === 'Coming Soon' ? 'required' : 'nullable';
+
         return [
-            'video_path' => ['nullable', 'string'],
-            'duration_in_minutes' => ['nullable', 'integer'],
-            'video_size_in_mb' => ['nullable', 'numeric'],
+            'video_path' => [$isRequired, 'string'],
+            'duration_in_minutes' => [$isRequired, 'integer'],
+            'video_size_in_mb' => [$isRequired, 'numeric'],
+            'status' => ['required', 'string', 'in:Coming Soon,Released']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'video_path.required' => 'Video file is required.'
         ];
     }
 }
