@@ -22,19 +22,19 @@ trait DashboardServices
             'SELECT
                 (
                     SELECT
-                        COUNT(users.id)
+                        COUNT(*)  
                     FROM
                         users
-                    INNER JOIN 
+                    LEFT JOIN 
                         model_has_roles
                     ON 
                         users.id  = model_has_roles.model_id
-                    INNER JOIN 
+                    LEFT JOIN 
                         roles
                     ON 
-                        model_has_roles.role_id = roles.id 
+                        model_has_roles.role_id = roles.id
                     WHERE 
-                        roles.name = "User"
+                        roles.id IS NULL 
                 ) as total_number_of_users,
                 (
                     SELECT 
