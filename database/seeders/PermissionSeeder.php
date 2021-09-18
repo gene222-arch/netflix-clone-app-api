@@ -18,35 +18,43 @@ class PermissionSeeder extends Seeder
         DB::table('permissions')->insert([
             [
                 'name' => 'Manage Authors',
-                'guard_name' => 'api'
+                'guard_name' => 'api',
+                'description' => 'Has access to Create, Read, Update and Delete one or multiple authors.'
             ],
             [
                 'name' => 'Manage Casts',
-                'guard_name' => 'api'
+                'guard_name' => 'api',
+                'description' => 'Has access to Create, Read, Update and Delete one or multiple casts.'
             ],
             [
                 'name' => 'Manage Directors',
-                'guard_name' => 'api'
+                'guard_name' => 'api',
+                'description' => 'Has access to Create, Read, Update and Delete one or multiple directors.'
             ],
             [
                 'name' => 'Manage Genres',
-                'guard_name' => 'api'
+                'guard_name' => 'api',
+                'description' => 'Has access to Create, Read, Update and Delete one or multiple genres.'
             ],
             [
                 'name' => 'Manage Movies',
-                'guard_name' => 'api'
+                'guard_name' => 'api',
+                'description' => 'Has access to Create, Read, Update and Delete one or multiple movies.'
             ],
             [
                 'name' => 'Manage Coming Soon Movies',
-                'guard_name' => 'api'
+                'guard_name' => 'api',
+                'description' => 'Has access to Create, Release, Read, Update, Delete, and Manage Trailers one or multiple coming soon movies.'
             ],
             [
                 'name' => 'View Dashboard',
-                'guard_name' => 'api'
+                'guard_name' => 'api',
+                'description' => 'Has access to the Dashboard that displays general data analytics.'
             ],
             [
                 'name' => 'Manage Access Rights',
-                'guard_name' => 'api'
+                'guard_name' => 'api',
+                'description' => 'Has access to Create, Read, Update and Delete one or multiple user role and permissions. Has access to assign a role to one or multiple users.'
             ]
         ]);
     }
