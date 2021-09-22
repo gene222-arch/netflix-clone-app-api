@@ -14,7 +14,7 @@ class AddAvatarToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('avatar_path');
+            $table->string('avatar_path')->after('id');
         });
     }
 
@@ -26,7 +26,7 @@ class AddAvatarToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropIfExists('avatar_path');
+            $table->dropColumn('avatar_path');
         });
     }
 }

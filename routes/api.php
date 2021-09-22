@@ -51,7 +51,6 @@ Route::middleware(['api', 'verified'])->group(function ()
     {
         Route::post('/login', [LoginController::class, 'login'])->withoutMiddleware('verified');
         Route::post('/register', [RegisterController::class, 'register'])->withoutMiddleware('verified');
-        Route::post('/users/upload-avatar', [UploadUserAvatarController::class, 'uploadAvatar'])->withoutMiddleware('verified');
 
         Route::middleware(['auth:api'])->group(function () {
             Route::get('/', [AuthController::class, 'show']);
@@ -242,6 +241,8 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::put('/email', [UsersController::class, 'updateEmail'])->withoutMiddleware('permission:Manage Users');
         Route::put('/password', [UsersController::class, 'updatePassword'])->withoutMiddleware('permission:Manage Users');
         Route::post('/email-verification-code', [UsersController::class, 'sendEmailVerificationCode'])->withoutMiddleware('permission:Manage Users');
+
+        Route::post('/upload-avatar', [UploadUserAvatarController::class, 'uploadAvatar'])->withoutMiddleware('verified');
     });
 
     /**

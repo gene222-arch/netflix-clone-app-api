@@ -13,20 +13,30 @@ class UploadUserAvatarController extends Controller
     use ApiResponser, HasUploadable;
 
     /**
-     * Display a listing of the resource.
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest:api');
+    }
+    
+    /**
+     * Upload Avatar
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function uploadAvatar(UploadAvatarRequest $request)
     {
-        $poster = $this->upload(
+        $avatar = $this->upload(
             $request, 
             'avatar', 
-            'users/avatars/posters/', 
+            'users/avatars/', 
             320,
             320
         );
 
-        return $this->success($poster);
+        return $this->success($avatar);
     }
 }
