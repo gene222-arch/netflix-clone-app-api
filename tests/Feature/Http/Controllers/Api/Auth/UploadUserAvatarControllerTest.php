@@ -10,7 +10,7 @@ use Tests\TestCase;
 class UploadUserAvatarControllerTest extends TestCase
 {
 
-    /** test */
+    /** @test */
     public function user_can_upload_avatar()
     {
         $path = UploadedFile::fake()->image('avatar.jpg', 400, 400);
@@ -20,7 +20,7 @@ class UploadUserAvatarControllerTest extends TestCase
         ];
 
         $response = $this->post(
-            '/api/auth/users/upload-avatar',
+            '/api/auth/upload-avatar',
             $data,
             $this->apiHeader()
         );
