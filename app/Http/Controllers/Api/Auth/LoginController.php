@@ -71,7 +71,7 @@ class LoginController extends Controller
 
         if ($withPermissions) {
             $data = $data + [
-                'permissions' => $this->authPermissionViaRoles()
+                'permissions' => $this->authPermissionViaRoles($auth)
             ];
         }
 
