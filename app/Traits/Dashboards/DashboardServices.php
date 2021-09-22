@@ -34,8 +34,24 @@ trait DashboardServices
                     ON 
                         model_has_roles.role_id = roles.id
                     WHERE 
-                        roles.id IS NULL 
+                        roles.name != "Subscriber"
                 ) as total_number_of_users,
+                (
+                    SELECT
+                        COUNT(*)  
+                    FROM
+                        users
+                    LEFT JOIN 
+                        model_has_roles
+                    ON 
+                        users.id  = model_has_roles.model_id
+                    LEFT JOIN 
+                        roles
+                    ON 
+                        model_has_roles.role_id = roles.id
+                    WHERE 
+                        roles.name = "Subscriber"
+                ) as total_number_of_subscribers,
                 (
                     SELECT 
                         COUNT(movies.id) 
