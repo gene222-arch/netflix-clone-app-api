@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Settings\AccountController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\AccessRight\AccessRightsController;
+use App\Http\Controllers\Api\Auth\UploadUserAvatarController;
 use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\Dashboards\DashboardsController;
 use App\Http\Controllers\Api\Movie\ComingSoonMoviesController;
@@ -50,6 +51,7 @@ Route::middleware(['api', 'verified'])->group(function ()
     {
         Route::post('/login', [LoginController::class, 'login'])->withoutMiddleware('verified');
         Route::post('/register', [RegisterController::class, 'register'])->withoutMiddleware('verified');
+        Route::post('/users/upload-avatar', [UploadUserAvatarController::class, 'uploadAvatar'])->withoutMiddleware('verified');
 
         Route::middleware(['auth:api'])->group(function () {
             Route::get('/', [AuthController::class, 'show']);
