@@ -48,15 +48,11 @@ class LoginController extends Controller
         $withRoles = (bool) $request->input('withRoles', false);
         $withPermissions = (bool) $request->input('withPermissions', false);
 
-        if (!Auth::attempt($request->validated())) {
+        if (! Auth::attempt($request->validated())) {
             return $this->error('Login Failed! Your email or password is incorrect');
         }
 
         $auth = Auth::user();
-
-        if (! $auth->hasVerifiedEmail()) {
-            return $this->error('Your email address is not verified.');
-        }
 
         $data = [
             'user' => $auth->withoutRelations(),
