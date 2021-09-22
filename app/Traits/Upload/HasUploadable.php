@@ -13,7 +13,7 @@ trait HasUploadable
     
     public function upload($request, string $property, string $pathToStore, int $width, int $height): string
     {
-        $path = '';
+        $newFileName = '';
         
         if ($request->hasFile($property))
         {

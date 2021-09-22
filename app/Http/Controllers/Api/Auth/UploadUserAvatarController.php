@@ -21,7 +21,7 @@ class UploadUserAvatarController extends Controller
     {
         $poster = $this->upload(
             $request, 
-            'poster', 
+            'avatar', 
             'users/avatars/posters/', 
             320,
             320
