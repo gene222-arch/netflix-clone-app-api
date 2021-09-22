@@ -42,7 +42,10 @@ class AccessRightsController extends Controller
      */
     public function index()
     {
-        $result = Role::orderBy('created_at')->with('users')->get(['id', 'name']);
+        $result = Role::orderBy('created_at')
+            ->with('users')
+            ->withCount('users')
+            ->get(['id', 'name']);
 
         return !$result->count()
             ? $this->noContent()
@@ -106,11 +109,11 @@ class AccessRightsController extends Controller
     {
         $this->updateAccessRight(
             $role,
-            $request->role_name,
+            $request->role,
             $request->permissions
         );
 
-        return $this->success();
+        return $this->success(null, 'Role updated successfully.');
     }
 
     /**

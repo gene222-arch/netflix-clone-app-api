@@ -15,8 +15,8 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         return [
-            'role_id' => ['required', 'integer', 'exists:roles,id'],
-            'role_name' => ['required', 'string', "unique:roles,name,{$this->role_id}"],
+            'id' => ['required', 'integer', 'exists:roles,id'],
+            'role' => ['required', 'string', "unique:roles,name,{$this->id}"],
             'permissions.*' => ['required', 'integer', 'distinct', 'exists:permissions,id']
         ];
     }
