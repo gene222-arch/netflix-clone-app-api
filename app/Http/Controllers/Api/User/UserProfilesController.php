@@ -88,12 +88,17 @@ class UserProfilesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  App\Http\Requests\UserProfile\ManagePinCodeRequest  $request
-     * @param UserProfile  $profile
+     * @param  UserProfile  $profile
      * @return \Illuminate\Http\JsonResponse
      */
     public function managePinCode(ManagePinCodeRequest $request, UserProfile $profile)
     {
-        $profile->update($request->validated());
+        $data = $request->validated();
+        $isUpdated = $profile->update($data);
+
+        if (! $isUpdated) return $this->error();
+
+        event(new \App\Events\UserProfilePINCodeUpdatedEvent($data));
 
         return $this->success(null, 'Profile Lock updated successfully.');
     }
@@ -126,7 +131,7 @@ class UserProfilesController extends Controller
             'avatar',
             UserProfile::$FILE_PATH,
             320,
-            320
+            320 
         );
 
         return $this->success($path, 'Avatar uploaded successfully.');

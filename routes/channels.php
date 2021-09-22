@@ -29,3 +29,7 @@ Broadcast::channel('coming.soon.movie.released', function () {
     return true;
 });
 
+Broadcast::channel('user.profile.manage.pincode', function () {
+    return true;
+});
+
