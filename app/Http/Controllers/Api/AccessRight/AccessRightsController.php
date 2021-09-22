@@ -42,9 +42,10 @@ class AccessRightsController extends Controller
      */
     public function index()
     {
-        $result = Role::orderBy('created_at')
-            ->with('users')
+        $result = Role::with('users')
             ->withCount('users')
+            ->withCount('permissions')
+            ->orderBy('created_at')
             ->get(['id', 'name']);
 
         return !$result->count()
