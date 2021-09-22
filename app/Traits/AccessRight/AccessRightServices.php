@@ -46,7 +46,14 @@ trait AccessRightServices
                     'updated_at' => null
                 ]);
         
-                $role->givePermissionTo($permissions);
+                $role->givePermissionTo(
+                    array_merge(
+                        $permissions,
+                        [
+                            'View Dashboard'
+                        ]
+                    )
+                );
             });
 
             return true;
