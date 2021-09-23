@@ -39,6 +39,9 @@ class UserProfilePINCodeUpdatedEvent implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        return $this->userProfileDetails;
+        return [
+            'type' => 'UserProfilePINCodeUpdatedEvent',
+            'data' => $this->userProfileDetails
+        ];
     }
 }

@@ -10,6 +10,6 @@ trait AuthServices
     {
         return ! $user 
             ? auth()->user()->getPermissionsViaRoles()->map->name
-            : $user->roles->first()->permissions->map->name;
+            : $user->roles?->first()->permissions->map->name;
     }
 }

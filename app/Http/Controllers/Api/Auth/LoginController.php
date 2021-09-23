@@ -53,19 +53,23 @@ class LoginController extends Controller
         }
 
         $auth = Auth::user();
+        $role = '';
 
         $data = [
             'user' => $auth->withoutRelations(),
             'profiles' => $auth->profiles
         ];
 
-        if ($withRoles) {
+        if ($withRoles) 
+        {
+            $role = $auth->roles->first()?->withoutRelations()->name;
+
             $data = $data + [
-                'role' => $auth->roles->first()?->withoutRelations()->name
+                'role' => $role
             ];
         }
 
-        if ($withPermissions) {
+        if ($withPermissions && $role !== 'Subscriber') {
             $data = $data + [
                 'permissions' => $this->authPermissionViaRoles($auth)
             ];
