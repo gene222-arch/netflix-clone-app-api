@@ -46,7 +46,8 @@ class UsersController extends Controller
 
         return $this->success([
             'user' => $auth->withoutRelations(),
-            'profiles' => $auth->profiles
+            'profiles' => $auth->profiles,
+            'role' => $auth->roles->first()?->withoutRelations()->name
         ]);
     }
 

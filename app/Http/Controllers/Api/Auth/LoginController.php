@@ -75,6 +75,10 @@ class LoginController extends Controller
             ];
         }
 
+        $data = ( $withPermissions && $role !== 'Subscriber' ) 
+            ? $data + [ 'permissions' => $this->authPermissionViaRoles($auth) ]
+            : $data + [ 'permissions' => [] ];
+
         return $this->token(
             $this->getPersonalAccessToken($request),
             'User logged in successfully.',
