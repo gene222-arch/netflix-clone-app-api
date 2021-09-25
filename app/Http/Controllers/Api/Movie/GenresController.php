@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api\Movie;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Movie\Genre\DestroyRequest;
 use App\Http\Requests\Movie\Genre\StoreRequest;
 use App\Http\Requests\Movie\Genre\UpdateRequest;
+use App\Http\Requests\Movie\Genre\DestroyRequest;
 
 class GenresController extends Controller
 {
@@ -42,7 +43,20 @@ class GenresController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        Genre::create($request->validated());
+        try {
+            DB::transaction(function () use ($request) 
+            {
+                $id = Genre::create($request->validated())->id;
+
+                $this->createLog(
+                    'Create',
+                    Genre::class,
+                    "http://localhost:3000/video-management/genres/$id/update-genre"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
 
         return $this->success(null, 'Genre created successfully.');
     }
@@ -68,7 +82,20 @@ class GenresController extends Controller
      */
     public function update(UpdateRequest $request, Genre $genre)
     {
-        $genre->update($request->validated());
+        try {
+            DB::transaction(function () use ($request, $genre) 
+            {
+                $genre->update($request->validated());
+
+                $this->createLog(
+                    'Update',
+                    Genre::class,
+                    "http://localhost:3000/video-management/genres/$genre->id/update-genre"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Genre updated successfully.');
     }
@@ -81,9 +108,20 @@ class GenresController extends Controller
      */
     public function updateEnabledStatus(Genre $genre)
     {
-        $genre->update([
-            'enabled' => !$genre->enabled 
-        ]);
+        try {
+            DB::transaction(function () use ($genre) 
+            {
+                $genre->update([ 'enabled' => !$genre->enabled ]);
+
+                $this->createLog(
+                    "Update",
+                    Genre::class,
+                    "http://localhost:3000/video-management/genres/$genre->id/update-genre"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
         
         return $this->success(null, 'Updated enabled successfully.');
     }
@@ -96,7 +134,16 @@ class GenresController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        Genre::whereIn('id', $request->ids)->delete();
+        try {
+            DB::transaction(function () use ($request) 
+            {
+                Genre::whereIn('id', $request->ids)->delete();
+
+                $this->createLog("Delete", Genre::class);
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Genre/s deleted successfully.');
     }
