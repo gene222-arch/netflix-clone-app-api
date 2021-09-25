@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Director;
 use App\Traits\Api\ApiResponser;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Movie\Director\Request;
 use App\Http\Requests\Upload\UploadAvatarRequest;
 use App\Http\Requests\Movie\Director\DestroyRequest;
-use App\Traits\Upload\HasUploadable;
+use App\Traits\ActivityLogsServices;
 
 class DirectorsController extends Controller
 {
-    use ApiResponser, HasUploadable;
+    use ApiResponser, HasUploadable, ActivityLogsServices;
 
     public function __construct()
     {
@@ -42,7 +44,20 @@ class DirectorsController extends Controller
      */
     public function store(Request $request)
     {
-        Director::create($request->validated());
+        try {
+            DB::transaction(function () use($request)
+            {   
+                $id = Director::create($request->validated())->id;
+
+                $this->createLog(
+                    'Create',
+                    Director::class,
+                    "http://localhost:3000/video-management/directors/$id/update-director"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Director created successfully.');
     }
@@ -69,7 +84,20 @@ class DirectorsController extends Controller
      */
     public function update(Request $request, Director $director)
     {
-        $director->update($request->validated());
+        try {
+            DB::transaction(function () use($request, $director) 
+            {
+                $director->update($request->validated());
+
+                $this->createLog(
+                    'Update',
+                    Director::class,
+                    "http://localhost:3000/video-management/directors/$director->id/update-director"
+                );
+            });
+        } catch (\Throwable $th) {
+           return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Director updated successfully.');
     }
@@ -103,9 +131,20 @@ class DirectorsController extends Controller
      */
     public function updateEnabledStatus(Director $director)
     {
-        $director->update([
-            'enabled' => !$director->enabled 
-        ]);
+        try {
+            DB::transaction(function () use($director)
+            {
+                $director->update([ 'enabled' => !$director->enabled ]);
+
+                $this->createLog(
+                    "Update",
+                    Director::class,
+                    "http://localhost:3000/video-management/directors/$director->id/update-director"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
         
         return $this->success(null, 'Updated enabled successfully.');
     }
@@ -117,7 +156,16 @@ class DirectorsController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        Director::whereIn('id', $request->ids)->delete();
+        try {
+            DB::transaction(function () use($request)
+            {
+                Director::whereIn('id', $request->ids)->delete();
+
+                $this->createLog("Delete", Director::class);
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Director/s deleted successfully.');
     }
