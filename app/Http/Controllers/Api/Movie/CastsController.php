@@ -46,15 +46,19 @@ class CastsController extends Controller
      */
     public function store(Request $request)
     {
-        DB::transaction(function () use ($request) 
-        {
-            $id = Cast::create($request->validated())->id;
-            $this->createLog(
-                "Create",
-                Cast::class,
-                "http://localhost:3000/video-management/casts/$id/update-cast"
-            );
-        });
+        try {
+            DB::transaction(function () use ($request) 
+            {
+                $id = Cast::create($request->validated())->id;
+                $this->createLog(
+                    "Create",
+                    Cast::class,
+                    "http://localhost:3000/video-management/casts/$id/update-cast"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Cast created successfully.');
     }
@@ -81,15 +85,19 @@ class CastsController extends Controller
      */
     public function update(Request $request, Cast $cast)
     {
-        DB::transaction(function () use ($request, $cast) 
-        {
-            $cast->update($request->validated());
-            $this->createLog(
-                "Update",
-                Cast::class,
-                "http://localhost:3000/video-management/casts/$cast->id/update-cast"
-            );
-        });
+        try {
+            DB::transaction(function () use ($request, $cast) 
+            {
+                $cast->update($request->validated());
+                $this->createLog(
+                    "Update",
+                    Cast::class,
+                    "http://localhost:3000/video-management/casts/$cast->id/update-cast"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Cast updated successfully.');
     }
@@ -102,15 +110,19 @@ class CastsController extends Controller
      */
     public function updateEnabledStatus(Cast $cast)
     {
-        DB::transaction(function () use ($cast) 
-        {
-            $cast->update([ 'enabled' => !$cast->enabled ]);
-            $this->createLog(
-                "Update",
-                Cast::class,
-                "http://localhost:3000/video-management/casts/$cast->id/update-cast"
-            );
-        });
+        try {
+            DB::transaction(function () use ($cast) 
+            {
+                $cast->update([ 'enabled' => !$cast->enabled ]);
+                $this->createLog(
+                    "Update",
+                    Cast::class,
+                    "http://localhost:3000/video-management/casts/$cast->id/update-cast"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
         
         return $this->success(null, 'Updated enabled successfully.');
     }
@@ -141,11 +153,15 @@ class CastsController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        DB::transaction(function () use ($request) 
-        {
-            Cast::whereIn('id', $request->ids)->delete();
-            $this->createLog("Delete", Cast::class);
-        });
+        try {
+            DB::transaction(function () use ($request) 
+            {
+                Cast::whereIn('id', $request->ids)->delete();
+                $this->createLog("Delete", Cast::class);
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Cast/s deleted successfully.');
     }
