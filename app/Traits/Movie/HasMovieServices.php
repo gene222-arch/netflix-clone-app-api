@@ -7,13 +7,14 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Movie\Movie\StoreRequest;
 use App\Http\Requests\Movie\Movie\UpdateRequest;
+use App\Traits\ActivityLogsServices;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 
 trait HasMovieServices
 {
-    use HasUploadable; 
+    use HasUploadable, ActivityLogsServices; 
 
     public function getMovies(bool $isForKids)
     {
@@ -291,6 +292,12 @@ trait HasMovieServices
                 $movie->casts()->attach($castIDs);
                 $movie->directors()->attach($directorIDs);
                 $movie->genres()->attach($genreIDs);
+
+                $this->createLog(
+                    'Create',
+                    Movie::class,
+                    "http://localhost:3000/video-management/movies/$movie->id/update-movie"
+                );
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -326,6 +333,12 @@ trait HasMovieServices
                 $movie->casts()->sync($castIDs);
                 $movie->directors()->sync($directorIDs);
                 $movie->genres()->sync($genreIDs);
+
+                $this->createLog(
+                    'Update',
+                    Movie::class,
+                    "http://localhost:3000/video-management/movies/$movie->id/update-movie"
+                );
             });
         } catch (\Throwable $th) {
             return $th->getMessage();

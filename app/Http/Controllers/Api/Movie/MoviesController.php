@@ -16,10 +16,12 @@ use App\Http\Requests\Upload\UploadPosterRequest;
 use App\Http\Requests\Upload\UploadTitleLogoRequest;
 use App\Http\Requests\Upload\UploadWallpaperRequest;
 use App\Http\Requests\Upload\UploadVideoPreviewRequest;
+use App\Traits\ActivityLogsServices;
+use Google\Service\DriveActivity\Move;
 
 class MoviesController extends Controller
 {
-    use ApiResponser, HasMovieServices, HasUploadable;
+    use ApiResponser, HasMovieServices, HasUploadable, ActivityLogsServices;
 
     public function __construct()
     {
@@ -299,7 +301,16 @@ class MoviesController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        Movie::whereIn('id', $request->ids)->delete();
+        try {
+            DB::transaction(function ($request) 
+            {
+                Movie::whereIn('id', $request->ids)->delete();
+
+                $this->createLog('Delete', Movie::class);
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Movie/s deleted successfully.');
     }

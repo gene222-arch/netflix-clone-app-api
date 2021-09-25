@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\Genre\StoreRequest;
 use App\Http\Requests\Movie\Genre\UpdateRequest;
 use App\Http\Requests\Movie\Genre\DestroyRequest;
+use App\Traits\ActivityLogsServices;
 
 class GenresController extends Controller
 {
@@ -18,7 +19,7 @@ class GenresController extends Controller
         $this->middleware(['auth:api', 'permission:Manage Genres']);
     }
 
-    use ApiResponser;
+    use ApiResponser, ActivityLogsServices;
 
     /**
      * Display a listing of the resource.
