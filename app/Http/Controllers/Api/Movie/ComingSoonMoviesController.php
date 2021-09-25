@@ -24,10 +24,11 @@ use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateStatusRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
+use App\Traits\ActivityLogsServices;
 
 class ComingSoonMoviesController extends Controller
 {
-    use ApiResponser, HasComingSoonMovieServices, HasUploadable;
+    use ApiResponser, HasComingSoonMovieServices, HasUploadable, ActivityLogsServices;
 
     public function __construct()
     {
@@ -78,9 +79,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function storeTrailer(ComingSoonMovie $comingSoonMovie, TrailerStoreRequest $request)
     {
-       $comingSoonMovie->trailers()->create($request->validated());
+       $result = $this->createTrailer($comingSoonMovie, $request->validated());
 
-        return $this->success(null, 'Trailer created successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Trailer created successfully.');
     }
 
 
@@ -285,52 +288,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function updateStatus(UpdateStatusRequest $request, ComingSoonMovie $comingSoonMovie)
     {
-        try {
-            DB::transaction(function () use ($request, $comingSoonMovie) 
-            {
-                $currentDate = Carbon::today();
+        $result = $this->updateMovieStatus($request, $comingSoonMovie);
 
-                $status = $comingSoonMovie->status === 'Released' ? 'Coming Soon' : 'Released';
-                $releasedAt = $comingSoonMovie->status === 'Released' ? null : $currentDate;
-        
-                $comingSoonMovie->update([
-                    'status' => $status,
-                    'released_at' => $releasedAt
-                ]);
-        
-                if ($status === 'Released') 
-                {
-                    $movie = array_merge(
-                        $comingSoonMovie->toArray(),
-                        [
-                            'year_of_release' => $currentDate->format('Y'),
-                            'date_of_release' => $currentDate,
-                            'duration_in_minutes' => $request->duration_in_minutes,
-                            'video_path' => $request->video_path,
-                            'video_preview_path' => $comingSoonMovie->video_trailer_path,
-                            'video_size_in_mb' => $request->video_size_in_mb
-                        ]
-                    );
-        
-                    $authorIds = $comingSoonMovie->authors()->get();
-                    $castIds = $comingSoonMovie->casts()->get();
-                    $directorIds = $comingSoonMovie->directors()->get();
-                    $genreIds = $comingSoonMovie->genres()->get();
-        
-                    $movie = Movie::create($movie);
-                    $movie->authors()->attach($authorIds);
-                    $movie->casts()->attach($castIds);
-                    $movie->directors()->attach($directorIds);
-                    $movie->genres()->attach($genreIds);
-
-                    event(new ComingSoonMovieReleasedEvent($comingSoonMovie));
-                }
-            });
-        } catch (\Throwable $th) {
-            return $this->error($th->getMessage());
-        }
-
-        return $this->success(null, 'Status updated successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Status updated successfully.');
     }
 
 
@@ -344,12 +306,15 @@ class ComingSoonMoviesController extends Controller
      */
     public function updateTrailer(TrailerUpdateRequest $request, ComingSoonMovie $comingSoonMovie, Trailer $trailer)
     {
-        $comingSoonMovie
-            ->trailers()
-            ->find($trailer->id)
-            ->update($request->validated());
+        $result = $this->trailerUpdate(
+            $comingSoonMovie,
+            $trailer->id,
+            $request->validated()
+        );
 
-        return $this->success(null, 'Trailer updated successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Trailer updated successfully.');
     }
 
     /**
@@ -360,9 +325,11 @@ class ComingSoonMoviesController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        ComingSoonMovie::whereIn('id', $request->ids)->delete();
+        $result = $this->deleteManyComingSoonMovies($request->ids);
 
-        return $this->success(null, 'Coming Soon Movie/s deleted successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Coming Soon Movie/s deleted successfully.');
     }
 
     /**
@@ -374,8 +341,10 @@ class ComingSoonMoviesController extends Controller
      */
     public function destroyTrailer(TrailerDestroyRequest $request, ComingSoonMovie $comingSoonMovie)
     {
-        $comingSoonMovie->trailers()->whereIn('id', $request->ids)->delete();
+        $result = $this->deleteManyTrailers($comingSoonMovie, $request->ids);
 
-        return $this->success(null, 'Trailer/s deleted successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Trailer/s deleted successfully.');
     }
 }
