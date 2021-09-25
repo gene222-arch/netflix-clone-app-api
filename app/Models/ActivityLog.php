@@ -32,12 +32,6 @@ class ActivityLog extends Model
         });
     }
 
-
-    public function setModelTypeAttribute($value)
-    {
-        $this->attributes['model_type'] = ActivityLog::class;
-    }
-
     public function setUserIdAttribute($value)
     {
         $this->attributes['user_id'] = auth('api')->user()->id;

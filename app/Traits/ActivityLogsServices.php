@@ -6,12 +6,13 @@ use App\Models\ActivityLog;
 
 trait ActivityLogsServices
 {
-    public static function createLog(string $urlViewPath, ?string $description = null): ActivityLog
+    public static function createLog(string $actionType, string $modelType, ?string $urlViewPath = null, ?string $description = null): ActivityLog
     {
         $data = [
-            'type' => 'Create',
+            'type' => $actionType,
+            'model_type' => $modelType,
             'description' => $description,
-            'url_view_path' => $urlViewPath
+            'view_data_path' => $urlViewPath
         ];
         
         return ActivityLog::create($data);

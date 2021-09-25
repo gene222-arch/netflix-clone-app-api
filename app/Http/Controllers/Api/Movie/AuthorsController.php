@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Author;
 use App\Traits\Api\ApiResponser;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Movie\Author\Request;
-use App\Http\Requests\Movie\Author\DestroyRequest;
-use App\Http\Requests\Upload\UploadAvatarRequest;
 use App\Traits\Upload\HasUploadable;
+use App\Http\Requests\Movie\Author\Request;
+use App\Http\Requests\Upload\UploadAvatarRequest;
+use App\Http\Requests\Movie\Author\DestroyRequest;
+use App\Traits\ActivityLogsServices;
 
 class AuthorsController extends Controller
 {
-    use ApiResponser, HasUploadable;
+    use ApiResponser, HasUploadable, ActivityLogsServices;
 
     public function __construct()
     {
@@ -42,7 +44,15 @@ class AuthorsController extends Controller
      */
     public function store(Request $request)
     {
-        Author::create($request->validated());
+        DB::transaction(function () use ($request) 
+        {
+            $id = Author::create($request->validated())->id;
+            $this->createLog(
+                'Create',
+                Author::class,
+                "http://localhost:3000/video-management/authors/$id/update-author"
+            );
+        });
 
         return $this->success(null, 'Author created successfully.');
     }
@@ -69,7 +79,15 @@ class AuthorsController extends Controller
      */
     public function update(Request $request, Author $author)
     {
-        $author->update($request->validated());
+        DB::transaction(function () use ($request, $author) 
+        {
+            $author->update($request->validated());
+            $this->createLog(
+                'Update',
+                Author::class,
+                "http://localhost:3000/video-management/authors/$author->id/update-author"
+            );
+        });
 
         return $this->success(null, 'Author updated successfully.');
     }
@@ -82,9 +100,15 @@ class AuthorsController extends Controller
      */
     public function updateEnabledStatus(Author $author)
     {
-        $author->update([
-            'enabled' => !$author->enabled 
-        ]);
+        DB::transaction(function () use ($author) 
+        {
+            $author->update([ 'enabled' => !$author->enabled ]);
+            $this->createLog(
+                "Update",
+                Author::class,
+                "http://localhost:3000/video-management/authors/$author->id/update-author"
+            );
+        });
         
         return $this->success(null, 'Updated enabled successfully.');
     }
@@ -115,7 +139,11 @@ class AuthorsController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        Author::whereIn('id', $request->ids)->delete();
+        DB::transaction(function () use ($request) 
+        {
+            Author::whereIn('id', $request->ids)->delete();
+            $this->createLog("Update", Author::class);
+        });
 
         return $this->success(null, 'Author/s deleted successfully.');
     }
