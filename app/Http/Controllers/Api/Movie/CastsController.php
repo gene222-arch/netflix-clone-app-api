@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Api\Movie;
 use App\Models\Cast;
 use App\Models\Movie;
 use App\Traits\Api\ApiResponser;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Traits\ActivityLogsServices;
+use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Movie\Cast\Request;
 use App\Http\Requests\Movie\Cast\DestroyRequest;
 use App\Http\Requests\Upload\UploadAvatarRequest;
-use App\Traits\Upload\HasUploadable;
 
 class CastsController extends Controller
 {
-    use ApiResponser, HasUploadable;
+    use ApiResponser, HasUploadable, ActivityLogsServices;
 
     public function __construct()
     {
@@ -44,7 +46,15 @@ class CastsController extends Controller
      */
     public function store(Request $request)
     {
-        Cast::create($request->validated());
+        DB::transaction(function () use ($request) 
+        {
+            $id = Cast::create($request->validated())->id;
+            $this->createLog(
+                "Create",
+                Cast::class,
+                "http://localhost:3000/video-management/casts/$id/update-cast"
+            );
+        });
 
         return $this->success(null, 'Cast created successfully.');
     }
@@ -71,7 +81,15 @@ class CastsController extends Controller
      */
     public function update(Request $request, Cast $cast)
     {
-        $cast->update($request->validated());
+        DB::transaction(function () use ($request, $cast) 
+        {
+            $cast->update($request->validated());
+            $this->createLog(
+                "Update",
+                Cast::class,
+                "http://localhost:3000/video-management/casts/$cast->id/update-cast"
+            );
+        });
 
         return $this->success(null, 'Cast updated successfully.');
     }
@@ -84,9 +102,15 @@ class CastsController extends Controller
      */
     public function updateEnabledStatus(Cast $cast)
     {
-        $cast->update([
-            'enabled' => !$cast->enabled 
-        ]);
+        DB::transaction(function () use ($cast) 
+        {
+            $cast->update([ 'enabled' => !$cast->enabled ]);
+            $this->createLog(
+                "Update",
+                Cast::class,
+                "http://localhost:3000/video-management/casts/$cast->id/update-cast"
+            );
+        });
         
         return $this->success(null, 'Updated enabled successfully.');
     }
@@ -117,7 +141,11 @@ class CastsController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        Cast::whereIn('id', $request->ids)->delete();
+        DB::transaction(function () use ($request) 
+        {
+            Cast::whereIn('id', $request->ids)->delete();
+            $this->createLog("Delete", Cast::class);
+        });
 
         return $this->success(null, 'Cast/s deleted successfully.');
     }
