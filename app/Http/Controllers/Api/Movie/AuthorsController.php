@@ -142,7 +142,7 @@ class AuthorsController extends Controller
         DB::transaction(function () use ($request) 
         {
             Author::whereIn('id', $request->ids)->delete();
-            $this->createLog("Update", Author::class);
+            $this->createLog("Delete", Author::class);
         });
 
         return $this->success(null, 'Author/s deleted successfully.');
