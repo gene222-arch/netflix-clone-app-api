@@ -39,7 +39,6 @@ class ActivityLogsController extends Controller
         ActivityLog::create([
             'type' => 'Create',
             'model_type' => ActivityLog::class,
-            'user_id' => $request->user('api')->id,
             'description' => $request->description
         ]);
 

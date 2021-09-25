@@ -10,8 +10,6 @@ trait ActivityLogsServices
     {
         $data = [
             'type' => 'Create',
-            'model_type' => ActivityLog::class,
-            'user_id' => request()->user('api')->id,
             'description' => $description,
             'url_view_path' => $urlViewPath
         ];
