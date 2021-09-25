@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Auth;
+
 
 class ActivityLog extends Model
 {
@@ -22,6 +22,15 @@ class ActivityLog extends Model
 
     public $timestamps = false;
 
+    protected static function booted()
+    {
+        parent::boot();
+
+        static::creating(function ($activityLog) {
+            $activityLog->user_id = auth('api')->id();
+        });
+    }
+
 
     public function setModelTypeAttribute($value)
     {
@@ -30,7 +39,7 @@ class ActivityLog extends Model
 
     public function setUserIdAttribute($value)
     {
-        $this->attributes['user_id'] = Auth::user()->id;
+        $this->attributes['user_id'] = auth('api')->user()->id;
     }
 
     public function createdBy(): BelongsTo
