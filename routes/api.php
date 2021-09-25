@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Settings\AccountController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\AccessRight\AccessRightsController;
+use App\Http\Controllers\Api\ActivityLogsController;
 use App\Http\Controllers\Api\Auth\UploadUserAvatarController;
 use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\Dashboards\DashboardsController;
@@ -100,6 +101,18 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::delete('/', [AccessRightsController::class, 'destroy']);
     });
     
+    /**
+     * * Activity Log
+     */
+    Route::prefix('activity-logs')->group(function () 
+    {
+        Route::get('/', [ActivityLogsController::class, 'index']);
+        Route::get('/{activityLog}', [ActivityLogsController::class, 'show']);
+        Route::post('/', [ActivityLogsController::class, 'store']);
+        Route::delete('/', [ActivityLogsController::class, 'destroy']);
+    });
+
+
     /**
       * Author
       */
