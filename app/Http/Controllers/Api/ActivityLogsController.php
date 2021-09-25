@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ActivityLog\DestroyRequest;
-use App\Http\Requests\ActivityLog\StoreRequest;
+use App\Http\Requests\ActivityLog\StoreUpdateRequest;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
@@ -31,10 +31,10 @@ class ActivityLogsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\ActivityLog\StoreRequest  $request
+     * @param  App\Http\Requests\ActivityLog\StoreUpdateRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreUpdateRequest $request)
     {
         ActivityLog::create([
             'type' => 'Create',
@@ -46,6 +46,21 @@ class ActivityLogsController extends Controller
         return $this->success(null, 'Activity Log created successfully.');
     }
 
+
+    /**
+     * Update specified resource in storage.
+     *
+     * @param  App\Http\Requests\ActivityLog\StoreUpdateRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(StoreUpdateRequest $request, ActivityLog $activityLog)
+    {
+        $activityLog->update([
+            'description' => $request->description
+        ]);
+
+        return $this->success(null, 'Activity Log updated successfully.');
+    }
 
     /**
      * Display the specified resource.
