@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers\Api\AccessRight;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\AccessRight\AssignRoleToUsersRequest;
-use App\Http\Requests\AccessRight\DestroyRequest;
-use App\Http\Requests\AccessRight\StoreRequest;
-use App\Http\Requests\AccessRight\UpdateRequest;
-use App\Traits\AccessRight\AccessRightServices;
 use App\Traits\Api\ApiResponser;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use App\Traits\ActivityLogsServices;
+use Spatie\Permission\Models\Permission;
+use App\Http\Requests\AccessRight\StoreRequest;
+use App\Traits\AccessRight\AccessRightServices;
+use App\Http\Requests\AccessRight\UpdateRequest;
+use App\Http\Requests\AccessRight\DestroyRequest;
+use App\Http\Requests\AccessRight\AssignRoleToUsersRequest;
 
 class AccessRightsController extends Controller
 {
-    use ApiResponser, AccessRightServices;
+    use ApiResponser, AccessRightServices, ActivityLogsServices;
 
     public function __construct()
     {
@@ -29,9 +31,11 @@ class AccessRightsController extends Controller
      */
     public function assign(AssignRoleToUsersRequest $request, Role $role)
     {
-        $this->assignRole($role, $request->user_ids);
+        $result = $this->assignRole($role, $request->user_ids);
 
-        return $this->success(null, 'Role assigned successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Role assigned successfully.');
     }
 
 
@@ -75,12 +79,14 @@ class AccessRightsController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->createAccessRight(
+        $result = $this->createAccessRight(
             $request->role,
             $request->permissions
         );
 
-        return $this->success(null, 'Access Right created successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Access Right created successfully.');
     }
 
     /**
@@ -108,13 +114,15 @@ class AccessRightsController extends Controller
      */
     public function update(UpdateRequest $request, Role $role)
     {
-        $this->updateAccessRight(
+        $result = $this->updateAccessRight(
             $role,
             $request->role,
             $request->permissions
         );
 
-        return $this->success(null, 'Role updated successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Role updated successfully.');
     }
 
     /**
@@ -125,7 +133,16 @@ class AccessRightsController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        Role::whereIn('id', $request->ids)->delete();
+        try {
+            DB::transaction(function ($request) 
+            {
+                Role::whereIn('id', $request->ids)->delete();    
+
+                $this->createLog("Delete", Role::class);
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Role\s deleted successfully.');
     }

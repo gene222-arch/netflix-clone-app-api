@@ -2,11 +2,13 @@
 
 namespace App\Traits\AccessRight;
 
+use App\Traits\ActivityLogsServices;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 trait AccessRightServices
 {
+    use ActivityLogsServices;
 
     public function assignRole(Role $role, array $userIds)
     {
@@ -20,6 +22,12 @@ trait AccessRightServices
                 }
 
                 $role->users()->attach($userIds);
+
+                $this->createLog(
+                    "Assign",
+                    Role::class,
+                    "http://localhost:3000/access-rights/$role->id/update"
+                );
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -54,6 +62,12 @@ trait AccessRightServices
                         ]
                     )
                 );
+
+                $this->createLog(
+                    "Create",
+                    Role::class,
+                    "http://localhost:3000/access-rights/$role->id/update"
+                );
             });
 
             return true;
@@ -79,13 +93,19 @@ trait AccessRightServices
                 $previousRole->update([ 'name' => $roleName ]);
 
                 $previousRole->syncPermissions($permissions);
-            });
 
-            return true;
+                $this->createLog(
+                    "Update",
+                    Role::class,
+                    "http://localhost:3000/access-rights/$previousRole->id/update"
+                );
+            });
 
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
+
+        return true;
     }
 
 }
