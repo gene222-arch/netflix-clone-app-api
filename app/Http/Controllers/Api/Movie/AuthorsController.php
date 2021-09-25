@@ -44,15 +44,19 @@ class AuthorsController extends Controller
      */
     public function store(Request $request)
     {
-        DB::transaction(function () use ($request) 
-        {
-            $id = Author::create($request->validated())->id;
-            $this->createLog(
-                'Create',
-                Author::class,
-                "http://localhost:3000/video-management/authors/$id/update-author"
-            );
-        });
+        try {
+            DB::transaction(function () use ($request) 
+            {
+                $id = Author::create($request->validated())->id;
+                $this->createLog(
+                    'Create',
+                    Author::class,
+                    "http://localhost:3000/video-management/authors/$id/update-author"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
 
         return $this->success(null, 'Author created successfully.');
     }
@@ -79,15 +83,19 @@ class AuthorsController extends Controller
      */
     public function update(Request $request, Author $author)
     {
-        DB::transaction(function () use ($request, $author) 
-        {
-            $author->update($request->validated());
-            $this->createLog(
-                'Update',
-                Author::class,
-                "http://localhost:3000/video-management/authors/$author->id/update-author"
-            );
-        });
+        try {
+            DB::transaction(function () use ($request, $author) 
+            {
+                $author->update($request->validated());
+                $this->createLog(
+                    'Update',
+                    Author::class,
+                    "http://localhost:3000/video-management/authors/$author->id/update-author"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Author updated successfully.');
     }
@@ -100,15 +108,19 @@ class AuthorsController extends Controller
      */
     public function updateEnabledStatus(Author $author)
     {
-        DB::transaction(function () use ($author) 
-        {
-            $author->update([ 'enabled' => !$author->enabled ]);
-            $this->createLog(
-                "Update",
-                Author::class,
-                "http://localhost:3000/video-management/authors/$author->id/update-author"
-            );
-        });
+        try {
+            DB::transaction(function () use ($author) 
+            {
+                $author->update([ 'enabled' => !$author->enabled ]);
+                $this->createLog(
+                    "Update",
+                    Author::class,
+                    "http://localhost:3000/video-management/authors/$author->id/update-author"
+                );
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
         
         return $this->success(null, 'Updated enabled successfully.');
     }
@@ -139,11 +151,15 @@ class AuthorsController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        DB::transaction(function () use ($request) 
-        {
-            Author::whereIn('id', $request->ids)->delete();
-            $this->createLog("Delete", Author::class);
-        });
+        try {
+            DB::transaction(function () use ($request) 
+            {
+                Author::whereIn('id', $request->ids)->delete();
+                $this->createLog("Delete", Author::class);
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Author/s deleted successfully.');
     }
