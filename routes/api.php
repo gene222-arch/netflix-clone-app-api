@@ -109,7 +109,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/', [ActivityLogsController::class, 'index']);
         Route::get('/{activityLog}', [ActivityLogsController::class, 'show']);
         Route::post('/', [ActivityLogsController::class, 'store']);
-        Route::put('/', [ActivityLogsController::class, 'update']);
+        Route::put('/{activityLog}', [ActivityLogsController::class, 'update']);
         Route::delete('/', [ActivityLogsController::class, 'destroy']);
     });
 

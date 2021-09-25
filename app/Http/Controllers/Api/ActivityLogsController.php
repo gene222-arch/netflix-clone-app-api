@@ -69,7 +69,7 @@ class ActivityLogsController extends Controller
      */
     public function show(ActivityLog $activityLog)
     {
-        return $this->success($activityLog);
+        return $this->success($activityLog->with('createdBy')->find($activityLog->id));
     }
 
 
@@ -81,7 +81,7 @@ class ActivityLogsController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        ActivityLog::findMany($request->ids)->delete();
+        ActivityLog::whereIn('id', $request->ids)->delete();
 
         return $this->success(null, 'Activity Log/s deleted successfully.');
     }
