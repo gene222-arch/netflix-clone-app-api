@@ -37,8 +37,8 @@ class ActivityLogsController extends Controller
     public function store(StoreUpdateRequest $request)
     {
         ActivityLog::create([
-            'type' => 'Create',
-            'model_type' => ActivityLog::class,
+            'type' => $request->type,
+            'model_type' => 'App\\Models\\' . $request->model_type,
             'description' => $request->description
         ]);
 
@@ -56,6 +56,7 @@ class ActivityLogsController extends Controller
     {
         $activityLog->update([
             'type' => $request->type,
+            'model_type' => 'App\\Models\\' . $request->model_type,
             'description' => $request->description
         ]);
 

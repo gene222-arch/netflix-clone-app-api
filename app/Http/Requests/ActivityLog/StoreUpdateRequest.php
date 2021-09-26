@@ -15,6 +15,7 @@ class StoreUpdateRequest extends BaseRequest
     {
         return [
             'type' => ['required', 'string', 'in:Update,Delete,Create'],
+            'model_type' => ['required', 'string', 'in:Author,Cast,Create,Director,Genre,Movie,ComingSoonMovie,Trailer'],
             'url_view_path' => ['nullable', 'string', 'url'],
             'description' => ['nullable', 'string', 'min:12']
         ];
