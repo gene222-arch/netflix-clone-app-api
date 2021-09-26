@@ -52,7 +52,7 @@ class GenresController extends Controller
                 $this->createLog(
                     'Create',
                     Genre::class,
-                    "http://localhost:3000/video-management/genres/$id/update-genre"
+                    "video-management/genres/$id/update-genre"
                 );
             });
         } catch (\Throwable $th) {
@@ -91,7 +91,7 @@ class GenresController extends Controller
                 $this->createLog(
                     'Update',
                     Genre::class,
-                    "http://localhost:3000/video-management/genres/$genre->id/update-genre"
+                    "video-management/genres/$genre->id/update-genre"
                 );
             });
         } catch (\Throwable $th) {
@@ -117,7 +117,7 @@ class GenresController extends Controller
                 $this->createLog(
                     "Update",
                     Genre::class,
-                    "http://localhost:3000/video-management/genres/$genre->id/update-genre"
+                    "video-management/genres/$genre->id/update-genre"
                 );
             });
         } catch (\Throwable $th) {

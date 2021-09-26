@@ -14,6 +14,7 @@ class StoreUpdateRequest extends BaseRequest
     public function rules()
     {
         return [
+            'type' => ['required', 'string', 'in:Update,Delete,Create'],
             'url_view_path' => ['nullable', 'string', 'url'],
             'description' => ['nullable', 'string', 'min:12']
         ];

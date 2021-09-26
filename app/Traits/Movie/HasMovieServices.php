@@ -296,7 +296,7 @@ trait HasMovieServices
                 $this->createLog(
                     'Create',
                     Movie::class,
-                    "http://localhost:3000/video-management/movies/$movie->id/update-movie"
+                    "video-management/movies/$movie->id/update-movie"
                 );
             });
         } catch (\Throwable $th) {
@@ -337,7 +337,7 @@ trait HasMovieServices
                 $this->createLog(
                     'Update',
                     Movie::class,
-                    "http://localhost:3000/video-management/movies/$movie->id/update-movie"
+                    "video-management/movies/$movie->id/update-movie"
                 );
             });
         } catch (\Throwable $th) {

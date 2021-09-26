@@ -55,6 +55,7 @@ class ActivityLogsController extends Controller
     public function update(StoreUpdateRequest $request, ActivityLog $activityLog)
     {
         $activityLog->update([
+            'type' => $request->type,
             'description' => $request->description
         ]);
 

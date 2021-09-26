@@ -76,7 +76,7 @@ trait HasComingSoonMovieServices
                 $this->createLog(
                     'Create',
                     ComingSoonMovie::class,
-                    "http://localhost:3000/video-management/coming-soon-movies/$comingSoonMovie->id"
+                    "video-management/coming-soon-movies/$comingSoonMovie->id"
                 );
             });
         } catch (\Throwable $th) {
@@ -114,7 +114,7 @@ trait HasComingSoonMovieServices
                 $this->createLog(
                     'Update',
                     ComingSoonMovie::class,
-                    "http://localhost:3000/video-management/coming-soon-movies/$comingSoonMovie->id"
+                    "video-management/coming-soon-movies/$comingSoonMovie->id"
                 );
             });
         } catch (\Throwable $th) {
@@ -135,7 +135,7 @@ trait HasComingSoonMovieServices
                 $this->createLog(
                     'Create',
                     Trailer::class,
-                    "http://localhost:3000/video-management/coming-soon-movies/$comingSoonMovie->id/trailers/$id"
+                    "video-management/coming-soon-movies/$comingSoonMovie->id/trailers/$id"
                 );
             });
         } catch (\Throwable $th) {
@@ -159,7 +159,7 @@ trait HasComingSoonMovieServices
                 $this->createLog(
                     'Update',
                     Trailer::class,
-                    "http://localhost:3000/video-management/coming-soon-movies/$comingSoonMovie->id/trailers/$trailerId"
+                    "video-management/coming-soon-movies/$comingSoonMovie->id/trailers/$trailerId"
                 );
             });
         } catch (\Throwable $th) {
@@ -216,7 +216,7 @@ trait HasComingSoonMovieServices
                 $this->createLog(
                     'Update',
                     ComingSoonMovie::class,
-                    "http://localhost:3000/video-management/coming-soon-movies/$comingSoonMovie->id"
+                    "video-management/coming-soon-movies/$comingSoonMovie->id"
                 );
             });
         } catch (\Throwable $th) {

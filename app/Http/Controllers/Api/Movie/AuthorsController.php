@@ -51,7 +51,7 @@ class AuthorsController extends Controller
                 $this->createLog(
                     'Create',
                     Author::class,
-                    "http://localhost:3000/video-management/authors/$id/update-author"
+                    "video-management/authors/$id/update-author"
                 );
             });
         } catch (\Throwable $th) {
@@ -90,7 +90,7 @@ class AuthorsController extends Controller
                 $this->createLog(
                     'Update',
                     Author::class,
-                    "http://localhost:3000/video-management/authors/$author->id/update-author"
+                    "video-management/authors/$author->id/update-author"
                 );
             });
         } catch (\Throwable $th) {
@@ -115,7 +115,7 @@ class AuthorsController extends Controller
                 $this->createLog(
                     "Update",
                     Author::class,
-                    "http://localhost:3000/video-management/authors/$author->id/update-author"
+                    "video-management/authors/$author->id/update-author"
                 );
             });
         } catch (\Throwable $th) {

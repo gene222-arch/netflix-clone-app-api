@@ -52,7 +52,7 @@ class DirectorsController extends Controller
                 $this->createLog(
                     'Create',
                     Director::class,
-                    "http://localhost:3000/video-management/directors/$id/update-director"
+                    "video-management/directors/$id/update-director"
                 );
             });
         } catch (\Throwable $th) {
@@ -92,7 +92,7 @@ class DirectorsController extends Controller
                 $this->createLog(
                     'Update',
                     Director::class,
-                    "http://localhost:3000/video-management/directors/$director->id/update-director"
+                    "video-management/directors/$director->id/update-director"
                 );
             });
         } catch (\Throwable $th) {
@@ -139,7 +139,7 @@ class DirectorsController extends Controller
                 $this->createLog(
                     "Update",
                     Director::class,
-                    "http://localhost:3000/video-management/directors/$director->id/update-director"
+                    "video-management/directors/$director->id/update-director"
                 );
             });
         } catch (\Throwable $th) {

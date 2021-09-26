@@ -53,7 +53,7 @@ class CastsController extends Controller
                 $this->createLog(
                     "Create",
                     Cast::class,
-                    "http://localhost:3000/video-management/casts/$id/update-cast"
+                    "video-management/casts/$id/update-cast"
                 );
             });
         } catch (\Throwable $th) {
@@ -92,7 +92,7 @@ class CastsController extends Controller
                 $this->createLog(
                     "Update",
                     Cast::class,
-                    "http://localhost:3000/video-management/casts/$cast->id/update-cast"
+                    "video-management/casts/$cast->id/update-cast"
                 );
             });
         } catch (\Throwable $th) {
@@ -117,7 +117,7 @@ class CastsController extends Controller
                 $this->createLog(
                     "Update",
                     Cast::class,
-                    "http://localhost:3000/video-management/casts/$cast->id/update-cast"
+                    "video-management/casts/$cast->id/update-cast"
                 );
             });
         } catch (\Throwable $th) {
