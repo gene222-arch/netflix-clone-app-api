@@ -20,7 +20,7 @@ class ActivityLogsController extends Controller
      */
     public function index()
     {
-        $result = ActivityLog::with('createdBy')->get();
+        $result = ActivityLog::with('createdBy')->latest('executed_at')->get();
 
         return !$result
             ? $this->noContent()
@@ -57,7 +57,8 @@ class ActivityLogsController extends Controller
         $activityLog->update([
             'type' => $request->type,
             'model_type' => 'App\\Models\\' . $request->model_type,
-            'description' => $request->description
+            'description' => $request->description,
+            'executed_at' => now()
         ]);
 
         return $this->success(null, 'Activity Log updated successfully.');
