@@ -29,7 +29,8 @@ class RegisterRequest extends BaseRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'allow_access_to_location' => ['required', 'boolean'],
-            'avatar_path' => ['required', 'string']
+            'avatar_path' => ['required', 'string'],
+            'role' => ['required', 'string', 'exists:roles,name']
         ];
     }
 }

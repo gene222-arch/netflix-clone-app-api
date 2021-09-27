@@ -48,9 +48,10 @@ class RegisterController extends Controller
 
 
     /**
-     * Create's a user with the attempt to log in 
+     * Create's a user 
      *
-     * @param RegisterRequest $request
+     * @param  RegisterRequest  $request
+     * @param  App\Models\User  $user
      * @return Illuminate\Http\JsonResponse
      */
     public function register(RegisterRequest $request, User $user)
@@ -66,27 +67,31 @@ class RegisterController extends Controller
                     'avatar_path' => $request->avatar_path
                 ];
 
-                $user->query()->create($userDetails)->sendEmailVerificationNotification();
+                $user = $user->query()->create($userDetails);
+                $user->sendEmailVerificationNotification();
+                $user->assignRole($request->role);
 
                 /** Save user location if access is allowed */
                 if ( $request->allow_access_to_location && $address = Location::get($request->ip()) ) 
                 {
                     $userAddressDetails = [
-                        'country' => $address['country'],
-                        'country_code' => $address['countryCode'],
-                        'region_code' => $address['regionCode'],
-                        'region_name' => $address['regionName'],
-                        'city_name' => $address['cityName'],
-                        'zip_code' => $address['zipCode'],
-                        'area_code' => $address['areaCode']
+                        'user_id' => $user->id,
+                        'country' => $address->countryName,
+                        'country_code' => $address->countryCode,
+                        'region_code' => $address->regionCode,
+                        'region_name' => $address->regionName,
+                        'city_name' => $address->cityName,
+                        'zip_code' => $address->zipCode,
+                        'area_code' => $address->areaCode
                     ];
 
                     $user->address()->create($userAddressDetails);
                 }
-        
-                if (! Auth::attempt($request->only('email', 'password'))) {
-                    return $this->error('Credentials mismatch', 401);
+
+                if (! Auth::attempt($request->safe(['email', 'password']))) {
+                    return $this->error('Login Failed!');
                 }
+
             });
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());
