@@ -143,10 +143,9 @@ trait DashboardServices
 
     private static function monthlySubscribersPerYear(int $year): array 
     {
-        $query = DB::select('SELECT 
-                COUNT(users.id) AS subscribers,
-                MONTH(users.created_at) - 1 as month_number,
-                MONTHNAME(users.created_at) as month_name
+        $monthlySubscribers = DB::select('SELECT 
+                COUNT(users.id) AS subscribers_count,
+                MONTH(users.created_at) - 1 as month_number
             FROM 
                 users
             INNER JOIN 
@@ -167,6 +166,12 @@ trait DashboardServices
             'filterYear' => $year
         ]);
 
-        return $query;
+        $toArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+        foreach ($monthlySubscribers as $monthlySubscriber) {
+            $toArray[$monthlySubscriber->month_number] = $monthlySubscriber->subscribers_count;
+        }
+
+        return $toArray;
     }
 }
