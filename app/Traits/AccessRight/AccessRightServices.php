@@ -26,7 +26,7 @@ trait AccessRightServices
                 $this->createLog(
                     "Assign",
                     Role::class,
-                    "http://localhost:3000/access-rights/$role->id/update"
+                    "access-rights/$role->id/update"
                 );
             });
         } catch (\Throwable $th) {
@@ -68,7 +68,7 @@ trait AccessRightServices
                 $this->createLog(
                     "Create",
                     Role::class,
-                    "http://localhost:3000/access-rights/$role->id/update"
+                    "access-rights/$role->id/update"
                 );
             });
 
@@ -99,7 +99,7 @@ trait AccessRightServices
                 $this->createLog(
                     "Update",
                     Role::class,
-                    "http://localhost:3000/access-rights/$previousRole->id/update"
+                    "access-rights/$previousRole->id/update"
                 );
             });
 
