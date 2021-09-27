@@ -28,7 +28,11 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::all()->except(1);
+        $users = User::withCount('roles')
+            ->whereHas('roles', fn($q) => $q->where('name', '!=', 'Subscriber'))
+            ->having('roles_count', 0)
+            ->get()
+            ->except(1);
 
         return !$users->count()
             ? $this->noContent()
