@@ -77,14 +77,9 @@ class User extends Authenticatable implements MustVerifyEmail
                 return $activeAt === $currentDate;
             });
 
-        if ($this->isSubscriber() && !$dateExist->count()) {
+        if ($this->hasRole('Subscriber') && !$dateExist->count()) {
             $this->subscriberActiveLogs()->create();
         }
-    }
-
-    public function isSubscriber(): bool
-    {
-        return $this->roles()->first()->name === 'Subscriber';
     }
 
     public function markedAsInActive()
