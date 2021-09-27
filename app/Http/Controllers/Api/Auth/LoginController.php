@@ -46,48 +46,41 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        try {
-            DB::transaction(function () use($request) 
-            {
-                $withRoles = (bool) $request->input('withRoles', false);
-                $withPermissions = (bool) $request->input('withPermissions', false);
-        
-                if (! Auth::attempt($request->validated())) {
-                    return $this->error('Login Failed! Your email or password is incorrect');
-                }
-        
-                $auth = Auth::user();
-                $auth->markedAsActive();
-        
-                $role = '';
-        
-                $data = [
-                    'user' => $auth->withoutRelations(),
-                    'profiles' => $auth->profiles
-                ];
-        
-                if ($withRoles) 
-                {
-                    $role = $auth->roles->first()?->withoutRelations()->name;
-        
-                    $data = $data + [
-                        'role' => $role
-                    ];
-                }
-        
-                if ($withPermissions && $role !== 'Subscriber') {
-                    $data = $data + [
-                        'permissions' => $this->authPermissionViaRoles($auth)
-                    ];
-                }
-        
-                $data = ( $withPermissions && $role !== 'Subscriber' ) 
-                    ? $data + [ 'permissions' => $this->authPermissionViaRoles($auth) ]
-                    : $data + [ 'permissions' => [] ];
-            });
-        } catch (\Throwable $th) {
-            //throw $th;
+        $withRoles = (bool) $request->input('withRoles', false);
+        $withPermissions = (bool) $request->input('withPermissions', false);
+
+        if (! Auth::attempt($request->validated())) {
+            return $this->error('Login Failed! Your email or password is incorrect');
         }
+
+        $auth = Auth::user();
+        $auth->markedAsActive();
+
+        $role = '';
+
+        $data = [
+            'user' => $auth->withoutRelations(),
+            'profiles' => $auth->profiles
+        ];
+
+        if ($withRoles) 
+        {
+            $role = $auth->roles->first()?->withoutRelations()->name;
+
+            $data = $data + [
+                'role' => $role
+            ];
+        }
+
+        if ($withPermissions && $role !== 'Subscriber') {
+            $data = $data + [
+                'permissions' => $this->authPermissionViaRoles($auth)
+            ];
+        }
+
+        $data = ( $withPermissions && $role !== 'Subscriber' ) 
+            ? $data + [ 'permissions' => $this->authPermissionViaRoles($auth) ]
+            : $data + [ 'permissions' => [] ];
 
         return $this->token(
             $this->getPersonalAccessToken($request),

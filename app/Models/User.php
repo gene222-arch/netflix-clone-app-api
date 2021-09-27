@@ -14,6 +14,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Notifications\EmailVerificationNotification;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -66,7 +67,24 @@ class User extends Authenticatable implements MustVerifyEmail
             'is_active' => true
         ]);
 
-        $this->subscriberActiveLogs()->create();
+        $dateExist = $this
+            ->subscriberActiveLogs
+            ->filter(function($subs) 
+            {
+                $activeAt = Carbon::parse($subs->active_at)->format('M/d/Y');
+                $currentDate = Carbon::parse(Carbon::now())->format('M/d/Y');
+
+                return $activeAt === $currentDate;
+            });
+
+        if ($this->isSubscriber() && !$dateExist->count()) {
+            $this->subscriberActiveLogs()->create();
+        }
+    }
+
+    public function isSubscriber(): bool
+    {
+        return $this->roles()->first()->name === 'Subscriber';
     }
 
     public function markedAsInActive()
