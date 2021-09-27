@@ -12,4 +12,15 @@ class SubscriberActiveLogs extends Model
     protected $fillable = [
         'user_id'
     ];
+
+    public $timestamps = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($activeLog) {
+            $activeLog->user_id = auth('api')->id();
+        });
+    }
 }
