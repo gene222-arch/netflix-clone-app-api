@@ -14,13 +14,4 @@ class SubscriberActiveLogs extends Model
     ];
 
     public $timestamps = false;
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($activeLog) {
-            $activeLog->user_id = auth('api')->id();
-        });
-    }
 }

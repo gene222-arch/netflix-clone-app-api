@@ -65,6 +65,8 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->update([
             'is_active' => true
         ]);
+
+        $this->subscriberActiveLogs()->create();
     }
 
     public function markedAsInActive()
@@ -72,6 +74,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->update([
             'is_active' => false
         ]);
+    }
+
+    public function subscriberActiveLogs()
+    {
+        return $this->hasMany(SubscriberActiveLogs::class, 'user_id');
     }
 
     /**
