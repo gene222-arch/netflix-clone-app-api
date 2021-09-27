@@ -11,7 +11,7 @@ trait DashboardServices
     public function dashboard(int $year): array
     {
         return [
-            'monthlySubscribersPerYear' => self::monthlySubscribersPerYear($year),
+            'monthly_subscribers_per_year' => self::monthlySubscribersPerYear($year),
             'general_analytics' => self::generalAnalytics(),
             'top_five_most_rated_movies' => self::getTopFiveMostRatedMovies(),
             'top_five_most_liked_movies' => self::getTopFiveMostLikedMovies()
