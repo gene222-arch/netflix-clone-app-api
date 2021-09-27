@@ -32,6 +32,8 @@ trait AccessRightServices
         } catch (\Throwable $th) {
             return $th->getMessage();
         }
+
+        return true;
     }
     
 
