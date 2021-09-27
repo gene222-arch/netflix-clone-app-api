@@ -43,6 +43,24 @@ trait DashboardServices
                         COUNT(*)  
                     FROM
                         users
+                    INNER JOIN 
+                        model_has_roles
+                    ON 
+                        model_has_roles.model_id = users.id
+                    INNER JOIN 
+                        roles 
+                    ON 
+                        roles.id = model_has_roles.role_id
+                    WHERE 
+                        is_active = 1
+                    AND 
+                        roles.name = "Subscriber"
+                ) AS total_active_subscribers,
+                (
+                    SELECT
+                        COUNT(*)  
+                    FROM
+                        users
                     LEFT JOIN 
                         model_has_roles
                     ON 
