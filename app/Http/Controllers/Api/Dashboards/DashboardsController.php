@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Dashboards;
 use App\Http\Controllers\Controller;
 use App\Traits\Api\ApiResponser;
 use App\Traits\Dashboards\DashboardServices;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardsController extends Controller
@@ -26,6 +27,8 @@ class DashboardsController extends Controller
     {
         setSqlModeEmpty();
 
-        return $this->success($this->dashboard(), 'Dashboard data fetched successfully.');
+        $filterYear = (int) $request->input('year', Carbon::parse(now())->format('Y'));
+
+        return $this->success($this->dashboard($filterYear), 'Dashboard data fetched successfully.');
     }
 }
