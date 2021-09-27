@@ -53,6 +53,8 @@ class LoginController extends Controller
         }
 
         $auth = Auth::user();
+        $auth->markedAsActive();
+
         $role = '';
 
         $data = [
@@ -94,7 +96,10 @@ class LoginController extends Controller
      */
     public function logout()
     {
-        request()->user('api')->token()->revoke();
+        $user = request()->user('api');
+
+        $user->token()->revoke();
+        $user->markedAsInActive();
 
         return $this->success([], 'User logged out successfully.');
     }

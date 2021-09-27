@@ -33,7 +33,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_name',
         'email',
         'password',
-        'avatar_path'
+        'avatar_path',
+        'is_active'
     ];
 
     /**
@@ -58,6 +59,20 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function markedAsActive()
+    {
+        $this->update([
+            'is_active' => true
+        ]);
+    }
+
+    public function markedAsInActive()
+    {
+        $this->update([
+            'is_active' => false
+        ]);
+    }
 
     /**
      * Dispatch a password reset notification
