@@ -39,6 +39,6 @@ class EmailVerificationNotification extends VerifyEmail implements ShouldQueue
             ]
         );
 
-        return str_replace('8000/api', '3000/auth', $url);
+        return str_replace('192.168.1.10:8000/api', 'localhost:3000/auth', $url);
     }
 }
