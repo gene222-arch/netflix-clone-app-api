@@ -40,4 +40,13 @@ class Subscription extends Model
         });
     }
 
+    public function scopeIsExpired($query)
+    {
+        $expiredAt = $query->where('is_expired', false)->first()->expired_at;
+        $today = Carbon::now();
+
+        if (! ($today === $expiredAt || $expiredAt < $today)) return false;
+
+        return $query->update(['is_expired' => true]);
+    }
 }
