@@ -9,7 +9,7 @@ use Tests\TestCase;
 class DashboardsControllerTest extends TestCase
 {
 
-    /** zztest */
+    /** test */
     public function user_can_view_any_dashboard_data()
     {
         $response = $this->get(

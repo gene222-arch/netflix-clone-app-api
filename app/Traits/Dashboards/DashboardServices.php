@@ -12,6 +12,7 @@ trait DashboardServices
     {
         return [
             'monthly_subscribers_per_year' => self::monthlySubscribersPerYear($year),
+            'monthly_active_subscribers' => self::monthlyActiveSubscribers($year),
             'general_analytics' => self::generalAnalytics(),
             'top_five_most_rated_movies' => self::getTopFiveMostRatedMovies(),
             'top_five_most_liked_movies' => self::getTopFiveMostLikedMovies()
@@ -173,5 +174,30 @@ trait DashboardServices
         }
 
         return $toArray;
+    }
+
+    private static function monthlyActiveSubscribers(int $year): array 
+    {
+        $monthlySubscribers = DB::select('SELECT 
+                COUNT(*) AS active_subscribers,
+                MONTH(active_at) - 1 AS month_number
+            FROM 
+                subscriber_active_logs
+            WHERE 
+                YEAR(active_at) = :filterYear
+            GROUP BY 
+                MONTH(active_at) - 1
+        ', 
+        [
+            'filterYear' => $year
+        ]);
+
+        $data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+        foreach ($monthlySubscribers as $monthlySubscriber) {
+            $data[$monthlySubscriber->month_number] = $monthlySubscriber->active_subscribers;
+        }
+
+        return $data;
     }
 }
