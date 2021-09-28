@@ -65,7 +65,7 @@ class SubscriptionsController extends Controller
     {
         auth('api')
             ->user()
-            ->subscriptions
+            ->subscriptions()
             ->where('is_expired', false)
             ->update([
                 'is_cancelled' => true,
