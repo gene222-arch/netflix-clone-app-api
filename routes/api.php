@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\Movie\MyListsController;
 use App\Http\Controllers\Api\Movie\RecentlyWatchedMoviesController;
 use App\Http\Controllers\Api\Movie\RemindMesController;
 use App\Http\Controllers\Api\Movie\UserRatingsController;
+use App\Http\Controllers\Api\SubscriptionsController;
 use App\Http\Controllers\Api\User\UserProfilesController;
 use App\Http\Controllers\Api\User\UsersController;
 
@@ -246,6 +247,19 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::delete('/', [RecentlyWatchedMoviesController::class, 'destroy']);
         Route::delete('/clear', [RecentlyWatchedMoviesController::class, 'destroy']);
     });
+
+    /**
+      * Subscriptions
+      */
+      Route::prefix('subscriptions')->group(function () 
+      {
+          Route::get('/', [SubscriptionsController::class, 'index']);
+          Route::get('/{subscription}', [SubscriptionsController::class, 'show']);
+          Route::post('/', [SubscriptionsController::class, 'store']);
+          Route::put('/{subscription}/cancel', [SubscriptionsController::class, 'cancel']);
+          Route::put('/{subscription}', [SubscriptionsController::class, 'update']);
+          Route::delete('/', [SubscriptionsController::class, 'destroy']);
+      });
 
     /**
      * User Profile
