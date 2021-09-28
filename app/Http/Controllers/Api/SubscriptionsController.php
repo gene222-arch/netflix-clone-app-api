@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
+use App\Traits\SubscriptionServices;
 use App\Http\Requests\Subscription\DestroyRequest;
 use App\Http\Requests\Subscription\UpdateOrStoreRequest;
-use App\Traits\SubscriptionServices;
 
 class SubscriptionsController extends Controller
 {
@@ -52,6 +53,26 @@ class SubscriptionsController extends Controller
     public function show(Subscription $subscription)
     {
         return $this->success($subscription);
+    }
+
+
+    /**
+     * Cancel a specific subscription in storage.
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cancel()
+    {
+        auth('api')
+            ->user()
+            ->subscriptions
+            ->where('is_expired', false)
+            ->update([
+                'is_cancelled' => true,
+                'cancelled_at' => Carbon::now()
+            ]);
+
+        return $this->success(null, 'Subscription cancelled successfully.');
     }
 
 

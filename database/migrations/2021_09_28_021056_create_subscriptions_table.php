@@ -19,9 +19,11 @@ class CreateSubscriptionsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->char('type', 8)->index();
             $table->boolean('is_first_subscription')->default(false);
+            $table->boolean('is_cancelled')->default(false);
+            $table->boolean('is_expired')->default(false);
             $table->timestamp('subscribed_at')->default(Carbon::now());
             $table->timestamp('expired_at')->default(Carbon::now());
-            $table->timestamp('cancelled_at')->default(Carbon::now());
+            $table->timestamp('cancelled_at')->nullable();
         });
     }
 
