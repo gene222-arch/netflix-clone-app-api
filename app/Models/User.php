@@ -89,11 +89,6 @@ class User extends Authenticatable implements MustVerifyEmail
         ]);
     }
 
-    public function subscriberActiveLogs()
-    {
-        return $this->hasMany(SubscriberActiveLogs::class, 'user_id');
-    }
-
     /**
      * Dispatch a password reset notification
      * 
@@ -103,6 +98,16 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         dispatch(new QueuePasswordResetNotification($this, $token))
             ->delay(now()->addSeconds(10));
+    }
+
+    public function subscriberActiveLogs()
+    {
+        return $this->hasMany(SubscriberActiveLogs::class, 'user_id');
+    }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
     }
 
     public function getKey(): int
