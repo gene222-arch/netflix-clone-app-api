@@ -55,13 +55,18 @@ class LoginController extends Controller
 
         $auth = Auth::user();
         $auth->markedAsActive();
-
         $role = '';
 
         $data = [
             'user' => $auth->withoutRelations(),
             'profiles' => $auth->profiles
         ];
+
+        if ($auth->hasRole('Subscriber')) {
+            $data = $data + [
+                'is_subscription_expired' => $auth->subscriptions()->isExpired()
+            ];
+        }
 
         if ($withRoles) 
         {
