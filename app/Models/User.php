@@ -74,7 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 $activeAt = Carbon::parse($subs->active_at)->format('M/d/Y');
                 $currentDate = Carbon::parse(Carbon::now())->format('M/d/Y');
 
-                return $activeAt === $currentDate;
+                return ( $activeAt === $currentDate ) && ( $subs->user_id === $this->id );
             });
 
         if ($this->hasRole('Subscriber') && !$dateExist->count()) {

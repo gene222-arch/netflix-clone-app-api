@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,4 +15,13 @@ class SubscriberActiveLogs extends Model
     ];
 
     public $timestamps = false;
+
+    protected static function booted()
+    {
+        parent::boot();
+
+        static::creating(function ($log) {
+            $log->active_at = Carbon::now();
+        });
+    }
 }
