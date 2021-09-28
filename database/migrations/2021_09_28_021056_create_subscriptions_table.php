@@ -17,7 +17,8 @@ class CreateSubscriptionsTable extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->char('type', 8);
+            $table->char('type', 8)->index();
+            $table->boolean('is_first_subscription')->default(false);
             $table->timestamp('subscribed_at')->default(Carbon::now());
             $table->timestamp('expired_at')->default(Carbon::now());
             $table->timestamp('cancelled_at')->default(Carbon::now());
