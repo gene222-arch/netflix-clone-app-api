@@ -101,6 +101,8 @@ class SubscriptionsController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        return $this->success(null, 'Subscription deleted successfully.');
+        Subscription::whereIn('id', $request->ids)->delete();
+
+        return $this->success(null, 'Subscription/s deleted successfully.');
     }
 }
