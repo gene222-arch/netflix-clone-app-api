@@ -39,9 +39,4 @@ class Subscription extends Model
             }
         });
     }
-
-    public function subscribe(string $type)
-    {
-        return $this->query()->create([ 'type' => $type ]);
-    }
 }
