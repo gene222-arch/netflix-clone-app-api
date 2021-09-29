@@ -32,7 +32,16 @@ class UpdateRequest extends BaseRequest
             'wallpaper_path' => ['required', 'string'],
             'video_path' => ['required', 'string'],
             'title_logo_path' => ['required', 'string'],
-            'video_size_in_mb' => ['required', 'numeric']
+            'video_size_in_mb' => ['required', 'numeric'],
+            'similar_movie_ids.*' => ['nullable', 'distinct', 'integer', 'exists:movies,id']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'similar_movie_ids.*.nullable' => 'Similar movies is nullable',
+            'similar_movie_ids.*.exists' => 'A non existing movie is selected'
         ];
     }
 }

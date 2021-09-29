@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Movie\Movie\StoreRequest;
 use App\Http\Requests\Movie\Movie\UpdateRequest;
+use App\Models\SimilarMovie;
 use App\Traits\ActivityLogsServices;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -36,17 +37,12 @@ trait HasMovieServices
             $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids) 
             {
                 $query = Movie::query();
-            
+                
+                $query->with('similarMovies');
                 $query->select('*');
                 $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
     
-                return $query->latest()->get()->map(function($movie) 
-                {
-                    $currentMovie = $movie;
-                    $currentMovie->other_movies = [];
-
-                    return $currentMovie;
-                });
+                return $query->latest()->get();
             });
 
             return $result;
@@ -293,7 +289,15 @@ trait HasMovieServices
                 $movie->casts()->attach($castIDs);
                 $movie->directors()->attach($directorIDs);
                 $movie->genres()->attach($genreIDs);
-                $movie->similarMovies()->attach($similarMovieIds);
+                
+                if ($similarMovieIds) {
+                    $similarMovies = [];
+
+                    foreach ($similarMovieIds as $similarMovieId) {
+                        $similarMovies[] = new SimilarMovie([ 'similar_movie_id' => $similarMovieId ]);
+                    }
+                    $movie->similarMovies()->saveMany($similarMovies);
+                }
 
                 $this->createLog(
                     'Create',
@@ -322,21 +326,24 @@ trait HasMovieServices
                 $genreIDs = $request->genre_ids;
                 $similarMovieIds = $request->similar_movie_ids;
 
-                /** Delete a file only if it exist within the request */
-                $this->deleteFile($request, [
-                    'poster_path' => $movie->poster_path,
-                    'wallpaper_path' => $movie->wallpaper_path,
-                    'title_logo_path' => $movie->title_logo_path,
-                    'video_path' => $movie->video_path
-                ]);
-
                 /** Update */
                 $movie->update($movieData);
                 $movie->authors()->sync($authorIDs);
                 $movie->casts()->sync($castIDs);
                 $movie->directors()->sync($directorIDs);
                 $movie->genres()->sync($genreIDs);
-                $movie->similarMovies()->sync($similarMovieIds);
+                
+                if ($similarMovieIds) 
+                {
+                    $similarMovies = [];
+
+                    foreach ($similarMovieIds as $similarMovieId) {
+                        $similarMovies[] = new SimilarMovie([ 'similar_movie_id' => $similarMovieId ]);
+                    }
+
+                    $movie->similarMovies()->delete();
+                    $movie->similarMovies()->saveMany($similarMovies);
+                }
 
                 $this->createLog(
                     'Update',

@@ -30,7 +30,7 @@ class StoreRequest extends BaseRequest
             'director_ids.*' => ['required', 'integer', 'exists:directors,id'],
             'authors' => ['required', 'string'],
             'author_ids.*' => ['required', 'integer', 'exists:authors,id'],
-            'similar_movie_ids.*' => ['required', 'integer', 'exists:movies,id'],
+            'similar_movie_ids.*' => ['nullable', 'distinct', 'integer', 'exists:movies,id'],
             'poster_path' => ['required', 'string'],
             'wallpaper_path' => ['required', 'string'],
             'video_path' => ['required', 'string'],
@@ -42,8 +42,8 @@ class StoreRequest extends BaseRequest
     public function messages()
     {
         return [
-            'similar_movie_ids.required' => 'Similar movies is required',
-            'similar_movie_ids.exists' => 'A non existing movie is selected'
+            'similar_movie_ids.*.nullable' => 'Similar movies is nullable',
+            'similar_movie_ids.*.exists' => 'A non existing movie is selected'
         ];
     }
 }
