@@ -3,6 +3,7 @@
 namespace App\Traits\Movie;
 
 use Carbon\Carbon;
+use App\Models\Movie;
 use App\Models\Trailer;
 use App\Models\ComingSoonMovie;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateStatusRequest;
+use App\Events\ComingSoonMovieReleasedEvent;
 
 trait HasComingSoonMovieServices
 {
@@ -212,7 +214,7 @@ trait HasComingSoonMovieServices
                     $movie->directors()->attach($directorIds);
                     $movie->genres()->attach($genreIds);
 
-                    event(new ComingSoonMovieReleasedEvent($comingSoonMovie));
+                    event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
                 }
 
                 $this->createLog(
