@@ -286,12 +286,14 @@ trait HasMovieServices
                 $castIDs = $request->cast_ids;
                 $directorIDs = $request->director_ids;
                 $genreIDs = $request->genre_ids;
+                $similarMovieIds = $request->similar_movie_ids;
                 
                 $movie = Movie::create($movieData);
                 $movie->authors()->attach($authorIDs);
                 $movie->casts()->attach($castIDs);
                 $movie->directors()->attach($directorIDs);
                 $movie->genres()->attach($genreIDs);
+                $movie->similarMovies()->attach($similarMovieIds);
 
                 $this->createLog(
                     'Create',
@@ -318,6 +320,7 @@ trait HasMovieServices
                 $castIDs = $request->cast_ids;
                 $directorIDs = $request->director_ids;
                 $genreIDs = $request->genre_ids;
+                $similarMovieIds = $request->similar_movie_ids;
 
                 /** Delete a file only if it exist within the request */
                 $this->deleteFile($request, [
@@ -333,6 +336,7 @@ trait HasMovieServices
                 $movie->casts()->sync($castIDs);
                 $movie->directors()->sync($directorIDs);
                 $movie->genres()->sync($genreIDs);
+                $movie->similarMovies()->sync($similarMovieIds);
 
                 $this->createLog(
                     'Update',

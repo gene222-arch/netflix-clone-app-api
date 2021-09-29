@@ -30,11 +30,20 @@ class StoreRequest extends BaseRequest
             'director_ids.*' => ['required', 'integer', 'exists:directors,id'],
             'authors' => ['required', 'string'],
             'author_ids.*' => ['required', 'integer', 'exists:authors,id'],
+            'similar_movie_ids.*' => ['required', 'integer', 'exists:movies,id'],
             'poster_path' => ['required', 'string'],
             'wallpaper_path' => ['required', 'string'],
             'video_path' => ['required', 'string'],
             'title_logo_path' => ['required', 'string'],
             'video_size_in_mb' => ['required', 'numeric']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'similar_movie_ids.required' => 'Similar movies is required',
+            'similar_movie_ids.exists' => 'A non existing movie is selected'
         ];
     }
 }
