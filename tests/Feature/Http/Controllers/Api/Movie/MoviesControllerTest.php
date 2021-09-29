@@ -104,7 +104,8 @@ class MoviesControllerTest extends TestCase
             'wallpaper_path' => '',
             'video_path' => '',
             'title_logo_path' => '',
-            'video_size_in_mb' => 325
+            'video_size_in_mb' => 325,
+            'similar_movie_ids' => [123, 2]
         ];
         $response = $this->post(
             '/api/movies',
@@ -143,7 +144,8 @@ class MoviesControllerTest extends TestCase
             'wallpaper_path' => '',
             'video_path' => '',
             'title_logo_path' => '',
-            'video_size_in_mb' => 325
+            'video_size_in_mb' => 325,
+            'similar_movie_ids' => [123, 2]
         ];
 
         $response = $this->put(
