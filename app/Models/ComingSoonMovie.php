@@ -49,17 +49,9 @@ class ComingSoonMovie extends Model
             static::cacheToForget();
             event(new \App\Events\ComingSoonMovieCreatedEvent($comingSoonMovie));
         });
-
-        static::updating(function() {
-            static::cacheToForget();
-        });
-
-        static::deleting(function() {
-            static::cacheToForget();
-        });
     }
 
-    private static function cacheToForget() {
+    public static function cacheToForget() {
         Cache::forget('coming.soon.movies.index');
     }
 

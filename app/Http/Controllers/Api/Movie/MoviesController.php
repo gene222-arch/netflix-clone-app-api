@@ -140,8 +140,6 @@ class MoviesController extends Controller
     public function update(UpdateRequest $request, Movie $movie)
     {
         $result = $this->updateMovie($request, $movie);
-        
-        Movie::cacheToForget();
 
         return $result !== true 
             ? $this->error($result)

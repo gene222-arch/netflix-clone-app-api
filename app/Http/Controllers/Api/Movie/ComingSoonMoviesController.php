@@ -343,6 +343,10 @@ class ComingSoonMoviesController extends Controller
     {
         $result = $this->deleteManyTrailers($comingSoonMovie, $request->ids);
 
+        if ($result) {
+            ComingSoonMovie::cacheToForget();
+        }
+
         return $result !== true 
             ? $this->error($result)
             : $this->success(null, 'Trailer/s deleted successfully.');

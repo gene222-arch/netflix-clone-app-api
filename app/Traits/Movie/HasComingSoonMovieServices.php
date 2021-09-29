@@ -116,6 +116,8 @@ trait HasComingSoonMovieServices
                     ComingSoonMovie::class,
                     "video-management/coming-soon-movies/$comingSoonMovie->id"
                 );
+
+                ComingSoonMovie::cacheToForget();
             });
         } catch (\Throwable $th) {
             return $th->getMessage();

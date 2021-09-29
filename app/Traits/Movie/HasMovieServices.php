@@ -355,6 +355,8 @@ trait HasMovieServices
                     Movie::class,
                     "video-management/movies/$movie->id/update-movie"
                 );
+
+                Movie::cacheToForget();
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
