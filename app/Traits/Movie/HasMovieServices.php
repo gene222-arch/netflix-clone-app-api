@@ -332,17 +332,22 @@ trait HasMovieServices
                 $movie->casts()->sync($castIDs);
                 $movie->directors()->sync($directorIDs);
                 $movie->genres()->sync($genreIDs);
-                
-                if ($similarMovieIds) 
+
+                if (is_array($similarMovieIds)) 
                 {
-                    $similarMovies = [];
-
-                    foreach ($similarMovieIds as $similarMovieId) {
-                        $similarMovies[] = new SimilarMovie([ 'similar_movie_id' => $similarMovieId ]);
+                    if (! count($similarMovieIds)) {
+                        $movie->similarMovies()->delete();
                     }
+                    else {
+                        $similarMovies = [];
 
-                    $movie->similarMovies()->delete();
-                    $movie->similarMovies()->saveMany($similarMovies);
+                        foreach ($similarMovieIds as $similarMovieId) {
+                            $similarMovies[] = new SimilarMovie([ 'similar_movie_id' => $similarMovieId ]);
+                        }
+
+                        $movie->similarMovies()->delete();
+                        $movie->similarMovies()->saveMany($similarMovies);
+                    }
                 }
 
                 $this->createLog(

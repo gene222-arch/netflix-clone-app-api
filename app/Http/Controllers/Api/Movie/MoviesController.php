@@ -140,6 +140,8 @@ class MoviesController extends Controller
     public function update(UpdateRequest $request, Movie $movie)
     {
         $result = $this->updateMovie($request, $movie);
+        
+        Movie::cacheToForget();
 
         return $result !== true 
             ? $this->error($result)
@@ -307,6 +309,8 @@ class MoviesController extends Controller
                 Movie::whereIn('id', $request->ids)->delete();
 
                 $this->createLog('Delete', Movie::class);
+
+                Movie::cacheToForget();
             });
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());

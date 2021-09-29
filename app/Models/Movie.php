@@ -53,17 +53,9 @@ class Movie extends Model
             static::cacheToForget();
             event(new \App\Events\MovieCreatedEvent($movie));
         });
-
-        static::updating(function() {
-            static::cacheToForget();
-        });
-
-        static::deleting(function() {
-            static::cacheToForget();
-        });
     }
 
-    private static function cacheToForget()
+    public static function cacheToForget()
     {
         Cache::forget('movies.index');
         Cache::forget('movies.categorizedMovies');
