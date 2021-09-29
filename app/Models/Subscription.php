@@ -42,11 +42,14 @@ class Subscription extends Model
 
     public function scopeIsExpired($query)
     {
-        $expiredAt = $query->where('is_expired', false)->first()->expired_at;
+        $expiredAt = $query->where('is_expired', false)->first()?->expired_at;
+
+        if (! $expiredAt) return true;
+
         $today = Carbon::now();
 
         if (! ($today === $expiredAt || $expiredAt < $today)) return false;
 
-        return $query->update(['is_expired' => true]);
+        return boolval($query->update(['is_expired' => true]));
     }
 }
