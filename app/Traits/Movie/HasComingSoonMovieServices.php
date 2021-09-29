@@ -222,6 +222,8 @@ trait HasComingSoonMovieServices
                     ComingSoonMovie::class,
                     "video-management/coming-soon-movies/$comingSoonMovie->id"
                 );
+
+                ComingSoonMovie::cacheToForget();
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -239,6 +241,8 @@ trait HasComingSoonMovieServices
                 ComingSoonMovie::whereIn('id', $ids)->delete();
 
                 $this->createLog('Delete', ComingSoonMovie::class);
+
+                ComingSoonMovie::cacheToForget();
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
