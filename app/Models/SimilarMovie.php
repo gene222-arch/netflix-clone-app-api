@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Movie;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SimilarMovie extends Model
 {
@@ -18,6 +19,6 @@ class SimilarMovie extends Model
 
     public function movie()
     {
-        return $this->belongsTo(Movie::class)->select('title');
+        return $this->belongsTo(Movie::class, 'similar_movie_id');
     }
 }

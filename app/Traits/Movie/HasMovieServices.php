@@ -38,7 +38,7 @@ trait HasMovieServices
             {
                 $query = Movie::query();
                 
-                $query->with('similarMovies');
+                $query->with('similarMovies.movie');
                 $query->select('*');
                 $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
     
