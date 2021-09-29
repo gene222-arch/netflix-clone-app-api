@@ -15,4 +15,9 @@ class SimilarMovie extends Model
         'movie_id',
         'similar_movie_id'
     ];
+
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class)->select('title');
+    }
 }
