@@ -17,6 +17,11 @@ class CreateSimilarMoviesTable extends Migration
             $table->id();
             $table->foreignId('movie_id')->constrained();
             $table->foreignId('similar_movie_id')->constrained('movies', 'id');
+
+            $table->unique([
+                'movie_id',
+                'similar_movie_id'
+            ]);
         });
     }
 

@@ -132,6 +132,12 @@ class Movie extends Model
     }
 
 
+    public function similarMovies()
+    {
+        return $this->hasMany(SimilarMovie::class);
+    }
+
+
     /**
     * Define a many-to-many relationship with UserRating class
     *
