@@ -10,6 +10,7 @@ use App\Http\Requests\Movie\Movie\UpdateRequest;
 use App\Models\SimilarMovie;
 use App\Traits\ActivityLogsServices;
 use Carbon\Carbon;
+use Google\Service\Bigquery\Model;
 use Illuminate\Support\Facades\Cache;
 
 
@@ -294,7 +295,10 @@ trait HasMovieServices
                     $similarMovies = [];
 
                     foreach ($similarMovieIds as $similarMovieId) {
-                        $similarMovies[] = new SimilarMovie([ 'similar_movie_id' => $similarMovieId ]);
+                        $similarMovies[] = new SimilarMovie([ 
+                            'similar_movie_id' => $similarMovieId, 
+                            'model_type' => Movie::class 
+                        ]);
                     }
                     $movie->similarMovies()->saveMany($similarMovies);
                 }
@@ -342,7 +346,10 @@ trait HasMovieServices
                         $similarMovies = [];
 
                         foreach ($similarMovieIds as $similarMovieId) {
-                            $similarMovies[] = new SimilarMovie([ 'similar_movie_id' => $similarMovieId ]);
+                            $similarMovies[] = new SimilarMovie([ 
+                                'similar_movie_id' => $similarMovieId,
+                                'model_type' => Movie::class
+                            ]);
                         }
 
                         $movie->similarMovies()->delete();

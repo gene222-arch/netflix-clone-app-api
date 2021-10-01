@@ -13,12 +13,13 @@ class SimilarMovie extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'movie_id',
+        'model_id',
+        'model_type',
         'similar_movie_id'
     ];
 
     public function movie()
     {
-        return $this->belongsTo(Movie::class, 'similar_movie_id');
+        return $this->belongsTo(Movie::class, 'similar_movie_id');  
     }
 }

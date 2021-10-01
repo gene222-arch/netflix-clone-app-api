@@ -126,7 +126,7 @@ class Movie extends Model
 
     public function similarMovies()
     {
-        return $this->hasMany(SimilarMovie::class);
+        return $this->hasMany(SimilarMovie::class, 'model_id')->where('model_type', 'App\\Models\\Movie');
     }
 
 
