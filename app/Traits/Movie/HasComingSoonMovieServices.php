@@ -71,31 +71,25 @@ trait HasComingSoonMovieServices
                 $similarMovieIds = $request->similar_movie_ids;
 
                 $comingSoonMovie = ComingSoonMovie::create($comingSoonMovieData);
+
+                if ($similarMovieIds) 
+                {
+                    $similarMovies = [];
+
+                    foreach ($similarMovieIds as $similarMovieId) {
+                        $similarMovies[] = new SimilarMovie([ 
+                            'similar_movie_id' => $similarMovieId, 
+                            'model_type' => ComingSoonMovie::class 
+                        ]);
+                    }
+
+                    $comingSoonMovie->similarMovies()->saveMany($similarMovies);
+                }
                 
                 $comingSoonMovie->authors()->attach($authorIDs);
                 $comingSoonMovie->casts()->attach($castIDs);
                 $comingSoonMovie->directors()->attach($directorIDs);
                 $comingSoonMovie->genres()->attach($genreIDs);
-
-                if (is_array($similarMovieIds)) 
-                {
-                    if (! count($similarMovieIds)) {
-                        $comingSoonMovie->similarMovies()->delete();
-                    }
-                    else {
-                        $similarMovies = [];
-
-                        foreach ($similarMovieIds as $similarMovieId) {
-                            $similarMovies[] = new SimilarMovie([ 
-                                'similar_movie_id' => $similarMovieId,
-                                'model_type' => ComingSoonMovie::class
-                            ]);
-                        }
-
-                        $comingSoonMovie->similarMovies()->delete();
-                        $comingSoonMovie->similarMovies()->saveMany($similarMovies);
-                    }
-                }
 
                 $this->createLog(
                     'Create',
@@ -120,6 +114,7 @@ trait HasComingSoonMovieServices
                 $castIDs = $request->cast_ids;
                 $directorIDs = $request->director_ids;
                 $genreIDs = $request->genre_ids;
+                $similarMovieIds = $request->similar_movie_ids;
                 
                 /** Delete a file only if it exist within the request */
                 $this->deleteFile($request, [
@@ -128,6 +123,26 @@ trait HasComingSoonMovieServices
                     'title_logo' => $comingSoonMovie->title_logo_path,
                     'video_trailer' => $comingSoonMovie->video_trailer_path
                 ]);
+
+                if (is_array($similarMovieIds)) 
+                {
+                    if (! count($similarMovieIds)) {
+                        $comingSoonMovie->similarMovies()->delete();
+                    }
+                    else {
+                        $similarMovies = [];
+
+                        foreach ($similarMovieIds as $similarMovieId) {
+                            $similarMovies[] = new SimilarMovie([ 
+                                'similar_movie_id' => $similarMovieId,
+                                'model_type' => ComingSoonMovie::class
+                            ]);
+                        }
+
+                        $comingSoonMovie->similarMovies()->delete();
+                        $comingSoonMovie->similarMovies()->saveMany($similarMovies);
+                    }
+                }
 
                 $comingSoonMovie->update($comingSoonMovieData);
                 $comingSoonMovie->authors()->sync($authorIDs);
