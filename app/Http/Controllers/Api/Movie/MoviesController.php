@@ -32,7 +32,8 @@ class MoviesController extends Controller
                 'topSearches',
                 'getLatestTwenty',
                 'incrementViews',
-                'mostLikedMovies'
+                'mostLikedMovies',
+                'incrementSearchCount'
             );
     }
 
