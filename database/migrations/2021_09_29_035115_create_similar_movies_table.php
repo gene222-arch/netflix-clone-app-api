@@ -15,12 +15,14 @@ class CreateSimilarMoviesTable extends Migration
     {
         Schema::create('similar_movies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('movie_id')->constrained();
+            $table->foreignId('model_id');
+            $table->string('model_type');
             $table->foreignId('similar_movie_id')->constrained('movies', 'id');
 
-            $table->unique([
-                'movie_id',
-                'similar_movie_id'
+            $table->index([
+                'model_id',
+                'similar_movie_id',
+                'model_type'
             ]);
         });
     }
