@@ -31,6 +31,7 @@ class UpdateRequest extends BaseRequest
             'poster_path' => ['required', 'string'],
             'wallpaper_path' => ['required', 'string'],
             'video_path' => ['required', 'string'],
+            'video_preview_path' => ['required', 'string'],
             'title_logo_path' => ['required', 'string'],
             'video_size_in_mb' => ['required', 'numeric'],
             'similar_movie_ids.*' => ['nullable', 'distinct', 'integer', 'exists:movies,id']
