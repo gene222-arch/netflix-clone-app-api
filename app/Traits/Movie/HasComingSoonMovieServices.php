@@ -252,6 +252,19 @@ trait HasComingSoonMovieServices
                     $movie->directors()->attach($directorIds);
                     $movie->genres()->attach($genreIds);
 
+                    $similarMovieIds = $comingSoonMovie->similarMovies->map->similar_movie_id->toArray();
+                    
+                    $similarMovies = [];
+
+                    foreach ($similarMovieIds as $similarMovieId) {
+                        $similarMovies[] = new SimilarMovie([ 
+                            'similar_movie_id' => $similarMovieId, 
+                            'model_type' => Movie::class 
+                        ]);
+                    }
+                    
+                    $movie->similarMovies()->saveMany($similarMovies);
+
                     event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
                 }
 
