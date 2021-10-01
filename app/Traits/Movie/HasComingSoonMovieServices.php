@@ -5,15 +5,16 @@ namespace App\Traits\Movie;
 use Carbon\Carbon;
 use App\Models\Movie;
 use App\Models\Trailer;
+use App\Models\SimilarMovie;
 use App\Models\ComingSoonMovie;
 use Illuminate\Support\Facades\DB;
 use App\Traits\ActivityLogsServices;
 use App\Traits\Upload\HasUploadable;
 use Illuminate\Support\Facades\Cache;
+use App\Events\ComingSoonMovieReleasedEvent;
 use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateStatusRequest;
-use App\Events\ComingSoonMovieReleasedEvent;
 
 trait HasComingSoonMovieServices
 {
@@ -67,6 +68,7 @@ trait HasComingSoonMovieServices
                 $castIDs = $request->cast_ids;
                 $directorIDs = $request->director_ids;
                 $genreIDs = $request->genre_ids;
+                $similarMovieIds = $request->similar_movie_ids;
 
                 $comingSoonMovie = ComingSoonMovie::create($comingSoonMovieData);
                 
@@ -74,6 +76,26 @@ trait HasComingSoonMovieServices
                 $comingSoonMovie->casts()->attach($castIDs);
                 $comingSoonMovie->directors()->attach($directorIDs);
                 $comingSoonMovie->genres()->attach($genreIDs);
+
+                if (is_array($similarMovieIds)) 
+                {
+                    if (! count($similarMovieIds)) {
+                        $comingSoonMovie->similarMovies()->delete();
+                    }
+                    else {
+                        $similarMovies = [];
+
+                        foreach ($similarMovieIds as $similarMovieId) {
+                            $similarMovies[] = new SimilarMovie([ 
+                                'similar_movie_id' => $similarMovieId,
+                                'model_type' => ComingSoonMovie::class
+                            ]);
+                        }
+
+                        $comingSoonMovie->similarMovies()->delete();
+                        $comingSoonMovie->similarMovies()->saveMany($similarMovies);
+                    }
+                }
 
                 $this->createLog(
                     'Create',

@@ -28,12 +28,21 @@ class StoreRequest extends BaseRequest
             'director_ids.*' => ['required', 'integer', 'exists:directors,id'],
             'authors' => ['required', 'string'],
             'author_ids.*' => ['required', 'integer', 'exists:authors,id'],
+            'similar_movie_ids.*' => ['nullable', 'distinct', 'integer', 'exists:movies,id'],
             'poster_path' => ['required', 'string'],
             'wallpaper_path' => ['required', 'string'],
             'video_trailer_path' => ['required', 'string'],
             'title_logo_path' => ['required', 'string'],
             'video_size_in_mb' => ['required', 'numeric'],
             'status' => ['required', 'string', 'in:Release,Coming Soon']
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'similar_movie_ids.*.nullable' => 'Similar movies is nullable',
+            'similar_movie_ids.*.exists' => 'A non existing movie is selected'
         ];
     }
 }
