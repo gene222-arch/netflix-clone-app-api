@@ -100,6 +100,11 @@ class ComingSoonMovie extends Model
     {
         return $this->belongsToMany(Genre::class, 'coming_soon_movie_genres');
     }
+
+    public function similarMovies()
+    {
+        return $this->hasMany(SimilarMovie::class, 'model_id')->where('model_type', 'App\\Models\\ComingSoonMovie');
+    }
     
     /**
     * Define a many-to-many relationship with Model class
