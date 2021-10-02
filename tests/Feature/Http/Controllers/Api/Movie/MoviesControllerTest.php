@@ -79,6 +79,18 @@ class MoviesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_view_random_movie()
+    {
+        $id = 1;
+
+        $response = $this->get(
+            "/api/movies",
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
 
     /** test */
     public function user_can_create_movie()
