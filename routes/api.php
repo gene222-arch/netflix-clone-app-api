@@ -208,8 +208,8 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/most-liked', [MoviesController::class, 'mostLikedMovies']);
         Route::get('/top-searches', [MoviesController::class, 'topSearches']);
         Route::get('/latest/20', [MoviesController::class, 'getLatestTwenty']);
-        Route::get('/{movie}', [MoviesController::class, 'show']);
         Route::get('/random', [MoviesController::class, 'showRandom']);
+        Route::get('/{movie}', [MoviesController::class, 'show']);
         Route::post('/', [MoviesController::class, 'store']);
         Route::post('/upload/poster', [MoviesController::class, 'uploadPoster']);
         Route::post('/upload/wallpaper', [MoviesController::class, 'uploadWallpaper']);

@@ -133,7 +133,6 @@ class MoviesController extends Controller
     /**
      * Display a randomized resource.
      *
-     * @param  Movie  $movie
      * @return \Illuminate\Http\JsonResponse
      */
     public function showRandom()

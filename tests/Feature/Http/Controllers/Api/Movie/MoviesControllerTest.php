@@ -85,7 +85,7 @@ class MoviesControllerTest extends TestCase
         $id = 1;
 
         $response = $this->get(
-            "/api/movies/",
+            "/api/movies/random",
             $this->apiHeader()
         );
 
