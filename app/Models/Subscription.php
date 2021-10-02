@@ -27,16 +27,29 @@ class Subscription extends Model
 
         static::creating(function ($subscription) 
         {
-            $subscription->user_id = auth('api')->id();
+            $authenticatedUser = auth('api')->user();
+
+            if ($authenticatedUser) // Create subscription using authenticated user 
+            {
+                $subscription->user_id = auth('api')->id();
+                
+                if (! $authenticatedUser->subscriptions->count()) 
+                {
+                    $subscription->is_first_subscription = true;
+                    $subscription->expired_at = $subscription->expired_at->addMonth();
+                }
+            } 
+            else // Create subscription by passing user id
+            {
+                if (! self::find($subscription->user_id)) 
+                {
+                    $subscription->is_first_subscription = true;
+                    $subscription->expired_at = $subscription->expired_at->addMonth();
+                }
+            }
+
             $subscription->subscribed_at = Carbon::now();
             $subscription->cancelled_at = null;
-
-            if (! auth('api')->user()->subscriptions->count()) 
-            {
-                $subscription->is_first_subscription = true;
-
-                $subscription->expired_at = $subscription->expired_at->addMonth();
-            }
         });
     }
 

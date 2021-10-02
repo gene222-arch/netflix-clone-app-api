@@ -73,7 +73,7 @@ class RegisterController extends Controller
                 $user->assignRole($request->role);
 
                 if ($request->has('plan_type')) {
-                    $this->subscribe($request->plan_type);
+                    $this->subscribe($request->plan_type, $user->id);
                 }
 
                 /** Save user location if access is allowed */
@@ -96,7 +96,6 @@ class RegisterController extends Controller
                 if (! Auth::attempt($request->safe(['email', 'password']))) {
                     return $this->error('Login Failed!');
                 }
-
             });
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());
