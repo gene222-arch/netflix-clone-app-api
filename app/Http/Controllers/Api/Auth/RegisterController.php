@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Stevebauman\Location\Facades\Location;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Traits\SubscriptionServices;
 
 class RegisterController extends Controller
 {
@@ -27,7 +28,7 @@ class RegisterController extends Controller
     |
     */
 
-    use ApiResponser, ApiServices, AuthServices;
+    use ApiResponser, ApiServices, AuthServices, SubscriptionServices;
 
     /**
      * Where to redirect users after registration.
@@ -70,6 +71,10 @@ class RegisterController extends Controller
                 $user = $user->query()->create($userDetails);
                 $user->sendEmailVerificationNotification();
                 $user->assignRole($request->role);
+
+                if ($request->has('plan_type')) {
+                    $this->subscribe($request->plan_type);
+                }
 
                 /** Save user location if access is allowed */
                 if ( $request->allow_access_to_location && $address = Location::get($request->ip()) ) 

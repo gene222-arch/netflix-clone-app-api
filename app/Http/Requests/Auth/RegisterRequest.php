@@ -30,7 +30,8 @@ class RegisterRequest extends BaseRequest
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'allow_access_to_location' => ['required', 'boolean'],
             'avatar_path' => ['required', 'string'],
-            'role' => ['required', 'string', 'exists:roles,name']
+            'role' => ['required', 'string', 'exists:roles,name'],
+            'plan_type' => ['required', 'string0', 'in:Basic,Standard,Premium']
         ];
     }
 }
