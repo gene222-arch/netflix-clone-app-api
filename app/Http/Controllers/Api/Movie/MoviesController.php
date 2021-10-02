@@ -130,6 +130,17 @@ class MoviesController extends Controller
         return $this->success($movie);
     }
 
+    /**
+     * Display a randomized resource.
+     *
+     * @param  Movie  $movie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showRandom()
+    {
+        return $this->success(Movie::all()->random(1)->first());
+    }
+
 
     /**
      * Update the specified resource in storage.
