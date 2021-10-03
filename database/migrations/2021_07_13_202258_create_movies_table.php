@@ -19,7 +19,7 @@ class CreateMoviesTable extends Migration
             $table->text('plot');
             $table->year('year_of_release');
             $table->timestamp('date_of_release')->default(now());
-            $table->unsignedInteger('duration_in_minutes');
+            $table->unsignedDouble('duration_in_minutes');
             $table->unsignedInteger('age_restriction');
             $table->string('country');
             $table->string('language');

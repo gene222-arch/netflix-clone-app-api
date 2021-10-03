@@ -17,7 +17,7 @@ class CreateComingSoonMoviesTable extends Migration
             $table->id();
             $table->string('title')->unique();
             $table->text('plot');
-            $table->unsignedInteger('duration_in_minutes');
+            $table->unsignedDouble('duration_in_minutes');
             $table->unsignedInteger('age_restriction');
             $table->string('country');
             $table->string('language');

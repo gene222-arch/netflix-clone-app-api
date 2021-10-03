@@ -19,7 +19,7 @@ class UpdateRequest extends BaseRequest
             'plot' => ['required', 'string'],
             'year_of_release' => ['required', 'integer'],
             'date_of_release' => ['required', 'date'],
-            'duration_in_minutes' => ['required', 'integer'],
+            'duration_in_minutes' => ['required', 'numeric'],
             'age_restriction' => ['required', 'integer'],
             'country' => ['required', 'string'],
             'language' => ['required', 'string'],

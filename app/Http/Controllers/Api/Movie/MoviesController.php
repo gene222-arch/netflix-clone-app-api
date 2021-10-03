@@ -33,7 +33,8 @@ class MoviesController extends Controller
                 'getLatestTwenty',
                 'incrementViews',
                 'mostLikedMovies',
-                'incrementSearchCount'
+                'incrementSearchCount',
+                'showRandom'
             );
     }
 
