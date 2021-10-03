@@ -33,7 +33,7 @@ class UpdateRequest extends BaseRequest
             'wallpaper_path' => ['required', 'string'],
             'video_trailer_path' => ['required', 'string'],
             'title_logo_path' => ['required', 'string'],
-            'status' => ['required', 'string', 'in:Release,Coming Soon']
+            'status' => ['required', 'string', 'in:Released,Coming Soon']
         ];
     }
 }

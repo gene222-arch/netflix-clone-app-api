@@ -116,14 +116,6 @@ trait HasComingSoonMovieServices
                 $directorIDs = $request->director_ids;
                 $genreIDs = $request->genre_ids;
                 $similarMovieIds = $request->similar_movie_ids;
-                
-                /** Delete a file only if it exist within the request */
-                $this->deleteFile($request, [
-                    'poster' => $comingSoonMovie->poster_path,
-                    'wallpaper' => $comingSoonMovie->wallpaper_path,
-                    'title_logo' => $comingSoonMovie->title_logo_path,
-                    'video_trailer' => $comingSoonMovie->video_trailer_path
-                ]);
 
                 if (is_array($similarMovieIds)) 
                 {

@@ -28,7 +28,7 @@ class GenresController extends Controller
      */
     public function index()
     {
-        $result = Genre::all();
+        $result = Genre::orderBy('name', 'asc')->get();
 
         return !$result
             ? $this->noContent()
