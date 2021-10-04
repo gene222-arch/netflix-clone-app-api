@@ -283,7 +283,7 @@ class ComingSoonMoviesController extends Controller
      * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function release(ReleaseRequest $request, ComingSoonMovie $comingSoonMovie)
+    public function releaseMovie(ReleaseRequest $request, ComingSoonMovie $comingSoonMovie)
     {
         $result = $this->release($request, $comingSoonMovie);
 

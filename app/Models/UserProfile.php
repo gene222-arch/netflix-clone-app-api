@@ -40,7 +40,7 @@ class UserProfile extends Model
     */
     public function myDownloads(): HasMany
     {
-        return $this->hasMany(MyDownload::class);
+        return $this->hasMany(MyDownload::class)->orderBy('downloaded_at', 'desc');
     }
 
 

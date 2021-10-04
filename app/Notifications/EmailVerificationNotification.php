@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class EmailVerificationNotification extends VerifyEmail implements ShouldQueue
+class EmailVerificationNotification extends VerifyEmail
 {
     use Queueable;
 
@@ -37,6 +37,6 @@ class EmailVerificationNotification extends VerifyEmail implements ShouldQueue
             ]
         );
 
-        return str_replace('192.168.1.33:8000/api', 'localhost:3000/auth', $url);
+        return str_replace('192.168.1.10:8000/api', 'localhost:3000/auth', $url);
     }
 }
