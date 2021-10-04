@@ -20,8 +20,12 @@ class EnsureEmailIsVerified
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse|null
      */
     public function handle($request, Closure $next, $redirectToRoute = null)
-    {
-        $user = $request->user('api') ?? User::where('email', $request->email)->first();
+    {   
+        $user = $request->user('api');
+
+        if (! $user && $request->has('email')) {
+            $user = User::where('email', $request->email)->first();
+        }
 
         $isUserVerified = $user instanceof MustVerifyEmail && $user->hasVerifiedEmail();
 
