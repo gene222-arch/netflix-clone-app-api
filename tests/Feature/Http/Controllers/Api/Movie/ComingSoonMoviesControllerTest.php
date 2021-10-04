@@ -147,7 +147,7 @@ class ComingSoonMoviesControllerTest extends TestCase
 
 
     /** test */
-    public function user_can_update_coming_soon_movie_status()
+    public function user_can_release_coming_soon_movie()
     {
         $id = 1;
 
@@ -158,7 +158,7 @@ class ComingSoonMoviesControllerTest extends TestCase
         ];
 
         $response = $this->put(
-            "/api/coming-soon-movies/$id/status",
+            "/api/coming-soon-movies/$id/release",
             $data,
             $this->apiHeader()
         );
