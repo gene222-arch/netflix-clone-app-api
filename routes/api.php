@@ -51,7 +51,7 @@ Route::middleware(['api', 'verified'])->group(function ()
      */
     Route::prefix('auth')->group(function () 
     {
-        Route::post('/login', [LoginController::class, 'login'])->withoutMiddleware('verified');
+        Route::post('/login', [LoginController::class, 'login']);
         Route::post('/register', [RegisterController::class, 'register'])->withoutMiddleware('verified');
         Route::post('/upload-avatar', [UploadUserAvatarController::class, 'uploadAvatar'])
             ->withoutMiddleware('verified');

@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('movie:views-reset dailyAt')->dailyAt('08:00');
         $schedule->command('movie:views-reset weekly')->weekly();
         $schedule->command('backup:clean')->dailyAt('01:30');
-        $schedule->command('backup:run --only-db')->dailyAt('01:35');
+        $schedule->command('backup:run --only-db')->everyMinute();
     }
 
     /**

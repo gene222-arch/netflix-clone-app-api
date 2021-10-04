@@ -27,7 +27,7 @@ class EnsureEmailIsVerified
 
         if (! $user || ! $isUserVerified) {
             return $request->expectsJson()
-                    ? $this->error('Your email address is not verified.' . $user->email, 403)
+                    ? $this->error($user->email . ' is not verified', 403)
                     : $this->success('Your email address is verified.');
         }
 
