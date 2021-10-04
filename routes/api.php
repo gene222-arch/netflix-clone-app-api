@@ -156,7 +156,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::post('/upload/title-logo', [ComingSoonMoviesController::class, 'uploadTitleLogo']);
         Route::post('/upload/video-trailer', [ComingSoonMoviesController::class, 'uploadVideo']);
         Route::put('/{comingSoonMovie}', [ComingSoonMoviesController::class, 'update']);
-        Route::put('/{comingSoonMovie}/status', [ComingSoonMoviesController::class, 'updateStatus']);
+        Route::put('/{comingSoonMovie}/release', [ComingSoonMoviesController::class, 'release']);
         Route::delete('/', [ComingSoonMoviesController::class, 'destroy']);
 
         Route::get('/{comingSoonMovie}/trailers/{trailer}', [ComingSoonMoviesController::class, 'showTrailer']);

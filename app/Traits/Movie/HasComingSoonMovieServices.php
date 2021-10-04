@@ -11,10 +11,9 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\ActivityLogsServices;
 use App\Traits\Upload\HasUploadable;
 use Illuminate\Support\Facades\Cache;
-use App\Events\ComingSoonMovieReleasedEvent;
+use App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
-use App\Http\Requests\Movie\ComingSoonMovie\UpdateStatusRequest;
 
 trait HasComingSoonMovieServices
 {
@@ -204,7 +203,7 @@ trait HasComingSoonMovieServices
     }
 
 
-    public function updateMovieStatus(UpdateStatusRequest $request, ComingSoonMovie $comingSoonMovie)
+    public function release(ReleaseRequest $request, ComingSoonMovie $comingSoonMovie)
     {
         try {
             DB::transaction(function () use ($request, $comingSoonMovie) 

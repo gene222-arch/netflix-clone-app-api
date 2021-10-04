@@ -4,7 +4,7 @@ namespace App\Http\Requests\Movie\ComingSoonMovie;
 
 use App\Http\Requests\BaseRequest;
 
-class UpdateStatusRequest extends BaseRequest
+class ReleaseRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.

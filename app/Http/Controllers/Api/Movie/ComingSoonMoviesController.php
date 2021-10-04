@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers\Api\Movie;
 
-use Carbon\Carbon;
-use App\Models\Movie;
 use App\Models\Trailer;
 use App\Models\ComingSoonMovie;
 use App\Traits\Api\ApiResponser;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Traits\Upload\HasUploadable;
-use Illuminate\Support\Facades\Cache;
-use App\Events\ComingSoonMovieReleasedEvent;
 use App\Http\Requests\Upload\UploadVideoRequest;
 use App\Traits\Movie\HasComingSoonMovieServices;
 use App\Http\Requests\Upload\UploadPosterRequest;
@@ -20,8 +16,8 @@ use App\Http\Requests\Upload\UploadWallpaperRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\DestroyRequest;
+use App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
-use App\Http\Requests\Movie\ComingSoonMovie\UpdateStatusRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
 use App\Traits\ActivityLogsServices;
@@ -283,12 +279,13 @@ class ComingSoonMoviesController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param  App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest  $request
      * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateStatus(UpdateStatusRequest $request, ComingSoonMovie $comingSoonMovie)
+    public function release(ReleaseRequest $request, ComingSoonMovie $comingSoonMovie)
     {
-        $result = $this->updateMovieStatus($request, $comingSoonMovie);
+        $result = $this->release($request, $comingSoonMovie);
 
         return $result !== true 
             ? $this->error($result)
