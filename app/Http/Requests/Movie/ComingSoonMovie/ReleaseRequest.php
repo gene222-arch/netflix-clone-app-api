@@ -17,7 +17,7 @@ class ReleaseRequest extends BaseRequest
 
         return [
             'video_path' => [$isRequired, 'string'],
-            'duration_in_minutes' => [$isRequired, 'integer'],
+            'duration_in_minutes' => [$isRequired, 'numeric'],
             'video_size_in_mb' => [$isRequired, 'numeric'],
             'status' => ['required', 'string', 'in:Coming Soon,Released']
         ];
