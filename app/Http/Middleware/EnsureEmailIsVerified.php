@@ -23,7 +23,7 @@ class EnsureEmailIsVerified
     {   
         $user = $request->user('api');
 
-        if (! $user && $request->has('email')) {
+        if (! $user && $request->exists('email')) {
             $user = User::where('email', $request->email)->first();
         }
 

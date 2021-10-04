@@ -73,7 +73,10 @@ trait HasMovieServices
 
             $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($user, $isForKids)
             {
-                $recentlyAddedMovies = Movie::latest()->take(20)->get();
+                $recentlyAddedMovies = Movie::query();
+                $recentlyAddedMovies->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
+                $recentlyAddedMovies = $recentlyAddedMovies->where('created_at', '<=', Carbon::now()->addDays(14))->get();
+                
 
                 $trendingNow = Movie::selectRaw('
                             movies.*, 
