@@ -21,17 +21,25 @@ class EnsureEmailIsVerified
      */
     public function handle($request, Closure $next, $redirectToRoute = null)
     {   
+        if (! $request->email) {
+            return $this->error([
+                'email' => 'Email is required'
+            ]);
+        }
+
         $user = $request->user('api');
 
-        if (! $user && $request->exists('email')) {
-            $user = User::where('email', $request->email)->first();
+        if (! $user) {
+            $user = User::where('email', $request->email)->firstOrFail();
         }
 
         $isUserVerified = $user instanceof MustVerifyEmail && $user->hasVerifiedEmail();
 
         if (! $user || ! $isUserVerified) {
             return $request->expectsJson()
-                    ? $this->error($user->email . ' is not verified', 403)
+                    ? $this->error([
+                        'email' => $request->email . ' is not verified'
+                    ], 403)
                     : $this->success('Your email address is verified.');
         }
 

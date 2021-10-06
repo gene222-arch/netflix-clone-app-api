@@ -28,4 +28,11 @@ class LoginRequest extends BaseRequest
             'password' => ['required', 'string'],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'email.exists' => "An account with this email address do not exists"
+        ];
+    }
 }
