@@ -67,4 +67,9 @@ class Subscription extends Model
 
         return boolval($query->update(['is_expired' => true]));
     }
+
+    public function payments()
+    {
+        return $this->hasMany(SubscriptionPaymentDetail::class)->orderBy('paid_at', 'asc');
+    }
 }
