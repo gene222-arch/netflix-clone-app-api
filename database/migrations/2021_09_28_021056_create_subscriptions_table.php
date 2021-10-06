@@ -18,6 +18,8 @@ class CreateSubscriptionsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->char('type', 8)->index();
+            $table->unsignedDouble('cost');
+            $table->unsignedDouble('paid_amount')->default(0);
             $table->boolean('is_first_subscription')->default(false);
             $table->boolean('is_cancelled')->default(false)->index();
             $table->boolean('is_expired')->default(false)->index();
