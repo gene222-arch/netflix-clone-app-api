@@ -30,6 +30,7 @@ class CreateMoviesTable extends Migration
             $table->string('poster_path');
             $table->string('wallpaper_path');
             $table->string('video_path');
+            $table->string('video_preview_path');
             $table->string('title_logo_path');
             $table->string('video_size_in_mb');
             $table->timestamps();

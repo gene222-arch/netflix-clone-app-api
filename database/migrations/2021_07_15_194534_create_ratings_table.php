@@ -16,6 +16,7 @@ class CreateRatingsTable extends Migration
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('movie_id');
+            $table->char('model_type', 60);
             $table->bigInteger('likes')->default(0);
             $table->bigInteger('dislikes')->default(0);
             $table->bigInteger('total_votes')->default(0);

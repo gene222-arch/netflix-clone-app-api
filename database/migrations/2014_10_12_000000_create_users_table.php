@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('avatar_path');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
@@ -22,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->timestamp('deleted_at')->nullable();
             $table->rememberToken();
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }
