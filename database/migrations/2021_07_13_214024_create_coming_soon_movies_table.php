@@ -30,7 +30,7 @@ class CreateComingSoonMoviesTable extends Migration
             $table->string('video_trailer_path');
             $table->string('title_logo_path');
             $table->string('status')->default('Coming Soon');
-            $table->timestamp('released_at')->nullable();
+            $table->timestamp('released_at')->nullable()->default(null);
             $table->timestamps();
         });
 

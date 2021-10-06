@@ -62,7 +62,7 @@ class UserProfile extends Model
      */
     public function recentlyWatchedMovies(): HasMany
     {
-        return $this->hasMany(RecentlyWatchedMovie::class);
+        return $this->hasMany(RecentlyWatchedMovie::class)->orderBy('recently_watched_at', 'desc');
     }
 
 

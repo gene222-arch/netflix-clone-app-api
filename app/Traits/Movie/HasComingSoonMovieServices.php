@@ -42,8 +42,8 @@ trait HasComingSoonMovieServices
                 $query = ComingSoonMovie::query();
 
                 $query->with('similarMovies.movie');
-                $query->when($status === 'Coming Soon', fn($q) => $q->where('status', 'Coming Soon'));
                 $query->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
+                $query->when($status === 'Coming Soon', fn($q) => $q->whereNull('released_at'));
                 
                 return $query
                             ->orderBy('status')
@@ -91,6 +91,8 @@ trait HasComingSoonMovieServices
                 $comingSoonMovie->directors()->attach($directorIDs);
                 $comingSoonMovie->genres()->attach($genreIDs);
 
+                ComingSoonMovie::cacheToForget();
+                
                 $this->createLog(
                     'Create',
                     ComingSoonMovie::class,
