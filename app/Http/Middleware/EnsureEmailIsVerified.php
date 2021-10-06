@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use App\Models\User;
 use App\Traits\Api\ApiResponser;
-use Closure;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class EnsureEmailIsVerified
@@ -21,15 +22,29 @@ class EnsureEmailIsVerified
      */
     public function handle($request, Closure $next, $redirectToRoute = null)
     {   
-        if (! $request->email) {
-            return $this->error([
-                'email' => 'Email is required'
-            ]);
-        }
-
         $user = $request->user('api');
 
-        if (! $user) {
+        if (! $user) 
+        {
+            if (! $request->email) {
+                return $this->error([
+                    'email' => 'Email is required'
+                ]);
+            }
+
+            $validator = Validator::make(
+                $request->all(), 
+                [ 'email' => ['required', 'email', 'exists:users'] ], 
+                [ 'email.exists' => 'An account with this email address do not exists']
+            );
+
+            if ( $validator->fails() ) 
+            {
+                return $this->error([
+                    'email' => $validator->errors()->first()
+                ]);
+            }
+
             $user = User::where('email', $request->email)->firstOrFail();
         }
 

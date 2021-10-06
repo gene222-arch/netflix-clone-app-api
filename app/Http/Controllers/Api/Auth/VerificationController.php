@@ -53,7 +53,7 @@ class VerificationController extends Controller
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function verify(Request $request)
-{
+    {
         if (! hash_equals((string) $request->route('id'), (string) $request->user('api')->getKey())) {
             throw new AuthorizationException;
         }
