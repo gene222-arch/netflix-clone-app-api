@@ -218,6 +218,8 @@ trait HasMovieServices
                 
             WHERE 
                 ratings.model_type = 'Movie'
+            HAVING 
+                score > 1000
             LIMIT 
                 250
             "

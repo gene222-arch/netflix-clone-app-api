@@ -42,7 +42,7 @@ trait HasComingSoonMovieServices
                 $query = ComingSoonMovie::query();
 
                 $query->with('similarMovies.movie');
-                $query->when($status === 'Coming Soon', fn($q) => $q->where('status', $status));
+                $query->when($status === 'Coming Soon', fn($q) => $q->where('status', 'Coming Soon'));
                 $query->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
                 
                 return $query
@@ -141,14 +141,14 @@ trait HasComingSoonMovieServices
                 $comingSoonMovie->casts()->sync($castIDs);
                 $comingSoonMovie->directors()->sync($directorIDs);
                 $comingSoonMovie->genres()->sync($genreIDs);
+                
+                ComingSoonMovie::cacheToForget();
 
                 $this->createLog(
                     'Update',
                     ComingSoonMovie::class,
                     "video-management/coming-soon-movies/$comingSoonMovie->id"
                 );
-
-                ComingSoonMovie::cacheToForget();
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -259,13 +259,13 @@ trait HasComingSoonMovieServices
                     event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
                 }
 
+                ComingSoonMovie::cacheToForget();
+
                 $this->createLog(
                     'Update',
                     ComingSoonMovie::class,
                     "video-management/coming-soon-movies/$comingSoonMovie->id"
                 );
-
-                ComingSoonMovie::cacheToForget();
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
