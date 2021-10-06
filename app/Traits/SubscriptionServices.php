@@ -25,7 +25,8 @@ trait SubscriptionServices
                 return Subscription::query()->create(array_merge(
                     $data,
                     [
-                        'expired_at' => Carbon::now()->addMonth()
+                        'expired_at' => Carbon::now()->addMonth(),
+                        'cost' => 100
                     ]
                 ));
 
@@ -33,7 +34,8 @@ trait SubscriptionServices
                 return Subscription::query()->create(array_merge(
                     $data,
                     [
-                        'expired_at' => Carbon::now()->addMonths(2)
+                        'expired_at' => Carbon::now()->addMonths(2),
+                        'cost' => 200
                     ]
                 ));
 
@@ -41,7 +43,8 @@ trait SubscriptionServices
                 return Subscription::query()->create(array_merge(
                     $data,
                     [
-                        'expired_at' => Carbon::now()->addMonths(6)
+                        'expired_at' => Carbon::now()->addMonths(6),
+                        'cost' => 600
                     ]
                 ));
         }
