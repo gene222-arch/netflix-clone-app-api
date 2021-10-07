@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use App\Http\Requests\Auth\LoginRequest;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -46,19 +47,23 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $withRoles = (bool) $request->input('withRoles', false);
-        $withPermissions = (bool) $request->input('withPermissions', false);
-
         if (! Auth::attempt($request->validated())) {
             return $this->error('Login Failed! Your email or password is incorrect');
         }
 
+        $withRoles = (bool) $request->input('withRoles', false);
+        $withPermissions = (bool) $request->input('withPermissions', false);
+
         $auth = Auth::user();
+
         $auth->markedAsActive();
         $role = '';
 
+        $subscriber = $auth->withoutRelations();
+        $subscriber->account_created_at = Carbon::parse($auth->created_at)->format('F Y');
+
         $data = [
-            'user' => $auth->withoutRelations(),
+            'user' => $subscriber,
             'profiles' => $auth->profiles
         ];
 
