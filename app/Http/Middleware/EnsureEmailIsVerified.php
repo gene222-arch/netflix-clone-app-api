@@ -50,7 +50,7 @@ class EnsureEmailIsVerified
 
         $isUserVerified = $user instanceof MustVerifyEmail && $user->hasVerifiedEmail();
 
-        if (! $user || ! $isUserVerified) {
+        if (! $isUserVerified) {
             return $request->expectsJson()
                     ? $this->error([
                         'email' => $request->email . ' is not verified'

@@ -43,7 +43,7 @@ class PasswordResetNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        $url = env('REACT_APP_URL') . "/auth/forgot-password/reset?email=" . $notifiable->email . '&token=' . $this->token;
+        $url = "http://localhost:3000/auth/forgot-password/reset?email=" . $notifiable->email . '&token=' . $this->token;
 
         return (new MailMessage)
             ->subject(Lang::get('Reset Password Notification'))
