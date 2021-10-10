@@ -41,7 +41,7 @@ class ComingSoonMoviesController extends Controller
     {
         $result = $this->getComingSoonMovies(
             request()->input('isForKids', false),
-            request()->input('status')
+            request()->input('isComingSoon')
         );
 
         return !$result->count()
