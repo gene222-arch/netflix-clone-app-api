@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\AccessRight;
 
+use App\Models\EmployeeRole;
 use App\Traits\Api\ApiResponser;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Traits\ActivityLogsServices;
 use Spatie\Permission\Models\Permission;
@@ -26,10 +26,11 @@ class AccessRightsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\AccessRight\AssignRoleToEmployeesRequest  $request
+     * @param  \App\Http\Requests\AccessRight\AssignRoleToEmployeesRequest  $request
+     * @param  \App\Models\EmployeeRole  $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function assign(AssignRoleToEmployeesRequest $request, Role $role)
+    public function assign(AssignRoleToEmployeesRequest $request, EmployeeRole $role)
     {
         $result = $this->assignRole($role, $request->ids);
 
@@ -46,8 +47,8 @@ class AccessRightsController extends Controller
      */
     public function index()
     {
-        $result = Role::with('users')
-            ->withCount('users')
+        $result = EmployeeRole::with('employees')
+            ->withCount('employees')
             ->withCount('permissions')
             ->orderBy('created_at')
             ->get(['id', 'name']);
@@ -92,10 +93,10 @@ class AccessRightsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Role  $role
+     * @param  \App\Models\EmployeeRole  $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Role $role)
+    public function show(EmployeeRole $role)
     {
         return !$role
             ? $this->noContent()
@@ -109,10 +110,10 @@ class AccessRightsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  UpdateRequest  $request
-     * @param  Role  $role
+     * @param  \App\Models\EmployeeRole  $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, Role $role)
+    public function update(UpdateRequest $request, EmployeeRole $role)
     {
         $result = $this->updateAccessRight(
             $role,
@@ -136,9 +137,9 @@ class AccessRightsController extends Controller
         try {
             DB::transaction(function ($request) 
             {
-                Role::whereIn('id', $request->ids)->delete();    
+                EmployeeRole::whereIn('id', $request->ids)->delete();    
 
-                $this->createLog("Delete", Role::class);
+                $this->createLog("Delete", EmployeeRole::class);
             });
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());

@@ -2,7 +2,6 @@
 
 namespace App\Traits\AccessRight;
 
-use App\Models\Role;
 use Illuminate\Support\Facades\DB;
 use App\Traits\ActivityLogsServices;
 
@@ -10,18 +9,12 @@ trait AccessRightServices
 {
     use ActivityLogsServices;
 
-    public function assignRole(Role $role, array $employeeIds)
+    public function assignRole(\App\Models\EmployeeRole $role, array $employeeIds)
     {
         try {
             DB::transaction(function () use($role, $employeeIds)
             {
-                $previouslyAssignedEmployees = $role->employees->map->pivot->map->model_id;
-                
-                if ($previouslyAssignedEmployees->count()) {
-                    $role->employees()->detach($previouslyAssignedEmployees);
-                }
-
-                $role->employees()->attach($employeeIds);
+                $role->employees()->sync($employeeIds);
 
                 $this->createLog(
                     "Assign",
@@ -50,7 +43,7 @@ trait AccessRightServices
 
             DB::transaction(function () use ($role, $permissions) 
             {
-                $role = Role::create([
+                $role = \App\Models\EmployeeRole::create([
                     'name' => $role,
                     'guard_name' => 'api',
                     'updated_at' => null
@@ -82,12 +75,12 @@ trait AccessRightServices
     /**
      * Update an existing access right
      *
-     * @param  Role $previousRole
+     * @param  \App\Models\EmployeeRole $previousRole
      * @param  string $roleName
      * @param  array $permissions
      * @return mixed
      */
-    public function updateAccessRight (Role $previousRole, string $roleName, array $permissions): mixed
+    public function updateAccessRight (\App\Models\EmployeeRole $previousRole, string $roleName, array $permissions): mixed
     {
         try {
             DB::transaction(function () use ($previousRole, $roleName, $permissions) 

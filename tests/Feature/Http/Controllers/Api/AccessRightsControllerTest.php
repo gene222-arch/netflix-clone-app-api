@@ -29,18 +29,17 @@ class AccessRightsControllerTest extends TestCase
             $this->apiHeader()
         );
 
-        dd(json_decode($response->getContent()));
-        
         $this->assertResponse($response);
     }
 
     /** test */
-    public function user_can_assign_access_rights()
+    public function user_can_assign_access_rights_to_employees()
     {
         $roleId = 2;
+
         $data = [
-            'user_ids' => [
-                59
+            'ids' => [
+                2
             ]
         ];
 
@@ -49,6 +48,8 @@ class AccessRightsControllerTest extends TestCase
             $data,
             $this->apiHeader()
         );
+
+        dd(json_decode($response->getContent()));
 
         $this->assertResponse($response);
     }
