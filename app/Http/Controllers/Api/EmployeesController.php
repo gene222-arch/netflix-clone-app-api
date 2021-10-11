@@ -10,10 +10,38 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\StoreRequest;
 use App\Http\Requests\Employee\UpdateRequest;
 use App\Http\Requests\Employee\DestroyRequest;
+use App\Http\Requests\Employee\LoginByPinRequest;
+use App\Traits\Api\ApiServices;
 
 class EmployeesController extends Controller
 {
-    use ApiResponser;
+    use ApiResponser, ApiServices;
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Http\Requests\Employee\LoginByPinRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function loginByPin(LoginByPinRequest $request)
+    {
+        $employee = Employee::where('pin_code', $request->pin_code)->first();
+
+        if (! $employee) {
+            return $this->error('PIN do not match. Please try again');
+        }
+
+        return $this->token(
+            $employee->createToken(env('PERSONAL_ACCESS_TOKEN')),
+            'Logged in successfully',
+            [
+                'employee' => $employee,
+                'role' => $employee->roles->first()->name,
+                'permissions' => $employee->getPermissionsViaRoles()->map->name,
+            ]  
+        );
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -64,6 +92,7 @@ class EmployeesController extends Controller
     {
         return $this->success(Employee::with('roles')->find($employee->id));
     }
+
 
 
     /**

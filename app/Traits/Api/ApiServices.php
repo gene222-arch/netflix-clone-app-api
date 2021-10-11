@@ -16,7 +16,7 @@ trait ApiServices
      */
     protected function getPersonalAccessToken($request)
     {
-        if ($request->remember_me === 'true')
+        if ($request->has('remember_me') && $request->remember_me)
         {
             Passport::personalAccessTokensExpireIn(Carbon::now()->addDays(15));
         }
