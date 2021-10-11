@@ -10,6 +10,8 @@ class Employee extends Model
 {
     use HasFactory, HasRoles;
 
+    protected $guard_name = 'api';
+    
     protected $fillable = [
         'created_by_id',
         'first_name',

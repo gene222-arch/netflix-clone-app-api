@@ -18,7 +18,8 @@ class StoreRequest extends BaseRequest
             'last_name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users', 'unique:employees'],
             'phone' => ['required', 'string', 'unique:employees'],
-            'pin_code' => ['required', 'string', 'min:4', 'max:4', 'unique:employees']
+            'pin_code' => ['required', 'string', 'min:4', 'max:4', 'unique:employees'],
+            'role_id' => ['required', 'integer', 'exists:roles,id']
         ];
     }
 }

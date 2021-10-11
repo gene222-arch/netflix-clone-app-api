@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Employee\DestroyRequest;
 use App\Http\Requests\Employee\StoreRequest;
 use App\Http\Requests\Employee\UpdateRequest;
+use App\Http\Requests\Employee\DestroyRequest;
 
 class EmployeesController extends Controller
 {
@@ -40,7 +41,14 @@ class EmployeesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        Employee::create($request->validated());
+        try {
+            DB::transaction(function () use ($request) {
+                $employee = Employee::create($request->validated());
+                $employee->assignRole($request->role_id);
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
 
         return $this->success(null, 'Employee created successfully.');
     }
@@ -67,7 +75,14 @@ class EmployeesController extends Controller
      */
     public function update(UpdateRequest $request, Employee $employee)
     {
-        $employee->update($request->validated());
+        try {
+            DB::transaction(function () use ($request, $employee) {
+                $employee->update($request->validated());
+                $employee->syncRoles($request->role_id);
+            });
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
         
         return $this->success(null, 'Employee updated successfully.');
     }
