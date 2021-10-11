@@ -62,7 +62,7 @@ class EmployeesController extends Controller
      */
     public function show(Employee $employee)
     {
-        return $this->success($employee);
+        return $this->success(Employee::with('roles')->find($employee->id));
     }
 
 
