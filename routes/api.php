@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\ActivityLogsController;
 use App\Http\Controllers\Api\Auth\UploadUserAvatarController;
 use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\Dashboards\DashboardsController;
+use App\Http\Controllers\Api\EmployeesController;
 use App\Http\Controllers\Api\Movie\ComingSoonMoviesController;
 use App\Http\Controllers\Api\Exports\UserExportController;
 use App\Http\Controllers\Api\Movie\AuthorsController;
@@ -183,6 +184,18 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::put('/{director}', [DirectorsController::class, 'update']);
         Route::put('/{director}/enabled', [DirectorsController::class, 'updateEnabledStatus']);
         Route::delete('/', [DirectorsController::class, 'destroy']);
+    });
+
+    /**
+     * * Employee
+     */
+    Route::prefix('employees')->group(function () 
+    {
+        Route::get('/', [EmployeesController::class, 'index']);
+        Route::get('/{employee}', [EmployeesController::class, 'show']);
+        Route::post('/', [EmployeesController::class, 'store']);
+        Route::put('/{employee}', [EmployeesController::class, 'update']);
+        Route::delete('/', [EmployeesController::class, 'destroy']);
     });
 
     /**

@@ -18,4 +18,13 @@ class Employee extends Model
         'phone',
         'pin_code'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($employee) {
+            $employee->created_by_id = auth('api')->id();
+        });
+    }
 }
