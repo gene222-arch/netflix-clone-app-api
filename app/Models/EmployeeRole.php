@@ -25,9 +25,4 @@ class EmployeeRole extends Role
             config('permission.column_names.model_morph_key')
         );
     }
-
-    public function getTable()
-    {
-        return 'employees';
-    }
 }

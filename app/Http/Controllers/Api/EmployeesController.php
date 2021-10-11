@@ -21,7 +21,10 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        $result = Employee::withCount('roles')->get();
+        $result = Employee::with('roles')
+            ->withCount('roles')
+            ->having('roles_count', '<=', 1)
+            ->get();
 
         return !$result
             ? $this->noContent()
