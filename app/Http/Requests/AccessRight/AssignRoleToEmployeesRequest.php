@@ -4,7 +4,7 @@ namespace App\Http\Requests\AccessRight;
 
 use App\Http\Requests\BaseRequest;
 
-class AssignRoleToUsersRequest extends BaseRequest
+class AssignRoleToEmployeesRequest extends BaseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,7 @@ class AssignRoleToUsersRequest extends BaseRequest
     public function rules()
     {
         return [
-            'user_ids.*' => ['required', 'integer', 'distinct', 'exists:users,id']
+            'ids.*' => ['required', 'integer', 'distinct', 'exists:employees,id']
         ];
     }
 }

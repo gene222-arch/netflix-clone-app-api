@@ -12,7 +12,7 @@ use App\Http\Requests\AccessRight\StoreRequest;
 use App\Traits\AccessRight\AccessRightServices;
 use App\Http\Requests\AccessRight\UpdateRequest;
 use App\Http\Requests\AccessRight\DestroyRequest;
-use App\Http\Requests\AccessRight\AssignRoleToUsersRequest;
+use App\Http\Requests\AccessRight\AssignRoleToEmployeesRequest;
 
 class AccessRightsController extends Controller
 {
@@ -26,12 +26,12 @@ class AccessRightsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\AccessRight\AssignRoleToUsersRequest  $request
+     * @param  App\Http\Requests\AccessRight\AssignRoleToEmployeesRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function assign(AssignRoleToUsersRequest $request, Role $role)
+    public function assign(AssignRoleToEmployeesRequest $request, Role $role)
     {
-        $result = $this->assignRole($role, $request->user_ids);
+        $result = $this->assignRole($role, $request->ids);
 
         return $result !== true 
             ? $this->error($result)

@@ -2,26 +2,26 @@
 
 namespace App\Traits\AccessRight;
 
-use App\Traits\ActivityLogsServices;
+use App\Models\Role;
 use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
+use App\Traits\ActivityLogsServices;
 
 trait AccessRightServices
 {
     use ActivityLogsServices;
 
-    public function assignRole(Role $role, array $userIds)
+    public function assignRole(Role $role, array $employeeIds)
     {
         try {
-            DB::transaction(function () use($role, $userIds)
+            DB::transaction(function () use($role, $employeeIds)
             {
-                $previousAssignedUsers = $role->users->map->pivot->map->model_id;
+                $previouslyAssignedEmployees = $role->employees->map->pivot->map->model_id;
                 
-                if ($previousAssignedUsers->count()) {
-                    $role->users()->detach($previousAssignedUsers);
+                if ($previouslyAssignedEmployees->count()) {
+                    $role->employees()->detach($previouslyAssignedEmployees);
                 }
 
-                $role->users()->attach($userIds);
+                $role->employees()->attach($employeeIds);
 
                 $this->createLog(
                     "Assign",
