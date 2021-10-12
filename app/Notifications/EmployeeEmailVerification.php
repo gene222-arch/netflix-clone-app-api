@@ -44,7 +44,9 @@ class EmployeeEmailVerification extends Notification
     public function toMail($notifiable)
     {
         $hashedEmail = sha1($notifiable->email);
-        $urlVerificationPath = "http://localhost:3000/employee/email-verification?token=$hashedEmail";
+        $id = $notifiable->id;
+
+        $urlVerificationPath = "http://localhost:3000/employee/email-verification?id=$id&hash=$hashedEmail";
 
         return (new MailMessage)
                     ->subject('Email Verification')

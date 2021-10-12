@@ -87,6 +87,33 @@ class EmployeesController extends Controller
 
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verify()
+    {
+        $hashedEmail = request()->input('hash');
+        $id = request()->input('id');
+
+        $userAccount = User::query()->find($id);
+
+        if ($userAccount->hasVerifiedEmail()) {
+            return $this->success(null, 'Email is already verified');
+        }
+
+        if (hash_equals($hashedEmail, sha1($userAccount->email))) 
+        {
+            $userAccount->markEmailAsVerified();
+
+            return $this->success(null, 'Email verified successfully');
+        }
+
+        return $this->error('Email not verified');
+    }
+
+
+    /**
      * Upload a file.
      *
      * @param  App\Http\Requests\Upload\UploadAvatarRequest  $request

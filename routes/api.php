@@ -44,6 +44,7 @@ use App\Http\Controllers\Api\User\UsersController;
 /**
  * Auth Module
  */
+
 Route::middleware(['api', 'verified'])->group(function () 
 {
     /**
@@ -195,6 +196,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/{employee}', [EmployeesController::class, 'show']);
         Route::post('/', [EmployeesController::class, 'store']);
         Route::post('/avatar', [EmployeesController::class, 'uploadAvatar']);
+        Route::put('/verify', [EmployeesController::class, 'verify'])->withoutMiddleware('verified');
         Route::put('/{employee}', [EmployeesController::class, 'update']);
         Route::delete('/', [EmployeesController::class, 'destroy']);
     });
