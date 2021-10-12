@@ -15,33 +15,7 @@ use App\Traits\Api\ApiServices;
 
 class EmployeesController extends Controller
 {
-    use ApiResponser, ApiServices;
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Http\Requests\Employee\LoginByPinRequest  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function loginByPin(LoginByPinRequest $request)
-    {
-        $employee = Employee::where('pin_code', $request->pin_code)->first();
-
-        if (! $employee) {
-            return $this->error('PIN do not match. Please try again');
-        }
-
-        return $this->token(
-            $employee->createToken(env('PERSONAL_ACCESS_TOKEN')),
-            'Logged in successfully',
-            [
-                'employee' => $employee,
-                'role' => $employee->roles->first()->name,
-                'permissions' => $employee->getPermissionsViaRoles()->map->name,
-            ]  
-        );
-    }
-
+    use ApiResponser;
 
     /**
      * Display a listing of the resource.

@@ -193,7 +193,6 @@ Route::middleware(['api', 'verified'])->group(function ()
     {
         Route::get('/', [EmployeesController::class, 'index']);
         Route::get('/{employee}', [EmployeesController::class, 'show']);
-        Route::post('/login', [EmployeesController::class, 'loginByPin']);
         Route::post('/', [EmployeesController::class, 'store']);
         Route::put('/{employee}', [EmployeesController::class, 'update']);
         Route::delete('/', [EmployeesController::class, 'destroy']);
