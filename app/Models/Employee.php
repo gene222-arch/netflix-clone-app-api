@@ -30,4 +30,9 @@ class Employee extends Model
             $employee->created_by_id = auth('api')->id();
         });
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by_id');
+    }
 }

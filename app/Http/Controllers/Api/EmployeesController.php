@@ -88,7 +88,7 @@ class EmployeesController extends Controller
         $result = HasEmployeeServices::destory($request);
 
         return is_string($result)
-        ? $this->error($result)
-        : $this->success(null, 'Employee\s deleted successfully');
+            ? $this->error($result)
+            : $this->success(null, 'Employee\s deleted successfully');
     }
 }

@@ -55,6 +55,15 @@ trait HasEmployeeServices
                     'avatar_path' => $request->avatar_path
                 ];
 
+                if ($request->email !== $employee->email) 
+                {
+                    $userDetails = $userDetails + [
+                        'email_verified_at' => NULL
+                    ];
+
+                    $user->sendEmailVerificationNotification();
+                }
+
                 $user->update($userDetails);
                 $user->syncRoles($request->role_id);
             });
@@ -71,8 +80,13 @@ trait HasEmployeeServices
         try {
             DB::transaction(function () use($request) 
             {
-                $employeeEmails = Employee::whereIn('id', $request->ids)->get()->map->email;
-                User::query()->whereIn('email', $employeeEmails)->delete();
+                $employeeEmails = Employee::whereIn('id', $request->ids)
+                    ->get()
+                    ->map
+                    ->email
+                    ->toArray();
+
+                DB::table('users')->whereIn('email', $employeeEmails)->delete();
                 
                 Employee::whereIn('id', $request->ids)->delete();
             });

@@ -39,11 +39,12 @@ class EmployeesControllerTest extends TestCase
     public function user_can_create_employee()
     {
         $data = [
-            'first_name' => 'Brix',
-            'last_name' => 'Br',
-            'email' => 'brgmail.com',
-            'phone' => '192647745578',
-            'pin_code' => '3333',
+            'first_name' => 'Employee',
+            'last_name' => 'Number Two',
+            'email' => 'alcaraznicobryan14@gmail.com',
+            'phone' => '231231312332',
+            'pin_code' => '4221',
+            'avatar_path' => 'avatar path',
             'role_id' => 5
         ];
 
@@ -60,16 +61,17 @@ class EmployeesControllerTest extends TestCase
     /** test */
     public function user_can_update_employee()
     {
-        $id = 2;
+        $id = 9;
 
         $data = [
             'id' => $id,
-            'first_name' => 'Namimi',
-            'last_name' => 'Kurusawa',
-            'email' => 'namiswangmail.com',
-            'phone' => '092647745578',
-            'pin_code' => '2222',
-            'role_id' => 5
+            'first_name' => 'Namimis',
+            'last_name' => 'Kurusaswa',
+            'email' => 'alcaraznicobryan14@gmail.com',
+            'phone' => '123123123',
+            'pin_code' => '3151',
+            'role_id' => 6,
+            'avatar_path' => 'some path'
         ];
 
         $response = $this->put(
@@ -82,12 +84,12 @@ class EmployeesControllerTest extends TestCase
     }
 
 
-    /** test */
+    /** @test */
     public function user_can_delete_employees()
     {
         $data = [
             'ids' => [
-                1
+                11
             ]
         ];
 
