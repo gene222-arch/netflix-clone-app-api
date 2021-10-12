@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Jobs\QueueEmployeeEmailVerificationNotification;
 use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Support\Str;
@@ -18,17 +19,24 @@ trait HasEmployeeServices
             {
                 Employee::create($request->validated());
 
+                $randomPassword = Str::random(10);
+
                 /** Create employee user account */
                 $userDetails = [
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
                     'email' => $request->email,
-                    'password' => Hash::make(Str::random(10)),
+                    'password' => Hash::make($randomPassword),
                     'avatar_path' => $request->avatar_path
                 ];
 
                 $user = User::query()->create($userDetails);   
                 $user->assignRole($request->role_id);
+
+                dispatch(
+                    new QueueEmployeeEmailVerificationNotification($user, $randomPassword)
+                )->delay(5);
+
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -51,6 +59,19 @@ trait HasEmployeeServices
                     'email' => $request->email,
                     'avatar_path' => $request->avatar_path
                 ];
+
+                if ($request->email !== $employee->email) 
+                {
+                    $randomPassword = Str::random(10);
+
+                    $userDetails = $userDetails + [
+                        'password' => Hash::make($randomPassword)
+                    ];
+
+                    dispatch(
+                        new QueueEmployeeEmailVerificationNotification($user, $randomPassword)
+                    )->delay(5);
+                }
 
                 $user->update($userDetails);
                 $user->syncRoles($request->role_id);
