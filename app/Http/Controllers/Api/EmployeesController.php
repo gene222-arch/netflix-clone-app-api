@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\StoreRequest;
 use App\Http\Requests\Employee\UpdateRequest;
 use App\Http\Requests\Employee\DestroyRequest;
-use App\Http\Requests\Upload\UploadPosterRequest;
+use App\Http\Requests\Upload\UploadAvatarRequest;
 use App\Traits\Upload\HasUploadable;
 
 class EmployeesController extends Controller
@@ -82,20 +82,20 @@ class EmployeesController extends Controller
     /**
      * Upload a file.
      *
-     * @param  App\Http\Requests\Upload\UploadPosterRequest  $request
+     * @param  App\Http\Requests\Upload\UploadAvatarRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function uploadPoster(UploadPosterRequest $request)
+    public function uploadAvatar(UploadAvatarRequest $request)
     {   
-        $poster = $this->upload(
+        $avatar = $this->upload(
             $request, 
-            'poster', 
+            'avatar', 
             'employees/avatars/', 
             264, 
             406
         );
 
-        return $this->success($poster);
+        return $this->success($avatar);
     }
 
 

@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class EmployeesControllerTest extends TestCase
@@ -83,8 +84,23 @@ class EmployeesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_upload_avatar()
+    {
+        $data = [
+            'avatar' => UploadedFile::fake()->image('employee_avatar.jpg', 300, 300)
+        ];
 
-    /** @test */
+        $response = $this->post(
+            "/api/employees/avatar",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_delete_employees()
     {
         $data = [
