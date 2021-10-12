@@ -10,6 +10,7 @@ use App\Http\Requests\Employee\StoreRequest;
 use App\Http\Requests\Employee\UpdateRequest;
 use App\Http\Requests\Employee\DestroyRequest;
 use App\Http\Requests\Upload\UploadAvatarRequest;
+use App\Models\User;
 use App\Traits\Upload\HasUploadable;
 
 class EmployeesController extends Controller
@@ -58,7 +59,12 @@ class EmployeesController extends Controller
      */
     public function show(Employee $employee)
     {
-        return $this->success(Employee::with('roles')->find($employee->id));
+        $role = User::firstWhere('email', $employee->email)->roles->first()->name;
+
+        return $this->success([
+            'employee' => $employee,
+            'role' => $role
+        ]);
     }
 
 
