@@ -96,7 +96,11 @@ class EmployeesController extends Controller
         $hashedEmail = request()->input('hash');
         $id = request()->input('id');
 
-        $userAccount = User::query()->findOrFail($id);
+        $userAccount = User::query()->find($id);
+
+        if (! $userAccount) {
+            return $this->error('Invalid url is found.');
+        }
 
         if (! (request()->has('hash') && request()->has('id'))) {
             return $this->error('You do not have the right to be verified.');
