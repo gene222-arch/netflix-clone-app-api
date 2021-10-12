@@ -27,8 +27,7 @@ trait HasEmployeeServices
                     'avatar_path' => $request->avatar_path
                 ];
 
-                $user = User::query()->create($userDetails);
-                $user->sendQueueEmailVerificationNotification();
+                $user = User::query()->create($userDetails);   
                 $user->assignRole($request->role_id);
             });
         } catch (\Throwable $th) {
@@ -52,15 +51,6 @@ trait HasEmployeeServices
                     'email' => $request->email,
                     'avatar_path' => $request->avatar_path
                 ];
-
-                if ($request->email !== $employee->email) 
-                {
-                    $userDetails = $userDetails + [
-                        'email_verified_at' => NULL
-                    ];
-
-                    $user->sendQueueEmailVerificationNotification();
-                }
 
                 $user->update($userDetails);
                 $user->syncRoles($request->role_id);
