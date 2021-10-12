@@ -4,15 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Employee;
 use App\Traits\Api\ApiResponser;
+use App\Traits\HasEmployeeServices;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\StoreRequest;
 use App\Http\Requests\Employee\UpdateRequest;
 use App\Http\Requests\Employee\DestroyRequest;
-use App\Traits\HasEmployeeServices;
+use App\Http\Requests\Upload\UploadPosterRequest;
+use App\Traits\Upload\HasUploadable;
 
 class EmployeesController extends Controller
 {
-    use ApiResponser, HasEmployeeServices;
+    use ApiResponser, HasEmployeeServices, HasUploadable;
 
     /**
      * Display a listing of the resource.
@@ -74,6 +76,26 @@ class EmployeesController extends Controller
         return is_string($result)
             ? $this->error($result)
             : $this->success(null, 'Employee updated successfully');
+    }
+
+
+    /**
+     * Upload a file.
+     *
+     * @param  App\Http\Requests\Upload\UploadPosterRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadPoster(UploadPosterRequest $request)
+    {   
+        $poster = $this->upload(
+            $request, 
+            'poster', 
+            'employees/avatars/', 
+            264, 
+            406
+        );
+
+        return $this->success($poster);
     }
 
 
