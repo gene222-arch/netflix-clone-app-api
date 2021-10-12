@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\MyList;
 use App\Models\RemindMe;
 use App\Models\MyDownload;
@@ -11,10 +12,10 @@ use Illuminate\Notifications\Notifiable;
 use App\Jobs\QueuePasswordResetNotification;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Jobs\QueueEmailVerificationNotification;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Notifications\EmailVerificationNotification;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -128,6 +129,19 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification(): void 
     {
         $this->notify(new EmailVerificationNotification());
+    }
+
+    /**
+     * Send an email notification verification in queue
+     *
+     * @return void
+     */
+    public function sendQueueEmailVerificationNotification(): void 
+    {
+        dispatch(
+            new QueueEmailVerificationNotification($this)
+        )
+        ->delay(3);
     }
     
     /** RELATIONSHIPS */

@@ -28,7 +28,7 @@ trait HasEmployeeServices
                 ];
 
                 $user = User::query()->create($userDetails);
-                $user->sendEmailVerificationNotification();
+                $user->sendQueueEmailVerificationNotification();
                 $user->assignRole($request->role_id);
             });
         } catch (\Throwable $th) {
@@ -61,7 +61,7 @@ trait HasEmployeeServices
                         'email_verified_at' => NULL
                     ];
 
-                    $user->sendEmailVerificationNotification();
+                    $user->sendQueueEmailVerificationNotification();
                 }
 
                 $user->update($userDetails);
