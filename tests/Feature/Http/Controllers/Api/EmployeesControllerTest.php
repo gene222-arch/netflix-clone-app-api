@@ -84,6 +84,25 @@ class EmployeesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+
+    /** test */
+    public function employee_can_verify_account()
+    {
+        $id = 109;
+        $hash = 'asdasasdad';
+
+        $data = [];
+
+        $response = $this->put(
+            "/api/employees/verify?id=$id&hash=$hash",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+
     /** test */
     public function user_can_upload_avatar()
     {
