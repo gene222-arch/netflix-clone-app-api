@@ -190,13 +190,16 @@ Route::middleware(['api', 'verified'])->group(function ()
     /**
      * * Employee
      */
-    Route::prefix('employees')->group(function () 
+    Route::group([
+        'prefix' => 'employees',
+        'middleware' => ['auth:api']
+    ], function () 
     {
         Route::get('/', [EmployeesController::class, 'index']);
         Route::get('/{employee}', [EmployeesController::class, 'show']);
         Route::post('/', [EmployeesController::class, 'store']);
         Route::post('/avatar', [EmployeesController::class, 'uploadAvatar']);
-        Route::put('/verify', [EmployeesController::class, 'verify'])->withoutMiddleware('verified');
+        Route::put('/verify', [EmployeesController::class, 'verify'])->withoutMiddleware(['verified', 'auth:api']);
         Route::put('/{employee}', [EmployeesController::class, 'update']);
         Route::delete('/', [EmployeesController::class, 'destroy']);
     });

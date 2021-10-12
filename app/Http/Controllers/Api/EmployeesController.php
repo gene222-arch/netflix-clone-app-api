@@ -96,13 +96,17 @@ class EmployeesController extends Controller
         $hashedEmail = request()->input('hash');
         $id = request()->input('id');
 
-        $userAccount = User::query()->find($id);
+        $userAccount = User::query()->findOrFail($id);
+
+        if (! (request()->has('hash') && request()->has('id'))) {
+            return $this->error('You do not have the right to be verified.');
+        }
 
         if ($userAccount->hasVerifiedEmail()) {
             return $this->success(null, 'Email is already verified');
         }
 
-        if (hash_equals($hashedEmail, sha1($userAccount->email))) 
+        if (hash_equals((string) $hashedEmail, sha1($userAccount->email))) 
         {
             $userAccount->markEmailAsVerified();
 
