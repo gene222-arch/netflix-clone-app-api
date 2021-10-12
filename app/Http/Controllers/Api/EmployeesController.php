@@ -12,10 +12,11 @@ use App\Http\Requests\Employee\UpdateRequest;
 use App\Http\Requests\Employee\DestroyRequest;
 use App\Http\Requests\Employee\LoginByPinRequest;
 use App\Traits\Api\ApiServices;
+use App\Traits\HasEmployeeServices;
 
 class EmployeesController extends Controller
 {
-    use ApiResponser;
+    use ApiResponser, HasEmployeeServices;
 
     /**
      * Display a listing of the resource.
@@ -43,14 +44,7 @@ class EmployeesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        try {
-            DB::transaction(function () use ($request) {
-                $employee = Employee::create($request->validated());
-                $employee->assignRole($request->role_id);
-            });
-        } catch (\Throwable $th) {
-            return $this->error($th->getMessage());
-        }
+        HasEmployeeServices::store($request);
 
         return $this->success(null, 'Employee created successfully.');
     }
@@ -68,7 +62,6 @@ class EmployeesController extends Controller
     }
 
 
-
     /**
      * Update the specified resource in storage.
      *
@@ -78,14 +71,7 @@ class EmployeesController extends Controller
      */
     public function update(UpdateRequest $request, Employee $employee)
     {
-        try {
-            DB::transaction(function () use ($request, $employee) {
-                $employee->update($request->validated());
-                $employee->syncRoles($request->role_id);
-            });
-        } catch (\Throwable $th) {
-            return $this->error($th->getMessage());
-        }
+        HasEmployeeServices::update($request, $employee);
         
         return $this->success(null, 'Employee updated successfully.');
     }
@@ -99,7 +85,7 @@ class EmployeesController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        Employee::whereIn('id', $request->ids)->delete();
+        HasEmployeeServices::destory($request);
 
         return $this->success(null, 'Employee deleted successfully.');
     }
