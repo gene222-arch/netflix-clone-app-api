@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Employee;
-use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\StoreRequest;
 use App\Http\Requests\Employee\UpdateRequest;
 use App\Http\Requests\Employee\DestroyRequest;
-use App\Http\Requests\Employee\LoginByPinRequest;
-use App\Traits\Api\ApiServices;
 use App\Traits\HasEmployeeServices;
 
 class EmployeesController extends Controller
@@ -44,9 +40,11 @@ class EmployeesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        HasEmployeeServices::store($request);
+        $result = HasEmployeeServices::store($request);
 
-        return $this->success(null, 'Employee created successfully.');
+        return is_string($result)
+            ? $this->error($result)
+            : $this->success(null, 'Employee created successfully');
     }
 
 
@@ -71,9 +69,11 @@ class EmployeesController extends Controller
      */
     public function update(UpdateRequest $request, Employee $employee)
     {
-        HasEmployeeServices::update($request, $employee);
+        $result = HasEmployeeServices::update($request, $employee);
         
-        return $this->success(null, 'Employee updated successfully.');
+        return is_string($result)
+            ? $this->error($result)
+            : $this->success(null, 'Employee updated successfully');
     }
 
 
@@ -85,8 +85,10 @@ class EmployeesController extends Controller
      */
     public function destroy(DestroyRequest $request)
     {
-        HasEmployeeServices::destory($request);
+        $result = HasEmployeeServices::destory($request);
 
-        return $this->success(null, 'Employee deleted successfully.');
+        return is_string($result)
+        ? $this->error($result)
+        : $this->success(null, 'Employee\s deleted successfully');
     }
 }
