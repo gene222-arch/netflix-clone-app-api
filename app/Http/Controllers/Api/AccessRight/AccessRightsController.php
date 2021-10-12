@@ -11,7 +11,7 @@ use App\Http\Requests\AccessRight\StoreRequest;
 use App\Traits\AccessRight\AccessRightServices;
 use App\Http\Requests\AccessRight\UpdateRequest;
 use App\Http\Requests\AccessRight\DestroyRequest;
-use App\Http\Requests\AccessRight\AssignRoleToEmployeesRequest;
+use App\Http\Requests\AccessRight\AssignRoleToUsersRequest;
 use Spatie\Permission\Models\Role;
 
 class AccessRightsController extends Controller
@@ -26,11 +26,11 @@ class AccessRightsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\AccessRight\AssignRoleToEmployeesRequest  $request
+     * @param  \App\Http\Requests\AccessRight\AssignRoleToUsersRequest  $request
      * @param  \Spatie\Permission\Models\Role  $role
      * @return \Illuminate\Http\JsonResponse
      */
-    public function assign(AssignRoleToEmployeesRequest $request, Role $role)
+    public function assign(AssignRoleToUsersRequest $request, Role $role)
     {
         $result = $this->assignRole($role, $request->ids);
 
