@@ -43,8 +43,6 @@ trait HasEmployeeServices
         try {
             DB::transaction(function () use ($request, $employee) 
             {
-                $employee->update($request->validated());
-
                 /** Update employee user account */
                 $user = User::query()->firstWhere('email', '=', $employee->email);
 
@@ -66,6 +64,8 @@ trait HasEmployeeServices
 
                 $user->update($userDetails);
                 $user->syncRoles($request->role_id);
+
+                $employee->update($request->validated());
             });
         } catch (\Throwable $th) {
             return $th->getMessage();

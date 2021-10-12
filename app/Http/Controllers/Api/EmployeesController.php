@@ -27,6 +27,7 @@ class EmployeesController extends Controller
         $result = Employee::with('roles')
             ->withCount('roles')
             ->having('roles_count', '<=', 1)
+            ->orderByDesc('created_at')
             ->get();
 
         return !$result
