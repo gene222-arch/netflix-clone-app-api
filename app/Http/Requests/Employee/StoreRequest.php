@@ -14,6 +14,7 @@ class StoreRequest extends BaseRequest
     public function rules()
     {
         return [
+            'avatar_path' => ['required', 'string'],
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users', 'unique:employees'],

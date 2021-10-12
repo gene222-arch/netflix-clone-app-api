@@ -14,6 +14,7 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         return [
+            'avatar_path' => ['required', 'string'],
             'id' => ['required', 'integer', 'exists:employees'],
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
