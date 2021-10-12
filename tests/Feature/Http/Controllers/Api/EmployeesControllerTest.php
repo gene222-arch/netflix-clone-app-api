@@ -94,7 +94,7 @@ class EmployeesControllerTest extends TestCase
         $data = [];
 
         $response = $this->put(
-            "/api/employees/verify?id=$id&hash=$hash",
+            "/api/employees/verify/email?id=$id&hash=$hash",
             $data,
             $this->apiHeader()
         );
