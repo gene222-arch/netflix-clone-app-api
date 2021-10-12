@@ -32,14 +32,14 @@ class AccessRightsControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-    /** test */
+    /** @test */
     public function user_can_assign_access_rights_to_employees()
     {
         $roleId = 2;
 
         $data = [
             'ids' => [
-                2
+                63
             ]
         ];
 
