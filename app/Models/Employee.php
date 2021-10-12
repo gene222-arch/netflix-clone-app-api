@@ -14,6 +14,7 @@ class Employee extends Model
     protected $guard_name = 'api';
     
     protected $fillable = [
+        'avatar_path',
         'created_by_id',
         'first_name',
         'last_name',
