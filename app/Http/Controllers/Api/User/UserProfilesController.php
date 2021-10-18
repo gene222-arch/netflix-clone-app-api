@@ -129,7 +129,7 @@ class UserProfilesController extends Controller
         $path = $this->upload(
             $request,
             'avatar',
-            UserProfile::$FILE_PATH,
+            'users/' . $request->user()->id . '/user-profiles/',
             320,
             320 
         );

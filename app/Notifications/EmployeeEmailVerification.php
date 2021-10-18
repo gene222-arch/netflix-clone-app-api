@@ -57,7 +57,7 @@ class EmployeeEmailVerification extends Notification
                     ->line(new HtmlString('<strong>Email: </strong>' . $notifiable->email))
                     ->line(new HtmlString('<strong>Password: </strong>' . $this->password))
                     ->line('')
-                    ->action('Notification Action', url($urlVerificationPath));
+                    ->action('Verify', url($urlVerificationPath));
     }
 
     /**
