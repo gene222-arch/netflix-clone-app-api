@@ -15,7 +15,8 @@ class RecentlyWatchedMovie extends Model
         'user_profile_id',
         'movie_id',
         'recently_watched_at',
-        'last_played_position_millis'
+        'last_played_position_millis',
+        'duration_in_millis',
     ];
 
     public $timestamps = false;

@@ -54,7 +54,8 @@ class RecentlyWatchedMoviesController extends Controller
                     'movie_id' => $request->movie_id
                 ],
                 [
-                    'recently_watched_at' => Carbon::now()
+                    'recently_watched_at' => Carbon::now(),
+                    'duration_in_millis' => $request->duration_in_millis
                 ]
             );
 
