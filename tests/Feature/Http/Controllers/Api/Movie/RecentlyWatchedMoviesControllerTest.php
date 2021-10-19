@@ -73,6 +73,24 @@ class RecentlyWatchedMoviesControllerTest extends TestCase
 
 
     /** test */
+    public function user_can_update_recently_watched_movie_position_millis()
+    {
+        $data = [
+            'user_profile_id' => 4,
+            'movie_id' => 5,
+            'last_played_position_millis' => 1231
+        ];
+
+        $response = $this->put(
+            '/api/recently-watched-movies/position-millis',
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_delete_recently_watched_movie()
     {
         $data = [
