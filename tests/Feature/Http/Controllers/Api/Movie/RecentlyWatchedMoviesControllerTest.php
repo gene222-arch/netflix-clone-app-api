@@ -38,10 +38,11 @@ class RecentlyWatchedMoviesControllerTest extends TestCase
     /** test */
     public function user_can_create_recently_watched_movie()
     {
-        $userProfileId = 4;
+        $userProfileId = 1;
 
         $data = [
-            'movie_id' => 5,
+            'movie_id' => 23,
+            'duration_in_millis' => 1231231
         ];
 
         $response = $this->post(
