@@ -74,12 +74,7 @@ class UserProfilesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $profile = UserProfile::create([
-            'user_id' => $request->user('api')->id,
-            'name' => $request->name,
-            'is_for_kids' => $request->is_for_kids,
-            'avatar' => $request->avatar
-        ]);
+        $profile = UserProfile::create($request->validated());
 
         return $this->success($profile, 'Profile created successfully.');
     }
@@ -113,7 +108,11 @@ class UserProfilesController extends Controller
      */
     public function update(UpdateRequest $request, UserProfile $profile)
     {
-        $profile->update($request->validated());
+        $data = $request->validated() + [
+            'previous_avatar' => $profile->avatar
+        ];
+
+        $profile->update($data);
 
         return $this->success(null, 'Profile updated successfully.');
     }

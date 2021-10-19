@@ -19,6 +19,7 @@ class UserProfile extends Model
         'user_id',
         'name',
         'avatar',
+        'previous_avatar',
         'is_for_kids',
         'is_profile_locked',
         'pin_code'
@@ -30,6 +31,16 @@ class UserProfile extends Model
     ];
 
     public static string $FILE_PATH = 'images/avatars';
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($userProfile) 
+        {
+            $userProfile->user_id = auth('api')->user()->id;
+        });
+    }
 
     /** RELATIONSHIPS */
 
