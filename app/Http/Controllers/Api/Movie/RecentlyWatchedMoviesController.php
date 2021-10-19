@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Movie;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\RecentlyWatchedMovie\Request;
+use App\Http\Requests\Movie\RecentlyWatchedMovie\UpdatePositionMillisRequest;
 use App\Models\RecentlyWatchedMovie;
 use App\Models\UserProfile;
 use Carbon\Carbon;
@@ -84,12 +85,26 @@ class RecentlyWatchedMoviesController extends Controller
         RecentlyWatchedMovie::where([
             [ 'user_profile_id', $request->user_profile_id ],
             [ 'movie_id', $request->movie_id ],
-            [ 'user_id', $request->user()->id ]
+            [ 'user_id', $request->user('api')->id ]
         ])
             ->update([
                 'recently_watched_at' => Carbon::now()
             ]);
         
+        return $this->success(null, 'Recently Watched Movie updated successfully.');
+    }
+
+    public function updatePositionMillis(UpdatePositionMillisRequest $request)
+    {
+        RecentlyWatchedMovie::where([
+            [ 'user_profile_id', $request->user_profile_id ],
+            [ 'movie_id', $request->movie_id ],
+            [ 'user_id', $request->user('api')->id ]
+        ])
+            ->update([
+                'last_played_position_millis' => $request->last_played_position_millis
+            ]);
+
         return $this->success(null, 'Recently Watched Movie updated successfully.');
     }
 
