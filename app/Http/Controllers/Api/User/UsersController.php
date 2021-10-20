@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\User\UpdateEmailRequest;
 use App\Http\Requests\User\UpdatePasswordRequest;
 use App\Notifications\ChangeEmailVerificationNotification;
-use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -50,8 +51,11 @@ class UsersController extends Controller
     {
         $auth = request()->user('api');
 
+        $user = $auth->withoutRelations();
+        $user->account_created_at = Carbon::parse($user->created_at)->format('F Y');
+
         return $this->success([
-            'user' => $auth->withoutRelations(),
+            'user' => $user,
             'profiles' => $auth->profiles,
             'role' => $auth->roles->first()?->withoutRelations()->name
         ]);
