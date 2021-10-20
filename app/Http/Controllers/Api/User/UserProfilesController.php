@@ -60,9 +60,11 @@ class UserProfilesController extends Controller
 
         $profileDetails->recently_watched_movies = $profileDetails
             ->recentlyWatchedMovies
-            ->map(function ($recentlyWatchedMovie) {
+            ->map(function ($recentlyWatchedMovie) 
+            {
                 $movie = $recentlyWatchedMovie->movie;
                 $movie->last_played_position_millis = $recentlyWatchedMovie->last_played_position_millis;
+                $movie->duration_in_millis = $recentlyWatchedMovie->duration_in_millis;
 
                 return $movie;
             });
