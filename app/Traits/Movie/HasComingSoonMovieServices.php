@@ -44,7 +44,7 @@ trait HasComingSoonMovieServices
 
                 $query->with('similarMovies.movie');
                 $query->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
-                $query->when($isComingSoon, fn($q) => $q->whereNull('released_at'));
+                $query->when($isComingSoon, fn($q) => $q->where('released_at', null));
                 
                 return $query
                             ->orderBy('status')
