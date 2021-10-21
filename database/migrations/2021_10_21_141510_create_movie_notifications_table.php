@@ -15,11 +15,8 @@ class CreateMovieNotificationsTable extends Migration
     {
         Schema::create('movie_notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('user_profile_id')->constrained();
             $table->foreignId('movie_id')->constrained();
             $table->string('type')->default('New Arrival');
-            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
