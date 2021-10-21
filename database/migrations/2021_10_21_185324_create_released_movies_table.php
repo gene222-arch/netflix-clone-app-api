@@ -16,8 +16,9 @@ class CreateReleasedMoviesTable extends Migration
     {
         Schema::create('released_movies', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('released_by_id')->constrained('users');
             $table->foreignId('movie_id')->constrained();
-            $table->foreignId('coming_soon_movie_id')->constrained();
+            $table->foreignId('coming_soon_movie_id')->nullable()->constrained();
             $table->timestamp('released_at')->default(Carbon::now());
         });
     }

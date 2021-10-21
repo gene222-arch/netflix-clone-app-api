@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
+use App\Models\ReleasedMovie;
 
 trait HasComingSoonMovieServices
 {
@@ -259,6 +260,11 @@ trait HasComingSoonMovieServices
                     $movie->similarMovies()->saveMany($similarMovies);
 
                     event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
+                    
+                    ReleasedMovie::query()->create([
+                        'movie_id' => $movie->id,
+                        'coming_soon_movie_id' => $comingSoonMovie->id
+                    ]);
                 }
 
                 ComingSoonMovie::cacheToForget();
