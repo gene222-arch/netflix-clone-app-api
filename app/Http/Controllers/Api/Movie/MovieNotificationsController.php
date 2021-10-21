@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Movie;
 use App\Models\MovieNotification;
 use App\Http\Controllers\Controller;
 use App\Traits\Api\ApiResponser;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MovieNotificationsController extends Controller
@@ -17,7 +18,11 @@ class MovieNotificationsController extends Controller
      */
     public function index()
     {
-        $notifications = MovieNotification::with('movie:id,title,wallpaper_path', 'releasedDetails:id,movie_id,coming_soon_movie_id')
+        $notifications = MovieNotification::with(
+                'movie:id,title,wallpaper_path', 
+                'releasedDetails:id,movie_id,coming_soon_movie_id'
+            )
+            ->where('created_at', '<=', Carbon::now()->addMonth())
             ->orderByDesc('created_at')
             ->get();
 
