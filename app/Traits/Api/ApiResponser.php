@@ -62,7 +62,7 @@ trait ApiResponser
      */
     public function noContent(string $message = 'No Content')
 	{
-        return self::jsonResponse(204, null, $message);
+        return self::jsonResponse(204, null, $message, 'no content');
 	}
 
     private static function jsonResponse(int $code = 200, $data = null, $message = null, string $status = '')

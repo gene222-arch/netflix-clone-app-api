@@ -37,7 +37,8 @@ abstract class TestCase extends BaseTestCase
             ->assertJsonStructure([
                 'status',
                 'message',
-                'data'
+                'data',
+                'status_message'
             ]);
     }
 
