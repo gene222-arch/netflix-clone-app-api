@@ -6,6 +6,7 @@ use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Movie\RemindMe\Request;
+use Carbon\Carbon;
 
 class RemindMesController extends Controller
 {
@@ -36,7 +37,9 @@ class RemindMesController extends Controller
                 
         if (! $findInMyListQuery->exists()) 
         {
-            $remindMes->create($request->validated());
+            $remindMes->create([
+                'reminded_at' => Carbon::now()
+            ] + $request->validated());
 
             return $this->success(null, 'Reminded.');
         }

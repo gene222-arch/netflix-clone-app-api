@@ -12,7 +12,8 @@ class RemindMe extends Model
     protected $fillable = [
         'user_id',
         'user_profile_id',
-        'coming_soon_movie_id'
+        'coming_soon_movie_id',
+        'reminded_at'
     ];
 
     public $timestamps = false;
