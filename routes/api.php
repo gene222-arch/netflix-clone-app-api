@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\Movie\AuthorsController;
 use App\Http\Controllers\Api\Movie\CastsController;
 use App\Http\Controllers\Api\Movie\DirectorsController;
 use App\Http\Controllers\Api\Movie\GenresController;
+use App\Http\Controllers\Api\Movie\MovieNotificationsController;
 use App\Http\Controllers\Api\Movie\MoviesController;
 use App\Http\Controllers\Api\Movie\MyDownloadsController;
 use App\Http\Controllers\Api\Movie\MyListsController;
@@ -241,6 +242,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::delete('/', [MoviesController::class, 'destroy']);
     });
 
+    Route::get('movie-notifications', [MovieNotificationsController::class, 'index'])->middleware('auth:api');
     Route::post('my-lists', [MyListsController::class, 'toggle']);
     Route::post('remind-mes', [RemindMesController::class, 'toggle']);
 
