@@ -17,7 +17,7 @@ class MovieNotificationsController extends Controller
      */
     public function index()
     {
-        $notifications = MovieNotification::all(['id', 'type', 'read_at', 'created_at']);
+        $notifications = MovieNotification::with('movie:id,title')->get();
 
         return !$notifications->count() ? $this->noContent(): $this->success($notifications);
     }
