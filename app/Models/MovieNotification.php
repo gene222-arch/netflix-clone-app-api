@@ -28,4 +28,9 @@ class MovieNotification extends Model
     {
         return $this->belongsTo(Movie::class);
     }
+
+    public function releasedDetails()
+    {
+        return $this->hasOne(ReleasedMovie::class, 'movie_id', 'movie_id');
+    }
 }

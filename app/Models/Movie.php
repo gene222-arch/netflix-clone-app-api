@@ -53,7 +53,6 @@ class Movie extends Model
             static::cacheToForget();
             event(new \App\Events\MovieCreatedEvent($movie));
             MovieNotification::query()->create([ 'movie_id' => $movie->id ]);
-            ReleasedMovie::query()->create(['movie_id' => $movie->id]);
         });
     }
 

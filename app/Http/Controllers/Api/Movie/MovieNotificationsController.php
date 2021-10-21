@@ -17,7 +17,9 @@ class MovieNotificationsController extends Controller
      */
     public function index()
     {
-        $notifications = MovieNotification::with('movie:id,title,wallpaper_path')->get();
+        $notifications = MovieNotification::with('movie:id,title,wallpaper_path', 'releasedDetails:id,movie_id,coming_soon_movie_id')
+            ->orderByDesc('created_at')
+            ->get();
 
         return !$notifications->count() ? $this->noContent(): $this->success($notifications);
     }
