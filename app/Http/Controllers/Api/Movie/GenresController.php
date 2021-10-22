@@ -56,7 +56,7 @@ class GenresController extends Controller
                 );
             });
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            return $this->error($th->getMessage());
         }
 
         return $this->success(null, 'Genre created successfully.');
