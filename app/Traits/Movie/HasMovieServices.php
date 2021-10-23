@@ -231,42 +231,19 @@ trait HasMovieServices
 
     public function getTopSearches(bool $isForKids)
     {
-        $cacheKey = 'movies.topSearches';
-        $isForKidsCacheKey = 'is.for.kids.top.searches';
+        $query = Movie::query();
 
-        if (! Cache::has($isForKidsCacheKey)) {
-            $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
-        } else {
-            $cachedIsForKids = Cache::get($isForKidsCacheKey);
-        }
+        $query->select('movies.*', 'movie_reports.*');
+        $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
 
-        if (! Cache::has($cacheKey) || $cachedIsForKids !== $isForKids) 
-        {
-            Cache::forget($isForKidsCacheKey);
-            Cache::forget($cacheKey);
-
-            Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
-            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids)
-            {
-                $query = Movie::query();
-
-                $query->select('movies.*', 'movie_reports.*');
-                $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
-
-                $query = $query
-                    ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
-                    ->where('movie_reports.search_count', '>', 0)
-                    ->orderByDesc('movie_reports.search_count')
-                    ->take(42)
-                    ->get();
-
-                return $query;
-            });
-
-            return $result;
-        }
-
-        return Cache::get($cacheKey);
+        $query = $query
+            ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
+            ->where('movie_reports.search_count', '>', 0)
+            ->orderByDesc('movie_reports.search_count')
+            ->take(42)
+            ->get();
+        
+        return $query;
     }
 
 
