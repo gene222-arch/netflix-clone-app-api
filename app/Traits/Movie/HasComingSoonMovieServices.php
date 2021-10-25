@@ -20,7 +20,7 @@ trait HasComingSoonMovieServices
 {
     use HasUploadable, ActivityLogsServices;
     
-    public function getComingSoonMovies(bool $isForKids, bool $isComingSoon) // null
+    public function getComingSoonMovies(bool $isForKids, bool $isComingSoon, bool $isFiltered) // null
     {
         $cacheKey = 'coming.soon.movies.index';
         $isForKidsCacheKey = 'is.for.kids.coming.soon.movies';
@@ -31,7 +31,7 @@ trait HasComingSoonMovieServices
             $cachedIsForKids = Cache::get($isForKidsCacheKey);
         }
 
-        if (! Cache::has($cacheKey) || $cachedIsForKids !== $isForKids) 
+        if (! Cache::has($cacheKey) || $cachedIsForKids !== $isForKids || !$isFiltered) 
         {
             Cache::forget($isForKidsCacheKey);
             Cache::forget($cacheKey);

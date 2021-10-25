@@ -52,6 +52,10 @@ class Movie extends Model
         {
             static::cacheToForget();
             event(new \App\Events\MovieCreatedEvent($movie));
+            MovieNotification::create([
+                'movie_id' => $movie->id,
+                'type' => 'New Arrival'
+            ]);
         });
     }
 
