@@ -244,7 +244,16 @@ Route::middleware(['api', 'verified'])->group(function ()
 
     Route::get('movie-notifications', [MovieNotificationsController::class, 'index'])->middleware('auth:api');
     Route::post('my-lists', [MyListsController::class, 'toggle']);
-    Route::post('remind-mes', [RemindMesController::class, 'toggle']);
+    
+    /**
+      * Remind me
+      */
+        Route::prefix('remind-mes')->group(function () 
+        {
+            Route::post('', [RemindMesController::class, 'toggle']);
+            Route::put('/mark-as-read', [RemindMesController::class, 'markAsRead']);
+        });
+
 
     /**
       * My Downloads
