@@ -172,6 +172,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
         App\Providers\GoogleDriveServiceProvider::class,
+        NotificationChannels\ExpoPushNotifications\ExpoPushNotificationsServiceProvider::class,
 
         /*
          * Application Service Providers...
