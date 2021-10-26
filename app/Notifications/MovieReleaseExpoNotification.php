@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Movie;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\ExpoPushNotifications\ExpoChannel;
@@ -11,11 +12,13 @@ class MovieReleaseExpoNotification extends Notification
 {
     use Queueable;
 
-    public string $movieTitle;
+    public Movie $movie;
+    public int $comingSoonMovieId;
 
-    public function __construct(string $movieTitle)
+    public function __construct(Movie $movie, int $comingSoonMovieId)
     {
-        $this->movieTitle = $movieTitle;
+        $this->movie = $movie;
+        $this->comingSoonMovieId = $comingSoonMovieId;
     }
 
     public function via($notifiable)
@@ -25,11 +28,20 @@ class MovieReleaseExpoNotification extends Notification
 
     public function toExpoPush($notifiable)
     {        
+        $isInRemindedComingSoonMovies = $notifiable
+            ->remindMes
+            ->map
+            ->coming_soon_movie_id
+            ->search($this->comingSoonMovieId);
+
+        $title = !$isInRemindedComingSoonMovies ? 'Release 📣' : 'Reminder 🔔';
+        
         return ExpoMessage::create()
             ->badge(1)
             ->enableSound()
-            ->title("Release")
-            ->body($this->movieTitle . " is Released")
-            ->setChannelId('movie-release-channel');
+            ->title($title)
+            ->body($this->movie->title . " is Released")
+            ->setChannelId('movie-release-channel')
+            ->priority('high');
     }
 }

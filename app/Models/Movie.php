@@ -6,6 +6,7 @@ use App\Models\Genre;
 use App\Models\Author;
 use App\Models\Director;
 use Illuminate\Support\Str;
+use App\Models\MovieNotification;
 use App\Traits\Upload\HasUploadable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
