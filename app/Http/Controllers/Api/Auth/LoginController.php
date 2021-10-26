@@ -113,6 +113,6 @@ class LoginController extends Controller
         $user->token()->revoke();
         $user->markedAsInActive();
 
-        return $this->success([], 'User logged out successfully.');
+        return $this->success(NULL, 'Logged out successfully.');
     }
 }
