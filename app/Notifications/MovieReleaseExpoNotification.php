@@ -3,8 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\ExpoPushNotifications\ExpoChannel;
 use NotificationChannels\ExpoPushNotifications\ExpoMessage;
@@ -31,6 +29,7 @@ class MovieReleaseExpoNotification extends Notification
             ->badge(1)
             ->enableSound()
             ->title("Release")
-            ->body($this->movieTitle . " is Released");
+            ->body($this->movieTitle . " is Released")
+            ->setChannelId('movie-release-channel');
     }
 }
