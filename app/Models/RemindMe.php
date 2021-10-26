@@ -13,7 +13,9 @@ class RemindMe extends Model
         'user_id',
         'user_profile_id',
         'coming_soon_movie_id',
-        'reminded_at'
+        'read_at',
+        'reminded_at',
+        'is_released'
     ];
 
     public $timestamps = false;

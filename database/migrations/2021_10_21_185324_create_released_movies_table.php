@@ -19,7 +19,6 @@ class CreateReleasedMoviesTable extends Migration
             $table->foreignId('released_by_id')->constrained('users');
             $table->foreignId('movie_id')->constrained();
             $table->foreignId('coming_soon_movie_id')->nullable()->constrained();
-            $table->timestamp('read_at')->nullable();
             $table->timestamp('released_at')->default(Carbon::now());
         });
     }

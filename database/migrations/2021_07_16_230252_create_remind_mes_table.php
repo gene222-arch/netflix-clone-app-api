@@ -18,7 +18,9 @@ class CreateRemindMesTable extends Migration
             $table->foreignId('user_id');
             $table->foreignId('user_profile_id');
             $table->foreignId('coming_soon_movie_id');
+            $table->timestamp('read_at')->nullable();
             $table->timestamp('reminded_at')->default(now());
+            $table->boolean('is_released')->default(false);
 
             $table->unique([
                 'user_profile_id',
