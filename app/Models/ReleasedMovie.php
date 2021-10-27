@@ -29,7 +29,7 @@ class ReleasedMovie extends Model
         });
     }
 
-    public function releasedMovieNotifiedUser()
+    public function releasedMovieNotifiedUsers()
     {
         return $this->hasMany(ReleasedMovieNotifiedUser::class);
     }

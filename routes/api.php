@@ -260,7 +260,7 @@ Route::middleware(['api', 'verified'])->group(function ()
       */
       Route::prefix('released-movie-notified-users')->group(function () 
       {
-          Route::post('/', [ReleasedMovieNotifiedUsersController::class, 'store']);
+          Route::post('/{releasedMovie}', [ReleasedMovieNotifiedUsersController::class, 'store']);
       });
 
 

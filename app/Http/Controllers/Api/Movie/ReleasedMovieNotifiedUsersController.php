@@ -19,7 +19,7 @@ class ReleasedMovieNotifiedUsersController extends Controller
     public function store(ReleasedMovie $releasedMovie)
     {
         $releasedMovie
-            ->releasedMovieNotifiedUser()
+            ->releasedMovieNotifiedUsers()
             ->create([
                 'user_id' => auth('api')->user()->id,
                 'notified_at' => Carbon::now(),
