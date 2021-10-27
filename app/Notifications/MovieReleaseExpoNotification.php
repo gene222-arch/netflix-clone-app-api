@@ -28,19 +28,14 @@ class MovieReleaseExpoNotification extends Notification
 
     public function toExpoPush($notifiable)
     {        
-        $isInRemindedComingSoonMovies = $notifiable
-            ->remindMes
-            ->map
-            ->coming_soon_movie_id
-            ->search($this->comingSoonMovieId);
-
-        $title = !$isInRemindedComingSoonMovies ? 'Release 📣' : 'Reminder 🔔';
-        
         return ExpoMessage::create()
             ->badge(1)
             ->enableSound()
-            ->title($title)
+            ->title('Release 📣')
             ->body($this->movie->title . " is Released")
+            ->setJsonData([
+                'type' => 'MovieReleaseExpoNotification'
+            ])
             ->setChannelId('movie-release-channel')
             ->priority('high');
     }

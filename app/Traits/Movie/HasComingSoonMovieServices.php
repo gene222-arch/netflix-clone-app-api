@@ -271,20 +271,20 @@ trait HasComingSoonMovieServices
                     auth('api')
                         ->user()
                         ->notify(new \App\Notifications\MovieReleaseExpoNotification($movie, $comingSoonMovie->id));
+
+                    ComingSoonMovie::cacheToForget();
+
+                    $this->createLog(
+                        'Update',
+                        ComingSoonMovie::class,
+                        "video-management/coming-soon-movies/$comingSoonMovie->id"
+                    );
+    
+                    // Mark all remind mes table as released
+                    RemindMe::query()
+                        ->where('coming_soon_movie_id', $comingSoonMovie->id)
+                        ->update([ 'is_released' => true ]);
                 }
-
-                ComingSoonMovie::cacheToForget();
-
-                $this->createLog(
-                    'Update',
-                    ComingSoonMovie::class,
-                    "video-management/coming-soon-movies/$comingSoonMovie->id"
-                );
-
-                // Mark all remind mes table as released
-                RemindMe::query()
-                    ->where('coming_soon_movie_id', $comingSoonMovie->id)
-                    ->update([ 'is_released' => true ]);
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
