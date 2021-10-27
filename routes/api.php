@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\Movie\MoviesController;
 use App\Http\Controllers\Api\Movie\MyDownloadsController;
 use App\Http\Controllers\Api\Movie\MyListsController;
 use App\Http\Controllers\Api\Movie\RecentlyWatchedMoviesController;
+use App\Http\Controllers\Api\Movie\ReleasedMovieNotifiedUsersController;
 use App\Http\Controllers\Api\Movie\RemindMesController;
 use App\Http\Controllers\Api\Movie\UserRatingsController;
 use App\Http\Controllers\Api\SubscriptionsController;
@@ -248,11 +249,19 @@ Route::middleware(['api', 'verified'])->group(function ()
     /**
       * Remind me
       */
-        Route::prefix('remind-mes')->group(function () 
-        {
-            Route::post('', [RemindMesController::class, 'toggle']);
-            Route::put('/mark-as-read', [RemindMesController::class, 'markAsRead']);
-        });
+    Route::prefix('remind-mes')->group(function () 
+    {
+        Route::post('/', [RemindMesController::class, 'toggle']);
+        Route::put('/mark-as-read', [RemindMesController::class, 'markAsRead']);
+    });
+
+    /**
+      * Released movie notified users
+      */
+      Route::prefix('released-movie-notified-users')->group(function () 
+      {
+          Route::post('/', [ReleasedMovieNotifiedUsersController::class, 'store']);
+      });
 
 
     /**

@@ -28,4 +28,9 @@ class ReleasedMovie extends Model
             $releasedMovie->released_at = Carbon::now();
         });
     }
+
+    public function releasedMovieNotifiedUser()
+    {
+        return $this->hasMany(ReleasedMovieNotifiedUser::class);
+    }
 }

@@ -13,12 +13,10 @@ class MovieReleaseExpoNotification extends Notification
     use Queueable;
 
     public Movie $movie;
-    public int $comingSoonMovieId;
 
-    public function __construct(Movie $movie, int $comingSoonMovieId)
+    public function __construct(Movie $movie)
     {
         $this->movie = $movie;
-        $this->comingSoonMovieId = $comingSoonMovieId;
     }
 
     public function via($notifiable)
