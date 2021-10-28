@@ -18,8 +18,7 @@ class UploadPosterRequest extends BaseRequest
             'poster' => [
                 'required', 
                 'image', 
-                new MimeType(['jpg', 'jpeg']),
-                'max:2048'
+                new MimeType(['jpg', 'jpeg'])
             ],
         ];
     }

@@ -17,8 +17,7 @@ class UploadWallpaperRequest extends BaseRequest
             'wallpaper' => [
                 'required', 
                 'image', 
-                'mimes:jpeg,jpg',
-                'max:2048'
+                'mimes:jpeg,jpg'
             ],
         ];
     }

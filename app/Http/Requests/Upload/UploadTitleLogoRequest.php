@@ -17,8 +17,7 @@ class UploadTitleLogoRequest extends BaseRequest
             'title_logo' => [
                 'required', 
                 'image', 
-                'mimes:png',
-                'max:2048'
+                'mimes:png'
             ],
         ];
     }
