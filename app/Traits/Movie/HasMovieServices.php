@@ -151,7 +151,7 @@ trait HasMovieServices
                         ->get();
         
                     array_push($result, [
-                        'title' => "Trending Now in the $country",
+                        'title' => "Trending now in $country",
                         'movies' => $trendingNowByUserAddress
                     ]);
                 }

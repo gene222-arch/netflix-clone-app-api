@@ -54,7 +54,7 @@ class LoginController extends Controller
         $withRoles = (bool) $request->input('withRoles', false);
         $withPermissions = (bool) $request->input('withPermissions', false);
 
-        $auth = Auth::user();
+        $auth = auth('api')->user() ?? Auth::user();
 
         $auth->markedAsActive();
         $role = '';
@@ -67,7 +67,7 @@ class LoginController extends Controller
             'profiles' => $auth->profiles
         ];
 
-        if ($auth->hasRole('Subscriber')) {
+        if ($auth->hasRole('Subscriber') || $auth->hasRole(1)) {
             $data = $data + [
                 'subscription_details' => $auth->subscriptions->first(),
                 'is_subscription_expired' => $auth->subscriptions()->isExpired()
