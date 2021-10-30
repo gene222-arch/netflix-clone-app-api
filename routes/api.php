@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\Movie\RecentlyWatchedMoviesController;
 use App\Http\Controllers\Api\Movie\ReleasedMovieNotifiedUsersController;
 use App\Http\Controllers\Api\Movie\RemindMesController;
 use App\Http\Controllers\Api\Movie\UserRatingsController;
+use App\Http\Controllers\Api\PaymentMethodsController;
 use App\Http\Controllers\Api\SubscriptionsController;
 use App\Http\Controllers\Api\User\UserProfilesController;
 use App\Http\Controllers\Api\User\UsersController;
@@ -273,6 +274,15 @@ Route::middleware(['api', 'verified'])->group(function ()
           Route::get('/{myDownload}', [MyDownloadsController::class, 'show']);
           Route::post('/', [MyDownloadsController::class, 'store']);
           Route::delete('/user-profiles/{userProfileId}', [MyDownloadsController::class, 'destroy']);
+      });
+
+
+    /**
+      * Payment Method
+      */
+      Route::prefix('payment-methods')->group(function () 
+      {
+          Route::post('/e-payment', [PaymentMethodsController::class, 'ePayment']);
       });
 
     /**
