@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Movie;
-use App\Traits\Api\ApiResponser;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Traits\Upload\HasUploadable;
@@ -17,11 +16,10 @@ use App\Http\Requests\Upload\UploadTitleLogoRequest;
 use App\Http\Requests\Upload\UploadWallpaperRequest;
 use App\Http\Requests\Upload\UploadVideoPreviewRequest;
 use App\Traits\ActivityLogsServices;
-use Google\Service\DriveActivity\Move;
 
 class MoviesController extends Controller
 {
-    use ApiResponser, HasMovieServices, HasUploadable, ActivityLogsServices;
+    use HasMovieServices, HasUploadable, ActivityLogsServices;
 
     public function __construct()
     {

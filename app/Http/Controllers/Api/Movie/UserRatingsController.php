@@ -2,23 +2,17 @@
 
 namespace App\Http\Controllers\Api\Movie;
 
-use App\Models\User;
 use App\Models\Movie;
-use App\Models\Rating;
 use App\Models\UserRating;
 use App\Models\UserProfile;
-use App\Traits\Api\ApiResponser;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Movie\UserRating\Request;
 use App\Http\Requests\Movie\UserRating\DestroyRequest;
-use App\Models\MovieReport;
 use App\Traits\Movie\HasUserRatingServices;
 
 class UserRatingsController extends Controller
 {
-    use ApiResponser, HasUserRatingServices;
+    use HasUserRatingServices;
 
     public function __construct()
     {

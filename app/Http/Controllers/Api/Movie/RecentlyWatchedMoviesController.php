@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers\Api\Movie;
 
-use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\RecentlyWatchedMovie\Request;
 use App\Http\Requests\Movie\RecentlyWatchedMovie\UpdatePositionMillisRequest;
 use App\Models\RecentlyWatchedMovie;
-use App\Models\UserProfile;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 class RecentlyWatchedMoviesController extends Controller
 {
-    use ApiResponser;
-
     public function __construct()
     {
         $this->middleware(['auth:api']);

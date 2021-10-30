@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Api\User;
 
 use Carbon\Carbon;
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\User\UpdateEmailRequest;
@@ -14,8 +12,6 @@ use App\Notifications\ChangeEmailVerificationNotification;
 
 class UsersController extends Controller
 {
-    use ApiResponser;
-
     public function __construct()
     {
         $this->middleware(['auth:api', 'permission:Manage Users']);

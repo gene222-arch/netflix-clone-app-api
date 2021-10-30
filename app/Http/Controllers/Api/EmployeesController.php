@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Employee;
-use App\Traits\Api\ApiResponser;
 use App\Traits\HasEmployeeServices;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Employee\StoreRequest;
@@ -15,7 +14,7 @@ use App\Traits\Upload\HasUploadable;
 
 class EmployeesController extends Controller
 {
-    use ApiResponser, HasEmployeeServices, HasUploadable;
+    use HasEmployeeServices, HasUploadable;
 
     /**
      * Display a listing of the resource.

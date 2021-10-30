@@ -6,12 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\MyDownload\DestroyRequest;
 use App\Http\Requests\Movie\MyDownload\StoreRequest;
 use App\Models\MyDownload;
-use App\Traits\Api\ApiResponser;
 
 class MyDownloadsController extends Controller
 {
-    use ApiResponser;
-
     /**
      * Display a listing of the resource.
      *

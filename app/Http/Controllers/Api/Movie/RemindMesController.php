@@ -2,17 +2,12 @@
 
 namespace App\Http\Controllers\Api\Movie;
 
-use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Movie\RemindMe\Request;
-use App\Models\RemindMe;
 use Carbon\Carbon;
 
 class RemindMesController extends Controller
 {
-    use ApiResponser;
-
     public function __construct()
     {
         $this->middleware(['auth:api']);

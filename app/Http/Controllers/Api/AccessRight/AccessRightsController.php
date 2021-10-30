@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\AccessRight;
 
-use App\Traits\Api\ApiResponser;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Traits\ActivityLogsServices;
@@ -16,7 +15,7 @@ use Spatie\Permission\Models\Role;
 
 class AccessRightsController extends Controller
 {
-    use ApiResponser, AccessRightServices, ActivityLogsServices;
+    use AccessRightServices, ActivityLogsServices;
 
     public function __construct()
     {

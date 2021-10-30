@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Api\Dashboards;
 
 use App\Http\Controllers\Controller;
-use App\Traits\Api\ApiResponser;
 use App\Traits\Dashboards\DashboardServices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardsController extends Controller
 {
-    use ApiResponser, DashboardServices;
+    use DashboardServices;
 
     public function __construct()
     {

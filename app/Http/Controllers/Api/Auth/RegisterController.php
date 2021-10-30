@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\User;
 use App\Traits\Api\ApiServices;
-use App\Traits\Api\ApiResponser;
 use App\Traits\Auth\AuthServices;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -28,7 +27,7 @@ class RegisterController extends Controller
     |
     */
 
-    use ApiResponser, ApiServices, AuthServices, SubscriptionServices;
+    use ApiServices, AuthServices, SubscriptionServices;
 
     /**
      * Where to redirect users after registration.

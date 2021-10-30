@@ -4,13 +4,10 @@ namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\MovieNotification;
 use App\Http\Controllers\Controller;
-use App\Traits\Api\ApiResponser;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class MovieNotificationsController extends Controller
 {
-    use ApiResponser;
     /**
      * Display a listing of the resource.
      *

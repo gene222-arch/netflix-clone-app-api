@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Cast;
-use App\Models\Movie;
-use App\Traits\Api\ApiResponser;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Traits\ActivityLogsServices;
@@ -15,7 +13,7 @@ use App\Http\Requests\Upload\UploadAvatarRequest;
 
 class CastsController extends Controller
 {
-    use ApiResponser, HasUploadable, ActivityLogsServices;
+    use HasUploadable, ActivityLogsServices;
 
     public function __construct()
     {

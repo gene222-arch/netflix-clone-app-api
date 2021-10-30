@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use Illuminate\Http\Request;
-use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
@@ -23,7 +21,7 @@ class ResetPasswordController extends Controller
     |
     */
 
-    use ResetsPasswords, ApiResponser;
+    use ResetsPasswords;
 
     /**
      * Reset the given user's password.

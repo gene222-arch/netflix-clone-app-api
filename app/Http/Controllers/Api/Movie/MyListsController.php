@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers\Api\Movie;
 
-use App\Models\MyList;
-use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\MyList\Request;
-use Illuminate\Support\Facades\Auth;
+
 
 class MyListsController extends Controller
 {
-    use ApiResponser;
-
     public function __construct()
     {
         $this->middleware(['auth:api']);

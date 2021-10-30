@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Trailer;
 use App\Models\ComingSoonMovie;
-use App\Traits\Api\ApiResponser;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Upload\UploadVideoRequest;
@@ -24,7 +22,7 @@ use App\Traits\ActivityLogsServices;
 
 class ComingSoonMoviesController extends Controller
 {
-    use ApiResponser, HasComingSoonMovieServices, HasUploadable, ActivityLogsServices;
+    use HasComingSoonMovieServices, HasUploadable, ActivityLogsServices;
 
     public function __construct()
     {

@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Models\User;
 use App\Traits\Api\ApiServices;
-use App\Traits\Api\ApiResponser;
 use App\Traits\Auth\AuthServices;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use App\Http\Requests\Auth\LoginRequest;
 use Carbon\Carbon;
 
@@ -26,7 +22,7 @@ class LoginController extends Controller
     |
     */
 
-    use ApiResponser, ApiServices, AuthServices;
+    use ApiServices, AuthServices;
 
     /**
      * Create a new controller instance.

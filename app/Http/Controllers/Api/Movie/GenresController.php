@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Genre;
-use Illuminate\Http\Request;
-use App\Traits\Api\ApiResponser;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\Genre\StoreRequest;
@@ -14,12 +12,13 @@ use App\Traits\ActivityLogsServices;
 
 class GenresController extends Controller
 {
+    use ActivityLogsServices;
+
+    
     public function __construct()
     {
         $this->middleware(['auth:api', 'permission:Manage Genres']);
     }
-
-    use ApiResponser, ActivityLogsServices;
 
     /**
      * Display a listing of the resource.

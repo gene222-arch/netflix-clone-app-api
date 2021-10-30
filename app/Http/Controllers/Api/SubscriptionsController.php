@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use App\Models\Subscription;
-use Illuminate\Http\Request;
-use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Traits\SubscriptionServices;
 use App\Http\Requests\Subscription\DestroyRequest;
@@ -13,7 +11,7 @@ use App\Http\Requests\Subscription\UpdateOrStoreRequest;
 
 class SubscriptionsController extends Controller
 {
-    use ApiResponser, SubscriptionServices;
+    use SubscriptionServices;
 
     /**
      * Display a listing of the resource.

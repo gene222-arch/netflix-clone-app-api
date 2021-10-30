@@ -4,13 +4,11 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Upload\UploadAvatarRequest;
-use Illuminate\Http\Request;
-use App\Traits\Api\ApiResponser;
 use App\Traits\Upload\HasUploadable;
 
 class UploadUserAvatarController extends Controller
 {
-    use ApiResponser, HasUploadable;
+    use HasUploadable;
 
     /**
      * Create a new controller instance.

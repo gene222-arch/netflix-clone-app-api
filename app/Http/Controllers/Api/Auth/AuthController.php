@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\CheckPasswordRequest;
 use App\Traits\Auth\AuthServices;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    use ApiResponser, AuthServices;
+    use AuthServices;
 
     /**
      * Show the currently authenticated user

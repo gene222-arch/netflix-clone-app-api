@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Verified;
 use App\Providers\RouteServiceProvider;
-use App\Traits\Api\ApiResponser;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Auth\Access\AuthorizationException;
 
@@ -23,7 +22,7 @@ class VerificationController extends Controller
     |
     */
 
-    use VerifiesEmails, ApiResponser;
+    use VerifiesEmails;
 
     /**
      * Where to redirect users after verification.

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Settings;
 
-use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -11,9 +10,6 @@ use App\Http\Requests\Settings\Account\VerifyUserRequest;
 
 class AccountController extends Controller
 {
-    use ApiResponser;
-
-    
     public function __construct()
     {
         $this->middleware(['auth:api']);

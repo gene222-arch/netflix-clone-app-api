@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use Illuminate\Http\Request;
-use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Password;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
@@ -22,7 +21,7 @@ class ForgotPasswordController extends Controller
     |
     */
 
-    use SendsPasswordResetEmails, ApiResponser;
+    use SendsPasswordResetEmails;
 
     /**
      * Send a reset link to the given user.

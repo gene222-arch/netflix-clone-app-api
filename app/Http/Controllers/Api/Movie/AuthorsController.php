@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\Author;
-use App\Traits\Api\ApiResponser;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Traits\Upload\HasUploadable;
@@ -14,7 +13,7 @@ use App\Traits\ActivityLogsServices;
 
 class AuthorsController extends Controller
 {
-    use ApiResponser, HasUploadable, ActivityLogsServices;
+    use HasUploadable, ActivityLogsServices;
 
     public function __construct()
     {

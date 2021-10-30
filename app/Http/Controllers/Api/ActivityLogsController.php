@@ -6,13 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ActivityLog\DestroyRequest;
 use App\Http\Requests\ActivityLog\StoreUpdateRequest;
 use App\Models\ActivityLog;
-use Illuminate\Http\Request;
-use App\Traits\Api\ApiResponser;
 
 class ActivityLogsController extends Controller
 {
-    use ApiResponser;
-
     /**
      * Display a listing of the resource.
      *

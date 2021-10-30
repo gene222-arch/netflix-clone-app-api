@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Models\UserProfile;
-use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
 use App\Traits\Upload\HasUploadable;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserProfile\StoreRequest;
 use App\Http\Requests\UserProfile\UpdateRequest;
 use App\Http\Requests\Upload\UploadAvatarRequest;
@@ -14,7 +12,7 @@ use App\Http\Requests\UserProfile\ManagePinCodeRequest;
 
 class UserProfilesController extends Controller
 {
-    use ApiResponser, HasUploadable;
+    use HasUploadable;
 
     public function __construct()
     {
