@@ -6,6 +6,11 @@ use App\Http\Requests\BaseRequest;
 
 class EPaymentRequest extends BaseRequest
 {
+    public function authorize()
+    {
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -15,7 +20,7 @@ class EPaymentRequest extends BaseRequest
     {
         return [
             'type' => ['required', 'string', 'in:gcash,grab_pay'],
-            'amount' => ['required', 'numeric', 'min:10000'],
+            'amount' => ['required', 'numeric', 'min:100'],
             'currency' => ['nullable', 'string', 'in:PHP']
         ];
     }

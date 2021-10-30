@@ -11,7 +11,7 @@ class PaymongoService
 
     public function __construct()
     {
-        self::$successPaymentUrl = env('REACT_APP_URL') . '/authorized?status=successfull';
+        self::$successPaymentUrl = env('REACT_APP_URL') . '/auth/create-an-account';
         self::$failedPaymentUrl = env('REACT_APP_URL') . '/unauthorized?status=failed';
     }
 
