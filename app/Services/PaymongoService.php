@@ -20,17 +20,27 @@ class PaymongoService
         return Paymongo::paymentMethod()->find($id) ?? NULL;
     }
 
-    public static function card(array $details, array $billingAddress, string $name, string $email, string $phone)
+    public static function card(array $details, array $billingAddress = [], string $name, string $email, string $phone)
     {
-        $payment = Paymongo::paymentMethod()
-            ->create([
-                'type' => 'card',
-                'details' => [
-                    'card_number' => $details['cardNumber'],
-                    'exp_month' => $details['expMonth'],
-                    'exp_year' => $details['expYear'],
-                    'cvc' => $details['cvc'],
-                ],
+        $billingAddressCollection = collect($billingAddress);
+
+        $payload = [
+            'type' => 'card',
+            'details' => [
+                'card_number' => $details['cardNumber'],
+                'exp_month' => $details['expMonth'],
+                'exp_year' => $details['expYear'],
+                'cvc' => $details['cvc'],
+            ],
+            'billing' => NULL,  
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone
+        ];
+
+        if ($billingAddressCollection->count()) 
+        {
+            $payload = $payload + [
                 'billing' => [
                     'address' => [
                         'line1' => $billingAddress['line1'],
@@ -40,11 +50,11 @@ class PaymongoService
                         'country' => $billingAddress['country'], // Country ISO Code
                         'postal_code' => $billingAddress['postalCode'],
                     ]
-                ],
-                'name' => $name,
-                'email' => $email,
-                'phone' => $phone
-            ]);
+                ]
+            ];
+        }
+
+        $payment = Paymongo::paymentMethod()->create($payload);
 
         return $payment;
     }
@@ -52,13 +62,15 @@ class PaymongoService
     public static function ePayment(
         string $type, // Gcash or Grab Pay
         float $amount, 
-        array $billingAddress, 
+        array $billingAddress = [], 
         string $name, 
         string $email, 
         string $phone, 
         string $currency = 'PHP'
     )
     {
+        $billingAddressCollection = collect($billingAddress);
+
         $payload = [
             'type' => $type,
             'amount' => $amount,
@@ -67,20 +79,27 @@ class PaymongoService
                 'success' => self::$successPaymentUrl,
                 'failed' => self::$failedPaymentUrl
             ],
-            'billing' => [
-                'address' => [
-                    'line1' => $billingAddress['line1'],
-                    'line2' => $billingAddress['line2'] ?? NULL,
-                    'city' => $billingAddress['city'],
-                    'state' => $billingAddress['state'],
-                    'country' => $billingAddress['country'], // Country ISO Code
-                    'postal_code' => $billingAddress['postalCode'],
-                ]
-            ],
+            'billing' => NULL,
             'name' => $name,
             'email' => $email,
             'phone' => $phone
         ];
+
+        if ($billingAddressCollection->count()) 
+        {
+            $payload = $payload + [
+                'billing' => [
+                    'address' => [
+                        'line1' => $billingAddress['line1'],
+                        'line2' => $billingAddress['line2'] ?? NULL,
+                        'city' => $billingAddress['city'],
+                        'state' => $billingAddress['state'],
+                        'country' => $billingAddress['country'], // Country ISO Code
+                        'postal_code' => $billingAddress['postalCode'],
+                    ]
+                ]
+            ];
+        }
 
         return Paymongo::source()->create($payload);
     }
