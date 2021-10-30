@@ -44,9 +44,9 @@ class PaymentAuthorizationNotification extends Notification implements ShouldQue
     {
         return (new MailMessage)
                     ->greeting('Payment Authorization')
-                    ->line('Click the link below for authorizing your payment and.')
-                    ->line('enjoy unlimited movies and no pesky contracts.')
-                    ->action('Notification Action', url($this->checkOutUrl))
+                    ->line('Click the button below for authorizing your payment and enjoy')
+                    ->line('the unlimited streaming of movies our application offers.')
+                    ->action('Authorize Payment', url($this->checkOutUrl))
                     ->line('Thank you for your patronage!');
     }
 
