@@ -20,7 +20,7 @@ class PaymongoService
         return Paymongo::paymentMethod()->find($id) ?? NULL;
     }
 
-    public static function card(array $details, array $billingAddressDetails, string $name, string $email, string $phone)
+    public static function card(array $details, array $billingAddress, string $name, string $email, string $phone)
     {
         $payment = Paymongo::paymentMethod()
             ->create([
@@ -33,12 +33,12 @@ class PaymongoService
                 ],
                 'billing' => [
                     'address' => [
-                        'line1' => $billingAddressDetails['line1'],
-                        'line2' => $billingAddressDetails['line2'] ?? NULL,
-                        'city' => $billingAddressDetails['city'],
-                        'state' => $billingAddressDetails['state'],
-                        'country' => $billingAddressDetails['country'], // Country ISO Code
-                        'postal_code' => $billingAddressDetails['postalCode'],
+                        'line1' => $billingAddress['line1'],
+                        'line2' => $billingAddress['line2'] ?? NULL,
+                        'city' => $billingAddress['city'],
+                        'state' => $billingAddress['state'],
+                        'country' => $billingAddress['country'], // Country ISO Code
+                        'postal_code' => $billingAddress['postalCode'],
                     ]
                 ],
                 'name' => $name,
@@ -52,7 +52,7 @@ class PaymongoService
     public static function ePayment(
         string $type, // Gcash or Grab Pay
         float $amount, 
-        array $billingAddressDetails, 
+        array $billingAddress, 
         string $name, 
         string $email, 
         string $phone, 
@@ -69,12 +69,12 @@ class PaymongoService
             ],
             'billing' => [
                 'address' => [
-                    'line1' => $billingAddressDetails['line1'],
-                    'line2' => $billingAddressDetails['line2'] ?? NULL,
-                    'city' => $billingAddressDetails['city'],
-                    'state' => $billingAddressDetails['state'],
-                    'country' => $billingAddressDetails['country'], // Country ISO Code
-                    'postal_code' => $billingAddressDetails['postalCode'],
+                    'line1' => $billingAddress['line1'],
+                    'line2' => $billingAddress['line2'] ?? NULL,
+                    'city' => $billingAddress['city'],
+                    'state' => $billingAddress['state'],
+                    'country' => $billingAddress['country'], // Country ISO Code
+                    'postal_code' => $billingAddress['postalCode'],
                 ]
             ],
             'name' => $name,
