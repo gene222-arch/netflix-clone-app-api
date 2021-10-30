@@ -280,10 +280,13 @@ Route::middleware(['api', 'verified'])->group(function ()
     /**
       * Payment Method
       */
-      Route::prefix('payment-methods')->group(function () 
-      {
-          Route::post('/e-payment', [PaymentMethodsController::class, 'ePayment']);
-      });
+    Route::group([ 
+        'prefix' => 'payment-methods'
+    ], function () 
+    {
+        Route::post('/e-payment', [PaymentMethodsController::class, 'ePayment'])
+            ->withoutMiddleware('verified');
+    });
 
     /**
       * Recently Watched Movie

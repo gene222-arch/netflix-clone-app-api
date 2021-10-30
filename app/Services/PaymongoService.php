@@ -57,6 +57,8 @@ class PaymongoService
             ],
         ];
 
-        return Paymongo::source()->create($payload);
+        $source = Paymongo::source()->create($payload);
+
+        return collect($source)->first();
     }
 }

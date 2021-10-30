@@ -9,7 +9,7 @@ use App\Services\PaymongoService;
 class PaymentMethodsController extends Controller
 {
     public function ePayment(EPaymentRequest $request, PaymongoService $service)
-    {
+    {    
         $source = $service->ePayment(
             $request->type,
             $request->amount,
