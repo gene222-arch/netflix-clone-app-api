@@ -6,8 +6,8 @@ use Luigel\Paymongo\Facades\Paymongo;
 
 class PaymongoService
 {
-    private string $successPaymentUrl;
-    private string $failedPaymentUrl;
+    private static string $successPaymentUrl;
+    private static string $failedPaymentUrl;
 
     public function __construct()
     {
