@@ -68,8 +68,8 @@ class RegisterController extends Controller
                 ];
 
                 $user = $user->query()->create($userDetails);
-                $user->sendEmailVerificationNotification();
                 $user->sendPaymentAuthorizationNotification($request->check_out_url);
+                $user->sendEmailVerificationNotification();
                 $user->assignRole($request->role);
 
                 if ($request->has('plan_type')) {

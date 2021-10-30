@@ -16,7 +16,6 @@ use App\Jobs\QueueEmailVerificationNotification;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Notifications\EmailVerificationNotification;
-use App\Notifications\PaymentAuthorizationNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -139,7 +138,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendPaymentAuthorizationNotification(string $checkOutUrl): void 
     {
-        $this->notify(new PaymentAuthorizationNotification($checkOutUrl));
+        dispatch(
+            new \App\Jobs\QueuePaymentAuthorizationNotification($this, $checkOutUrl)
+        )
+        ->delay(2);
     }
 
     /**
