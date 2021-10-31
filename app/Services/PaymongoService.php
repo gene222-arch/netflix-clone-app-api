@@ -40,12 +40,18 @@ class PaymongoService
         bool $sendPaymentAuthorizationNotif = false
     )
     {
+        $planType = match($amount) {
+            100.00 => 'Basic',
+            200.00 => 'Standard',
+            600.00 => 'Premium'
+        };
+
         $payload = [
             'type' => $type,
             'amount' => $amount,
             'currency' => $currency,
             'redirect' => [
-                'success' => env('REACT_APP_URL') . "/subscriptions/subscribed-successfully?email=$email&type=$type",
+                'success' => env('REACT_APP_URL') . "/subscriptions/subscribed-successfully?email=$email&type=$planType",
                 'failed' => env('REACT_APP_URL') . '/subscriptions/unauthorized?status=failed'
             ],
         ];

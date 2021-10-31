@@ -30,9 +30,11 @@ class NotSubscribed implements Rule
 
         if (! $user) return false; 
 
-        $isUnsubscribed = $user->inActiveSubscription->count();
+        $subscriptionDetails = $user->currentSubscription();
 
-        return $isUnsubscribed;
+        if ($subscriptionDetails->is_expired) return true;
+
+        return false;
     }
 
     /**
