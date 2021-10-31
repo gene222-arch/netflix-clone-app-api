@@ -14,7 +14,8 @@ class UpdateOrStoreRequest extends BaseRequest
     public function rules()
     {
         return [
-            'type' => ['required', 'string', 'in:Basic,Standard,Premium']
+            'type' => ['required', 'string', 'in:Basic,Standard,Premium'],
+            'user_id' => ['required', 'integer', 'exists:users,id']
         ];
     }
 }

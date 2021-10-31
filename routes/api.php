@@ -311,7 +311,7 @@ Route::middleware(['api', 'verified'])->group(function ()
           Route::get('/{subscription}', [SubscriptionsController::class, 'show']);
           Route::post('/', [SubscriptionsController::class, 'store']);
           Route::put('/cancel', [SubscriptionsController::class, 'cancel']);
-          Route::put('/{subscription}', [SubscriptionsController::class, 'update']);
+          Route::put('/', [SubscriptionsController::class, 'update']);
           Route::delete('/', [SubscriptionsController::class, 'destroy']);
       });
 

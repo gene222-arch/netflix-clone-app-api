@@ -36,7 +36,7 @@ class SubscriptionsController extends Controller
      */
     public function store(UpdateOrStoreRequest $request)
     {
-        $this->subscribe($request->type);
+        $this->subscribe($request->user_id, $request->type);
 
         return $this->success(null, 'Subscribed successfully.');
     }
@@ -78,15 +78,12 @@ class SubscriptionsController extends Controller
      * Update the specified resource in storage.
      * ! Uknown process
      * @param  App\Http\Requests\Subscription\UpdateOrStoreRequest  $request
-     * @param  App\Models\Subscription  $subscription
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateOrStoreRequest $request, Subscription $subscription)
+    public function update(UpdateOrStoreRequest $request)
     {
-        $subscription->update([
+        $this->subscribe($request->user_id);
 
-        ]);
-        
         return $this->success(null, 'Subscription updated successfully.');
     }
 
