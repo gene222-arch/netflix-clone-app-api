@@ -36,7 +36,7 @@ class SubscriptionsController extends Controller
      */
     public function store(UpdateOrStoreRequest $request)
     {
-        $this->subscribe($request->user_id, $request->type);
+        $this->subscribe($request->user_mail, $request->type);
 
         return $this->success(null, 'Subscribed successfully.');
     }

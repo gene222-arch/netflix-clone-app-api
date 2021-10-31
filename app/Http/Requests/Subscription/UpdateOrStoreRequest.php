@@ -15,7 +15,7 @@ class UpdateOrStoreRequest extends BaseRequest
     {
         return [
             'type' => ['required', 'string', 'in:Basic,Standard,Premium'],
-            'user_id' => ['required', 'integer', 'exists:users,id']
+            'user_email' => ['required', 'email', 'string']
         ];
     }
 }

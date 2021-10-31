@@ -37,12 +37,12 @@ trait SubscriptionServices
         }
     }
 
-    public function subscribe(int $userId, ?string $type = NULL)
+    public function subscribe(string $userEmail, string $type)
     {
         $user = auth('api')->user();
 
         if (! $user) {
-            $user = User::find($userId);
+            $user = User::query()->firstWhere('email', '=', $userEmail);
         }
 
         $totalSubscriptions = $user->subscriptions->where('subscribed_at', '!=', NULL)->count();
