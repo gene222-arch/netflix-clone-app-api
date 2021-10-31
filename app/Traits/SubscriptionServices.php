@@ -46,7 +46,7 @@ trait SubscriptionServices
         }
 
         $totalSubscriptions = $user->subscriptions->where('subscribed_at', '!=', NULL)->count();
-
+        
         if (! $totalSubscriptions) 
         {
             $currentPreSubscription = $user->subscriptions->first();
@@ -77,6 +77,7 @@ trait SubscriptionServices
         if ($totalSubscriptions && $type)
         {
             $expiredAt = null;
+            $cost = 200;
 
             switch ($type) 
             {
@@ -86,14 +87,18 @@ trait SubscriptionServices
 
                 case 'Standard':
                     $expiredAt = Carbon::now()->addMonths(4);
+                    $cost = 400;
                     break;
 
                 case 'Premium':
                     $expiredAt = Carbon::now()->addMonths(6);
+                    $cost = 600;
                     break;
             }
 
-            $user->subscription()->create([
+            $user->subscriptions()->create([
+                'type' => $type,
+                'cost' => $cost,
                 'expired_at' => $expiredAt,
                 'subscribed_at' => Carbon::now()
             ]);

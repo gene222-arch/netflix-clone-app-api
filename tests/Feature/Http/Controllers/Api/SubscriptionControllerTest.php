@@ -39,6 +39,7 @@ class SubscriptionControllerTest extends TestCase
     public function subscriber_can_create_subscription()
     {
         $data = [
+            'user_email' => 'genephillip222@gmail.com',
             'type' => 'Premium'
         ];
 

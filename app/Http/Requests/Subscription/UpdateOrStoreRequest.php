@@ -6,6 +6,11 @@ use App\Http\Requests\BaseRequest;
 
 class UpdateOrStoreRequest extends BaseRequest
 {
+    public function authorize()
+    {
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
