@@ -4,7 +4,7 @@ namespace App\Http\Requests\Subscription;
 
 use App\Http\Requests\BaseRequest;
 
-class UpdateOrStoreRequest extends BaseRequest
+class StoreRequest extends BaseRequest
 {
     public function authorize()
     {

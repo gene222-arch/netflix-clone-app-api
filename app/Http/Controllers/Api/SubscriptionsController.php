@@ -7,7 +7,7 @@ use App\Models\Subscription;
 use App\Http\Controllers\Controller;
 use App\Traits\SubscriptionServices;
 use App\Http\Requests\Subscription\DestroyRequest;
-use App\Http\Requests\Subscription\UpdateOrStoreRequest;
+use App\Http\Requests\Subscription\StoreRequest;
 
 class SubscriptionsController extends Controller
 {
@@ -31,10 +31,10 @@ class SubscriptionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\Subscription\UpdateOrStoreRequest  $request
+     * @param  App\Http\Requests\Subscription\StoreRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(UpdateOrStoreRequest $request)
+    public function store(StoreRequest $request)
     {
         $this->subscribe($request->user_email, $request->type);
 
