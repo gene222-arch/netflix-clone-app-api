@@ -13,7 +13,8 @@ class PaymentMethodsController extends Controller
         $source = $service->ePayment(
             $request->type,
             $request->amount,
-            $request->input('currency', 'PHP')
+            $request->input('currency', 'PHP'),
+            $request->email
         );
 
         return $this->success($source, 'E Payment source created successfully.');

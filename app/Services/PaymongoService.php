@@ -6,15 +6,6 @@ use Luigel\Paymongo\Facades\Paymongo;
 
 class PaymongoService
 {
-    private static string $successPaymentUrl;
-    private static string $failedPaymentUrl;
-
-    public function __construct()
-    {
-        self::$successPaymentUrl = env('REACT_APP_URL') . '/auth/create-an-account';
-        self::$failedPaymentUrl = env('REACT_APP_URL') . '/unauthorized?status=failed';
-    }
-
     public static function find(string $id)
     {
         return Paymongo::paymentMethod()->find($id) ?? NULL;
@@ -44,7 +35,8 @@ class PaymongoService
     public static function ePayment(
         string $type, // Gcash or Grab Pay
         float $amount, 
-        string $currency
+        string $currency,
+        string $email
     )
     {
         $payload = [
@@ -52,8 +44,8 @@ class PaymongoService
             'amount' => $amount,
             'currency' => $currency,
             'redirect' => [
-                'success' => self::$successPaymentUrl,
-                'failed' => self::$failedPaymentUrl
+                'success' => env('REACT_APP_URL') . '/auth/subscribed-successfully?email=' . $email,
+                'failed' => env('REACT_APP_URL') . '/unauthorized?status=failed'
             ],
         ];
 
