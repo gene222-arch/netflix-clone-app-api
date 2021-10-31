@@ -22,7 +22,8 @@ class EPaymentRequest extends BaseRequest
             'type' => ['required', 'string', 'in:gcash,grab_pay'],
             'amount' => ['required', 'numeric', 'min:100'],
             'currency' => ['nullable', 'string', 'in:PHP'],
-            'email' => ['required', 'email']
+            'email' => ['required', 'email'],
+            'send_payment_authorization_notif' => ['nullable', 'boolean']
         ];
     }
 }

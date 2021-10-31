@@ -14,7 +14,8 @@ class PaymentMethodsController extends Controller
             $request->type,
             $request->amount,
             $request->input('currency', 'PHP'),
-            $request->email
+            $request->email,
+            $request->input('send_payment_authorization_notif', false)
         );
 
         return $this->success($source, 'E Payment source created successfully.');

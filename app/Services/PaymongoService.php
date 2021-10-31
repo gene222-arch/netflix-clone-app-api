@@ -36,7 +36,8 @@ class PaymongoService
         string $type, // Gcash or Grab Pay
         float $amount, 
         string $currency,
-        string $email
+        string $email,
+        bool $sendPaymentAuthorizationNotif = false
     )
     {
         $payload = [
@@ -44,13 +45,20 @@ class PaymongoService
             'amount' => $amount,
             'currency' => $currency,
             'redirect' => [
-                'success' => env('REACT_APP_URL') . "/auth/subscribed-successfully?email=$email&type=$type",
-                'failed' => env('REACT_APP_URL') . '/unauthorized?status=failed'
+                'success' => env('REACT_APP_URL') . "/subscriptions/subscribed-successfully?email=$email&type=$type",
+                'failed' => env('REACT_APP_URL') . '/subscriptions/unauthorized?status=failed'
             ],
         ];
 
         $source = Paymongo::source()->create($payload);
+        $source = collect($source)->first();
 
-        return collect($source)->first();
+        if ($sendPaymentAuthorizationNotif) {
+            auth('api')
+                ->user()
+                ->sendPaymentAuthorizationNotification($source['redirect']['checkout_url']);
+        }
+
+        return $source;
     }
 }
