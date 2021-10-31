@@ -49,10 +49,10 @@ trait SubscriptionServices
         
         if (! $totalSubscriptions) 
         {
-            $currentPreSubscription = $user->subscriptions->first();
+            $inActiveSubscription = $user->inActiveSubscription->first();
             $expiredAt = null;
 
-            switch ($currentPreSubscription->type) 
+            switch ($inActiveSubscription->type) 
             {
                 case 'Basic':
                     $expiredAt = Carbon::now()->addMonths(2);
@@ -67,7 +67,7 @@ trait SubscriptionServices
                     break;
             }
 
-            $user->activeSubscription()->update([
+            $user->inActiveSubscription()->update([
                 'is_first_subscription' => true,
                 'expired_at' => $expiredAt,
                 'subscribed_at' => Carbon::now()
