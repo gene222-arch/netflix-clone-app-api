@@ -25,35 +25,6 @@ class Subscription extends Model
         'subscribed_at',
     ];
 
-    protected static function booted()
-    {
-        parent::boot();
-
-        static::creating(function ($subscription) 
-        {
-            $authenticatedUser = auth('api')->user();
-
-            if ($authenticatedUser) // Create subscription using authenticated user 
-            {
-                $subscription->user_id = auth('api')->id();
-                
-                if (! $authenticatedUser->activeSubscription) 
-                {
-                    $subscription->is_first_subscription = true;
-                    $subscription->expired_at = $subscription->expired_at->addMonth();
-                }
-            } 
-            else // Create subscription by passing user id
-            {
-                if (! self::find($subscription->user_id)) 
-                {
-                    $subscription->is_first_subscription = true;
-                    $subscription->expired_at = $subscription->expired_at->addMonth();
-                }
-            }
-        });
-    }
-
     public function scopeIsExpired($query)
     {
         $expiredAt = $query->where('is_expired', false)->first()?->expired_at;

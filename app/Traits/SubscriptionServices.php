@@ -7,6 +7,35 @@ use App\Models\Subscription;
 
 trait SubscriptionServices
 {
+    public function preSubscription(string $type, int $userId)
+    {
+        $data = [
+            'user_id' => $userId,
+            'type' => $type
+        ];
+
+        switch ($type) 
+        {
+            case 'Basic':
+                return Subscription::query()->create(array_merge(
+                    $data,
+                    [ 'cost' => 100 ]
+                ));
+
+            case 'Standard':
+                return Subscription::query()->create(array_merge(
+                    $data,
+                    [ 'cost' => 200 ]
+                ));
+
+            case 'Premium':
+                return Subscription::query()->create(array_merge(
+                    $data,
+                    [ 'cost' => 600 ]
+                ));
+        }
+    }
+
     public function subscribe(string $type, ?int $userId = null)
     {
         $data = [
