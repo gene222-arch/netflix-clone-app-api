@@ -16,11 +16,13 @@ class Subscription extends Model
         'user_id',
         'type',
         'cost',
-        'paid_amount',
         'is_first_subscription',
-        'subscribed_at',
+        'is_cancelled',
+        'is_expired',
+        'is_subscribed',
         'expired_at',
-        'cancelled_at'
+        'cancelled_at',
+        'subscribed_at',
     ];
 
     protected static function booted()
