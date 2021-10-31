@@ -33,3 +33,7 @@ Broadcast::channel('user.profile.manage.pincode', function () {
     return true;
 });
 
+Broadcast::channel('subscribed.successfully', function () {
+    return true;
+});
+
