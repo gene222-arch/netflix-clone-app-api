@@ -51,9 +51,6 @@ class Subscription extends Model
                     $subscription->expired_at = $subscription->expired_at->addMonth();
                 }
             }
-
-            $subscription->subscribed_at = Carbon::now();
-            $subscription->cancelled_at = null;
         });
     }
 
