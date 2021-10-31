@@ -27,7 +27,13 @@ class Subscription extends Model
 
     public function scopeIsExpired($query)
     {
-        $expiredAt = $query->where('is_expired', false)->first()?->expired_at;
+        $expiredAt = $query->where([
+            [ 'is_expired', '=', false ],
+            [ 'subscribed_at', '!=', NULL ],
+            [ 'expired_at', '!=', NULL ]
+        ])
+            ->first()
+            ?->expired_at;
 
         if (! $expiredAt) return true;
 

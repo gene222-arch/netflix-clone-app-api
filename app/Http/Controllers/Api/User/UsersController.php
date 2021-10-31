@@ -53,6 +53,7 @@ class UsersController extends Controller
         return $this->success([
             'user' => $user,
             'profiles' => $auth->profiles,
+            'subscription_details' => $auth->currentSubscription(),
             'role' => $auth->roles->first()?->withoutRelations()->name
         ]);
     }
