@@ -44,7 +44,7 @@ class PaymongoService
             'amount' => $amount,
             'currency' => $currency,
             'redirect' => [
-                'success' => env('REACT_APP_URL') . '/auth/subscribed-successfully?email=' . $email,
+                'success' => env('REACT_APP_URL') . "/auth/subscribed-successfully?email=$email&type=$type",
                 'failed' => env('REACT_APP_URL') . '/unauthorized?status=failed'
             ],
         ];
