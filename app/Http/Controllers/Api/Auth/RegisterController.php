@@ -73,7 +73,7 @@ class RegisterController extends Controller
                 $user->assignRole($request->role);
 
                 if ($request->has('plan_type')) {
-                    $this->subscribe($request->plan_type, $user->id);
+                    $this->preSubscription($request->plan_type, $user->id);
                 }
 
                 /** Save user location if access is allowed */
