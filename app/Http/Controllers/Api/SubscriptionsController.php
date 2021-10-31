@@ -73,21 +73,6 @@ class SubscriptionsController extends Controller
         return $this->success(null, 'Subscription cancelled successfully.');
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     * ! Uknown process
-     * @param  App\Http\Requests\Subscription\UpdateOrStoreRequest  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(UpdateOrStoreRequest $request)
-    {
-        $this->subscribe($request->user_id);
-
-        return $this->success(null, 'Subscription updated successfully.');
-    }
-
-
     /**
      * Remove the specified resource from storage.
      *
