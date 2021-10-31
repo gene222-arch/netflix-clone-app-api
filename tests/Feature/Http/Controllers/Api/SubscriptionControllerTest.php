@@ -66,22 +66,6 @@ class SubscriptionControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-    /** test */
-    public function subscriber_can_update_subscription()
-    {
-        $data = [
-            
-        ];
-
-        $response = $this->put(
-            '/api/subscriptions',
-            $data,
-            $this->apiHeader()
-        );
-
-        $this->assertResponse($response);
-    }
-
 
     /** test */
     public function subscriber_can_delete_subscriptions()
