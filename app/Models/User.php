@@ -108,7 +108,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function subscriptions(): HasMany
     {
-        return $this->hasMany(Subscription::class)->where('is_expired', false);
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function activeSubscription()
+    {
+        return $this->subscriptions()->where('is_expired', false);
     }
 
     public function getKey(): int

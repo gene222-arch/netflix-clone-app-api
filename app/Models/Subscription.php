@@ -37,7 +37,7 @@ class Subscription extends Model
             {
                 $subscription->user_id = auth('api')->id();
                 
-                if (! $authenticatedUser->subscriptions->count()) 
+                if (! $authenticatedUser->activeSubscription) 
                 {
                     $subscription->is_first_subscription = true;
                     $subscription->expired_at = $subscription->expired_at->addMonth();
