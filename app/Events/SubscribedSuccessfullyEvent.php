@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\Subscription;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -16,14 +15,14 @@ class SubscribedSuccessfullyEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Subscription $subscription;
+    public array $subscription;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Subscription $subscription)
+    public function __construct(array $subscription)
     {
         $this->subscription = $subscription;
     }
