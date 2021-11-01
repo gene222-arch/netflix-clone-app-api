@@ -23,6 +23,7 @@ class Subscription extends Model
         'expired_at',
         'cancelled_at',
         'subscribed_at',
+        'status'
     ];
 
     public function scopeIsExpired($query)

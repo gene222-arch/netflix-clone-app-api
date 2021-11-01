@@ -63,11 +63,11 @@ class SubscriptionsController extends Controller
     {
         auth('api')
             ->user()
-            ->subscriptions()
-            ->where('is_expired', false)
+            ->currentSubscription()
             ->update([
                 'is_cancelled' => true,
-                'cancelled_at' => Carbon::now()
+                'cancelled_at' => Carbon::now(),
+                'status' => 'cancelled'
             ]);
 
         return $this->success(null, 'Subscription cancelled successfully.');
