@@ -26,22 +26,25 @@ class Subscription extends Model
         'status'
     ];
 
-    public function scopeIsExpired($query)
+    public function scopeIsExpired($query): bool
     {
-        $expiredAt = $query->where([
-            [ 'is_expired', '=', false ],
-            [ 'subscribed_at', '!=', NULL ],
-            [ 'expired_at', '!=', NULL ]
-        ])
-            ->first()
-            ?->expired_at;
+        $subscription = $query->get()->last();
+        $today = Carbon::parse(Carbon::now())->format('m/d/Y H:i:s');
+        $expirationDate = Carbon::parse($subscription->expired_at)->format('m/d/Y H:i:s');
 
-        if (! $expiredAt) return true;
+        if ($subscription->is_expired) return true;
 
-        $today = Carbon::now();
+        if ($today >= $expirationDate) 
+        {
+            $payload = [
+                'is_expired' => true,
+                'expired_at' => $today,
+                'status' => 'expired'
+            ];
 
-        if (! ($today === $expiredAt || $expiredAt < $today)) return false;
+            return $query->update($payload);
+        }
 
-        return boolval($query->update(['is_expired' => true]));
+        return false;
     }
 }
