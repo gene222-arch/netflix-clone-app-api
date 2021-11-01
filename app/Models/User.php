@@ -111,6 +111,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Subscription::class);
     }
 
+    public function activeSubscription(): \App\Models\Subscription|null
+    {
+        return $this->subscriptions()->firstWhere('status', 'subscribed');
+    }
+
     public function inActiveSubscription()
     {
         return $this
@@ -121,7 +126,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ]);
     }
 
-    public function currentSubscription()
+    public function currentSubscription(): \App\Models\Subscription
     {
         return $this
             ->subscriptions()

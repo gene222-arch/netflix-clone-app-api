@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Subscription;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -39,29 +40,27 @@ class MonitorSubscriptionExpirationDate extends Command
      */
     public function handle()
     {
-        $groupedUsers = User::all(['id'])->chunk(50);
-        $today = Carbon::parse(Carbon::now())->format('m/d/Y H:i:s');
+        $currentDate = Carbon::now();
+        $users = User::role('Subscriber')->get();
+        $today = Carbon::parse($currentDate)->format('m/d/Y H:i:s');
 
-
-        foreach ($groupedUsers as $groupedUser) 
+        $users->map(function ($user) use ($today, $currentDate) 
         {
-            foreach ($groupedUser as $user) 
+            $subscription = $user->activeSubscription();
+
+            if ($subscription)
             {
-                $subscription = $user->currentSubscription();
-
                 $expirationDate = Carbon::parse($subscription->expired_at)->format('m/d/Y H:i:s');
-
+            
                 if ($today >= $expirationDate) 
                 {
-                    $payload = [
+                    $subscription->update([
                         'is_expired' => true,
-                        'expired_at' => $today,
+                        'expired_at' => $currentDate,
                         'status' => 'expired'
-                    ];
-        
-                    $query->update($payload);
+                    ]);
                 }
             }
-        }
+        });
     }
 }
