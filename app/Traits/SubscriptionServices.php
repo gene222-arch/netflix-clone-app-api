@@ -72,6 +72,7 @@ trait SubscriptionServices
             $subscription = [
                 'is_first_subscription' => true,
                 'expired_at' => $expiredAt,
+                'is_expired' => false,
                 'subscribed_at' => Carbon::now()
             ];
 
@@ -103,6 +104,7 @@ trait SubscriptionServices
             $subscription = [
                 'type' => $type,
                 'cost' => $cost,
+                'is_expired' => false,
                 'expired_at' => $expiredAt,
                 'subscribed_at' => Carbon::now()
             ];
