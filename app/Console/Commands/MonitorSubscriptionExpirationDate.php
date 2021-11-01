@@ -58,6 +58,12 @@ class MonitorSubscriptionExpirationDate extends Command
                         'status' => 'expired'
                     ]);
                 }
+
+                if ($expiredAt->diffInDays(Carbon::now()) === 7) {
+                    $user->notify(
+                        new \App\Notifications\SubscriptionDueDateNotification(Carbon::now()->addWeek())
+                    );
+                }
             }
         });
     }
