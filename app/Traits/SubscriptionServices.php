@@ -41,6 +41,8 @@ trait SubscriptionServices
     {
         $user = auth('api')->user();
 
+        $subscription = new Subscription();
+
         if (! $user) {
             $user = User::query()->firstWhere('email', '=', $userEmail);
         }
@@ -67,11 +69,13 @@ trait SubscriptionServices
                     break;
             }
 
-            $user->inActiveSubscription()->update([
+            $subscription = [
                 'is_first_subscription' => true,
                 'expired_at' => $expiredAt,
                 'subscribed_at' => Carbon::now()
-            ]);
+            ];
+
+            $user->inActiveSubscription()->update($subscription);
         }
 
         if ($totalSubscriptions && $type)
@@ -96,12 +100,16 @@ trait SubscriptionServices
                     break;
             }
 
-            $user->subscriptions()->create([
+            $subscription = [
                 'type' => $type,
                 'cost' => $cost,
                 'expired_at' => $expiredAt,
                 'subscribed_at' => Carbon::now()
-            ]);
+            ];
+
+            $user->subscriptions()->create($subscription);
         }
+
+        event(new \App\Events\SubscribedSuccessfullyEvent($subscription));
     }
 }

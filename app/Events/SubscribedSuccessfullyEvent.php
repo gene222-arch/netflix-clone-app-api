@@ -37,4 +37,12 @@ class SubscribedSuccessfullyEvent implements ShouldBroadcastNow
     {
         return new PrivateChannel('subscribed.successfully');
     }
+
+    public function broadcastWith()
+    {
+        return [
+            'type' => 'User Subscribed Successfully',
+            'data' => $this->subscription
+        ];
+    }
 }
