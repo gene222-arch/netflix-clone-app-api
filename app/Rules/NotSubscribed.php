@@ -32,7 +32,7 @@ class NotSubscribed implements Rule
 
         $subscriptionDetails = $user->currentSubscription();
 
-        if ($subscriptionDetails->is_expired) return true;
+        if ($subscriptionDetails->is_expired || !$subscriptionDetails->subscribed_at) return true;
 
         return false;
     }
