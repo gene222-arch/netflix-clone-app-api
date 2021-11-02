@@ -114,6 +114,11 @@ trait SubscriptionServices
             $user->subscriptions()->create($subscription);
         }
 
+        $user->notifications()
+            ->latest()
+            ->first()
+            ->markAsRead();
+
         event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscription));
     }
 }
