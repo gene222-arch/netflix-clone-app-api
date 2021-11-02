@@ -16,12 +16,10 @@ class NotificationsController extends Controller
      */
     public function findCurrentPaymentAuthorizationByUserId()
     {
-        $userId = request()->input('userId');
-
         $notification = Notification::query()
             ->where([
-                [ 'type', '=', 'App\Notifications\PasswordResetNotification' ],
-                [ 'notifiable_id', '=', $userId ],
+                [ 'type', '=', 'App\Notifications\PaymentAuthorizationNotification' ],
+                [ 'notifiable_id', '=', request()->user('api')->id ],
                 [ 'read_at', '=', NULL ]
             ])
             ->get()
