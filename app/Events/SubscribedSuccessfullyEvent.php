@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,6 +16,7 @@ class SubscribedSuccessfullyEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public User $user;
     public array $subscription;
 
     /**
@@ -22,8 +24,9 @@ class SubscribedSuccessfullyEvent implements ShouldBroadcastNow
      *
      * @return void
      */
-    public function __construct(array $subscription)
+    public function __construct(User $user, array $subscription)
     {
+        $this->user = $user;
         $this->subscription = $subscription;
     }
 
@@ -34,7 +37,7 @@ class SubscribedSuccessfullyEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('subscribed.successfully');
+        return new PrivateChannel('subscribed.successfully.' . $this->user->id);
     }
 
     public function broadcastWith()

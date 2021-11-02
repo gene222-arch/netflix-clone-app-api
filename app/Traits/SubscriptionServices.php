@@ -114,6 +114,6 @@ trait SubscriptionServices
             $user->subscriptions()->create($subscription);
         }
 
-        event(new \App\Events\SubscribedSuccessfullyEvent($subscription));
+        event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscription));
     }
 }

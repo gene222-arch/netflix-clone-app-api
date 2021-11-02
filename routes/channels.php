@@ -29,11 +29,11 @@ Broadcast::channel('coming.soon.movie.released', function () {
     return true;
 });
 
-Broadcast::channel('user.profile.manage.pincode.{userId}', function ($user, $userId) {
+Broadcast::channel('user.profile.manage.pincode.{userId}', function (\App\Models\User $user, $userId) {
     return $user->id === (int) $userId;
 });
 
-Broadcast::channel('subscribed.successfully', function () {
-    return true;
+Broadcast::channel('subscribed.successfully.{userId}', function (\App\Models\User $user, $userId) {
+    return $user->id === (int) $userId;
 });
 
