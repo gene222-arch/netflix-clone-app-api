@@ -2,19 +2,21 @@
 
 namespace App\Events;
 
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 
 class UserProfilePINCodeUpdatedEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public User $user;
     public array $userProfileDetails;
 
     /**
@@ -22,8 +24,9 @@ class UserProfilePINCodeUpdatedEvent implements ShouldBroadcastNow
      *
      * @return void
      */
-    public function __construct(array $userProfileDetails)
+    public function __construct(User $user, array $userProfileDetails)
     {
+        $this->user = $user;
         $this->userProfileDetails = $userProfileDetails;
     }
 
@@ -34,7 +37,7 @@ class UserProfilePINCodeUpdatedEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('user.profile.manage.pincode');
+        return new PrivateChannel('user.profile.manage.pincode.' . $this->user->id);
     }
 
     public function broadcastWith()

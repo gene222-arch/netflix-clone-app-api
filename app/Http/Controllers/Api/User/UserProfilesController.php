@@ -100,7 +100,7 @@ class UserProfilesController extends Controller
 
         if (! $isUpdated) return $this->error();
 
-        event(new \App\Events\UserProfilePINCodeUpdatedEvent($data));
+        event(new \App\Events\UserProfilePINCodeUpdatedEvent($request->user('api'), $data));
 
         return $this->success(null, 'Profile Lock updated successfully.');
     }
