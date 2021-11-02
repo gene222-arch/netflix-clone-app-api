@@ -25,6 +25,6 @@ class NotificationsController extends Controller
             ->get()
             ->last();
 
-        return $this->success($notification);
+        return !$notification ? $this->noContent() : $this->success($notification);
     }
 }
