@@ -31,7 +31,7 @@ class PaymentAuthorizationNotification extends Notification implements ShouldQue
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -56,10 +56,15 @@ class PaymentAuthorizationNotification extends Notification implements ShouldQue
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toDatabase($notifiable)
     {
         return [
-            //
+            'type' => 'PaymentAuthorizationNotification',
+            'data' => [
+                'user_id' => $notifiable->id,
+                'status' => 'pending',
+                'message' => 'Payment Authorization will expire in an hour, please authorize your payment within the specified time.'
+            ]
         ];
     }
 }
