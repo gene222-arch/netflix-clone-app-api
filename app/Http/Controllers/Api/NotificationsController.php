@@ -6,11 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationsController extends Controller
 {
+
     /**
      * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function paymentAuthorizationNotifications()
+    {
+        $notification = Auth::user()
+            ->notifications
+            ->where(
+                'type', '=', 'App\Notifications\PaymentAuthorizationNotification'
+            )
+            ->get();
+
+        return !$notification->count() ? $this->noContent() : $this->success($notification);
+    }
+
+
+    /**
+     * Display current payment authorization notifications by notifiable id.
      *
      * @return \Illuminate\Http\JsonResponse
      */
