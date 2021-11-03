@@ -18,11 +18,11 @@ class NotificationsController extends Controller
      */
     public function paymentAuthorizationNotifications()
     {
-        $notification = Auth::user()
+        $notification = auth('api')
+            ->user()
             ->notifications
             ->filter(function ($notification) {
-                $notification->type === 'App\Notifications\PaymentAuthorizationNotification';
-                return $notification;
+                return $notification->type === 'App\Notifications\PaymentAuthorizationNotification';
             });
 
         return !$notification->count() ? $this->noContent() : $this->success($notification);
