@@ -37,3 +37,7 @@ Broadcast::channel('subscribed.successfully.{userId}', function (\App\Models\Use
     return $user->id === (int) $userId;
 });
 
+Broadcast::channel('payment.authorization.sent.{userId}', function (\App\Models\User $user, $userId) {
+    return $user->id === (int) $userId;
+});
+
