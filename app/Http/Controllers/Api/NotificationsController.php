@@ -20,10 +20,10 @@ class NotificationsController extends Controller
     {
         $notification = Auth::user()
             ->notifications
-            ->where(
-                'type', '=', 'App\Notifications\PaymentAuthorizationNotification'
-            )
-            ->get();
+            ->filter(function ($notification) {
+                $notification->type === 'App\Notifications\PaymentAuthorizationNotification';
+                return $notification;
+            });
 
         return !$notification->count() ? $this->noContent() : $this->success($notification);
     }
