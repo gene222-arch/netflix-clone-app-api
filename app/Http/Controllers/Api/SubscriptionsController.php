@@ -61,16 +61,18 @@ class SubscriptionsController extends Controller
      */
     public function cancel()
     {
+        $data = [
+            'is_cancelled' => true,
+            'cancelled_at' => Carbon::now(),
+            'status' => 'cancelled'
+        ];
+        
         auth('api')
             ->user()
             ->currentSubscription()
-            ->update([
-                'is_cancelled' => true,
-                'cancelled_at' => Carbon::now(),
-                'status' => 'cancelled'
-            ]);
+            ->update($data);
 
-        return $this->success(null, 'Subscription cancelled successfully.');
+        return $this->success($data, 'Subscription cancelled successfully.');
     }
 
     /**
