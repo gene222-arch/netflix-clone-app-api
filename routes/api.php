@@ -287,6 +287,8 @@ Route::middleware(['api', 'verified'])->group(function ()
         {
             Route::get('/payment-authorizations', [NotificationsController::class, 'paymentAuthorizationNotifications']);
             Route::get('/payment-authorizations/current', [NotificationsController::class, 'findCurrentPaymentAuthorizationByUserId']);
+            Route::get('/payment-authorizations/clear', [NotificationsController::class, 'markAllPaymentAuthNotifsAsRead']);
+            Route::get('/payment-authorizations/clear', [NotificationsController::class, 'clearPaymentAuthNotifs']);
         });
 
 

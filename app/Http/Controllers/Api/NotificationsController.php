@@ -47,4 +47,30 @@ class NotificationsController extends Controller
 
         return !$notification ? $this->noContent() : $this->success($notification);
     }
+
+    public function markAllPaymentAuthNotifsAsRead()
+    {
+        auth('api')
+            ->user()
+            ->unreadNotifications
+            ->map(function ($notification) {
+                if ($notification->type === 'App\Notifications\PaymentAuthorizationNotification') {
+                    $notification->markAsRead();
+                }
+            });
+
+        return $this->success(NULL, 'Notifications mark all as read');
+    }
+
+    public function clearPaymentAuthNotifs()
+    {
+        auth('api')
+            ->user()
+            ->notifications()
+            ->where('type', 'App\Notifications\PaymentAuthorizationNotification')
+            ->delete();
+
+
+        return $this->success(NULL, 'Notifications cleared');
+    }
 }
