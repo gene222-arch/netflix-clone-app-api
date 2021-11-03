@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class NotificationsControllerTest extends TestCase
 {
-    /** @test */
+    /** test */
     public function user_can_view_payment_authorizations()
     {
         $response = $this->get(
@@ -28,5 +28,31 @@ class NotificationsControllerTest extends TestCase
         );
 
         $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_mark_all_as_read_payment_authorization_notifications()
+    {
+        $data = [];
+        $response = $this->put(
+            "/api/notifications/payment-authorizations/mark-all-as-read",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_clear_payment_authorization_notifications()
+    {
+        $data = [];
+        $response = $this->delete(
+            "/api/notifications/payment-authorizations/clear",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);   
     }
 }
