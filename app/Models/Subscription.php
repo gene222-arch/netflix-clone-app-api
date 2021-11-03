@@ -26,6 +26,10 @@ class Subscription extends Model
         'status'
     ];
 
+    protected $appends = [
+        'days_left'
+    ];
+
     public function scopeIsExpired($query): bool
     {
         $subscription = $query->get()->last();
@@ -46,5 +50,10 @@ class Subscription extends Model
         }
 
         return false;
+    }
+
+    public function getDaysLeftAttribute()
+    {
+        return Carbon::createFromDate($this->expired_at)->diffInDays();
     }
 }

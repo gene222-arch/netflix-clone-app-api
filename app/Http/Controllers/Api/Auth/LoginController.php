@@ -65,8 +65,7 @@ class LoginController extends Controller
 
         if ($auth->hasRole('Subscriber') || $auth->hasRole(1)) {
             $data = $data + [
-                'subscription_details' => $auth->currentSubscription(),
-                'is_subscription_expired' => $auth->subscriptions()->isExpired()
+                'subscription_details' => $auth->currentSubscription()
             ];
         }
 
