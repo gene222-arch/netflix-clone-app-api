@@ -74,11 +74,12 @@ class SubscriptionControllerTest extends TestCase
         $id = 62;
 
         $data = [
-            'type' => 'Premium'
+            'type' => 'Premium',
+            'user_email' => 'genephillip222@gmail.com'
         ];
 
         $response = $this->put(
-            '/api/subscriptions/' . $id,
+            '/api/subscriptions',
             $data,
             $this->apiHeader()
         );
