@@ -40,13 +40,10 @@ class QueuePaymentAuthorizationNotification implements ShouldQueue
             new PaymentAuthorizationNotification($this->checkOutUrl)
         );
 
-        /**
-         * Todo: add the appropriate notif data
-         */
         event(new \App\Events\PaymentAuthorizationSentEvent($this->user, [
             'read_at' => NULL,
             'data' => [
-                'type' => 'Payment Authorization Sent',
+                'type' => 'Payment Authorization Notification',
             ]
         ]));
     }
