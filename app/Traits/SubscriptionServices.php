@@ -124,8 +124,12 @@ trait SubscriptionServices
     }
 
 
-    public function updateSubscription(UpdateRequest $request, Subscription $subscription)
+    public function updateSubscription(UpdateRequest $request)
     {
+        $userSubscription = User::query()
+            ->firstWhere('email', $request->user_email)
+            ->activeSubscription();
+
         $type = $request->type;
         $expiredAt = NULL;
         $cost = 200;
@@ -147,7 +151,7 @@ trait SubscriptionServices
                 break;
         }
 
-        $result = $subscription->update([
+        $result = $userSubscription->update([
             'is_first_subscription' => false,
             'expired_at' => $expiredAt,
             'cost' => $cost

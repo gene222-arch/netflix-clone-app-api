@@ -60,12 +60,9 @@ class SubscriptionsController extends Controller
      * @param  App\Http\Requests\Subscription\StoreRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateRequest $request, Subscription $subscription)
+    public function update(UpdateRequest $request)
     {
-        $result = $this->updateSubscription(
-            $request,
-            $subscription
-        );
+        $result = $this->updateSubscription($request);
 
         return !$result 
             ? $this->error('There`s an error in the server')
