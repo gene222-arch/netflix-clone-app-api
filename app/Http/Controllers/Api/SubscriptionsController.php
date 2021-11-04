@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\SubscriptionServices;
 use App\Http\Requests\Subscription\DestroyRequest;
 use App\Http\Requests\Subscription\StoreRequest;
+use App\Http\Requests\Subscription\UpdateRequest;
 
 class SubscriptionsController extends Controller
 {
@@ -51,6 +52,19 @@ class SubscriptionsController extends Controller
     public function show(Subscription $subscription)
     {
         return $this->success($subscription);
+    }
+
+
+    public function update(UpdateRequest $request, Subscription $subscription)
+    {
+        $result = $this->updateSubscription(
+            $request,
+            $subscription
+        );
+
+        return !$result 
+            ? $this->error('There`s an error in the server')
+            : $this->success(NULL, 'Plan updated successfully');
     }
 
 

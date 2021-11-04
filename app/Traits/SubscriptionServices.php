@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Http\Requests\Subscription\UpdateRequest;
 use Carbon\Carbon;
 use App\Models\Subscription;
 use App\Models\User;
@@ -120,5 +121,38 @@ trait SubscriptionServices
             ->markAsRead();
 
         event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscription));
+    }
+
+
+    public function updateSubscription(UpdateRequest $request, Subscription $subscription)
+    {
+        $type = $request->type;
+        $expiredAt = NULL;
+        $cost = 200;
+
+        switch ($type) 
+        {
+            case 'Standard':
+                $expiredAt = Carbon::now()->addMonths(5);
+                $cost = 200;
+                break;
+            
+            case 'Premium':
+                $expiredAt = Carbon::now()->addMonths(6);
+                $cost = 600;
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        $result = $subscription->update([
+            'is_first_subscription' => false,
+            'expired_at' => $expiredAt,
+            'cost' => $cost
+        ]);
+
+        return $result;
     }
 }
