@@ -58,8 +58,6 @@ class PaymentAuthorizationNotification extends Notification implements ShouldQue
      */
     public function toDatabase($notifiable)
     {
-        event(new \App\Events\PaymentAuthorizationSentEvent(auth('api')->user(), $this));
-
         return [
             'type' => 'PaymentAuthorizationNotification',
             'data' => [

@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\User;
-use App\Notifications\PaymentAuthorizationNotification;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -18,14 +17,14 @@ class PaymentAuthorizationSentEvent implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public User $user;
-    public PaymentAuthorizationNotification $notification;
+    public $notification;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user, PaymentAuthorizationNotification $notification)
+    public function __construct(User $user, $notification)
     {
         $this->user = $user;
         $this->notification = $notification;
