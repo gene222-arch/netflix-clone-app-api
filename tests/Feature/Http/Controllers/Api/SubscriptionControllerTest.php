@@ -69,6 +69,24 @@ class SubscriptionControllerTest extends TestCase
 
 
     /** test */
+    public function subscriber_can_update_subscription()
+    {
+        $id = 62;
+
+        $data = [
+            'type' => 'Premium'
+        ];
+
+        $response = $this->put(
+            '/api/subscriptions/' . $id,
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function subscriber_can_delete_subscriptions()
     {
         $data = [

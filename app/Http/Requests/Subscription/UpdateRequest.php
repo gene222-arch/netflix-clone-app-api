@@ -14,7 +14,6 @@ class UpdateRequest extends BaseRequest
     public function rules()
     {
         return [
-            'id' => ['required', 'integer', 'exists:subscriptions'],
             'type' => ['required', 'string', 'in:Basic,Standard,Premium']
         ];
     }

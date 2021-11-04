@@ -54,7 +54,12 @@ class SubscriptionsController extends Controller
         return $this->success($subscription);
     }
 
-
+    /**
+     * Update a specified resource in storage.
+     *
+     * @param  App\Http\Requests\Subscription\StoreRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(UpdateRequest $request, Subscription $subscription)
     {
         $result = $this->updateSubscription(
