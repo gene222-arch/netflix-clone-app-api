@@ -23,7 +23,8 @@ class EPaymentRequest extends BaseRequest
             'amount' => ['required', 'numeric', 'min:100'],
             'currency' => ['nullable', 'string', 'in:PHP'],
             'email' => ['required', 'email'],
-            'send_payment_authorization_notif' => ['nullable', 'boolean']
+            'send_payment_authorization_notif' => ['nullable', 'boolean'],
+            'request_type' => ['nullable', 'string', 'in:POST,PUT']
         ];
     }
 }

@@ -37,7 +37,8 @@ class PaymongoService
         float $amount, 
         string $currency,
         string $email,
-        bool $sendPaymentAuthorizationNotif = false
+        string $requestType,
+        bool $sendPaymentAuthorizationNotif = false,
     )
     {
         $planType = match($amount) {
@@ -46,12 +47,14 @@ class PaymongoService
             600.00 => 'Premium'
         };
 
+        $subscriptionPath = $requestType === 'POST' ? 'subscribed-successfully' : 'updated-successfully';
+
         $payload = [
             'type' => $type,
             'amount' => $amount,
             'currency' => $currency,
             'redirect' => [
-                'success' => env('REACT_APP_URL') . "/subscriptions/subscribed-successfully?email=$email&type=$planType",
+                'success' => env('REACT_APP_URL') . "/subscriptions/$subscriptionPath?email=$email&type=$planType",
                 'failed' => env('REACT_APP_URL') . '/subscriptions/unauthorized?status=failed'
             ],
         ];
