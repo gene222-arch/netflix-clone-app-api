@@ -43,6 +43,22 @@ class NotificationsControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+
+    /** test */
+    public function user_can_mark_as_read_payment_authorization_notifications()
+    {
+        $id = 1;
+
+        $data = [];
+        $response = $this->put(
+            "/api/notifications/payment-authorizations/mark-as-read/$id",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
     /** test */
     public function user_can_clear_payment_authorization_notifications()
     {
