@@ -21,7 +21,7 @@ class SubscriptionsController extends Controller
      */
     public function index()
     {
-        $result = Subscription::all();
+        $result = Subscription::with('user')->get();
 
         return !$result->count()
             ? $this->noContent()

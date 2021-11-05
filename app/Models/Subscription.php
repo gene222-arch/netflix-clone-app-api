@@ -56,4 +56,9 @@ class Subscription extends Model
     {
         return Carbon::createFromDate($this->expired_at)->diffInDays();
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

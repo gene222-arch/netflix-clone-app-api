@@ -13,6 +13,7 @@ trait DashboardServices
         return [
             'monthly_subscribers_per_year' => self::monthlySubscribersPerYear($year),
             'monthly_active_subscribers' => self::monthlyActiveSubscribers($year),
+            'monthly_subscription_revenue' => self::monthlySubscriptionRevenue($year),
             'general_analytics' => self::generalAnalytics(),
             'top_five_most_rated_movies' => self::getTopFiveMostRatedMovies(),
             'top_five_most_liked_movies' => self::getTopFiveMostLikedMovies()
@@ -29,6 +30,14 @@ trait DashboardServices
                     FROM
                         employees
                 ) as total_number_of_employees,
+                (
+                    SELECT 
+                        SUM(cost)
+                    FROM 
+                        subscriptions
+                    WHERE 
+                        status IN ("subscribed", "expired", "cancelled")
+                ) as revenue,
                 (
                     SELECT
                         COUNT(*)  
@@ -186,6 +195,34 @@ trait DashboardServices
 
         foreach ($monthlySubscribers as $monthlySubscriber) {
             $data[$monthlySubscriber->month_number] = $monthlySubscriber->active_subscribers;
+        }
+
+        return $data;
+    }
+
+    private static function monthlySubscriptionRevenue(int $year): array 
+    {
+        $monthlySubscriptionRevenues = DB::select(
+            'SELECT 
+                    SUM(cost) as revenue,
+                MONTH(subscribed_at) - 1 AS month_number
+            FROM 
+                subscriptions
+            WHERE 
+                YEAR(subscribed_at) = :filterYear
+            AND 
+                status IN ("subscribed", "cancelled", "expired")
+            GROUP BY 
+                MONTH(subscribed_at) - 1
+        ', 
+    [
+            'filterYear' => $year
+        ]);
+
+        $data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+        foreach ($monthlySubscriptionRevenues as $monthlySubscriptionRevenue) {
+            $data[$monthlySubscriptionRevenue->month_number] = $monthlySubscriptionRevenue->revenue;
         }
 
         return $data;
