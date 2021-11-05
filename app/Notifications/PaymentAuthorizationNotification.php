@@ -2,10 +2,11 @@
 
 namespace App\Notifications;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class PaymentAuthorizationNotification extends Notification implements ShouldQueue
 {
@@ -58,13 +59,25 @@ class PaymentAuthorizationNotification extends Notification implements ShouldQue
      */
     public function toDatabase($notifiable)
     {
+        $data = [
+            'user_id' => $notifiable->id,
+            'status' => 'pending',
+            'message' => 'Payment Authorization will expire in an hour, please authorize your payment within the specified time.'
+        ];
+
+        event(new \App\Events\PaymentAuthorizationSentEvent($notifiable, [
+            'id' => $this->id,
+            'read_at' => NULL,
+            'data' => [
+                'type' => 'PaymentAuthorizationNotification',
+                'data' => $data
+            ],
+            'time_ago' => Carbon::parse(now())->diffForHumans()
+        ]));
+        
         return [
             'type' => 'PaymentAuthorizationNotification',
-            'data' => [
-                'user_id' => $notifiable->id,
-                'status' => 'pending',
-                'message' => 'Payment Authorization will expire in an hour, please authorize your payment within the specified time.'
-            ]
+            'data' => $data
         ];
     }
 }

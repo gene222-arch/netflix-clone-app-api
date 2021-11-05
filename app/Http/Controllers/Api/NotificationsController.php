@@ -66,6 +66,8 @@ class NotificationsController extends Controller
         return $this->success(NULL, 'Notifications mark all as read');
     }
 
+    
+
     public function clearPaymentAuthNotifs()
     {
         auth('api')
