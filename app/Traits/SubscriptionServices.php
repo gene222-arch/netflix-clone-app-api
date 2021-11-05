@@ -126,9 +126,8 @@ trait SubscriptionServices
 
     public function updateSubscription(UpdateRequest $request)
     {
-        $userSubscription = User::query()
-            ->firstWhere('email', $request->user_email)
-            ->activeSubscription();
+        $user = User::query()->firstWhere('email', $request->user_email);
+        $userSubscription = $user->activeSubscription();
 
         $type = $request->type;
         $expiredAt = NULL;
@@ -152,13 +151,19 @@ trait SubscriptionServices
                 break;
         }
 
-        $result = $userSubscription->update([
+        $subscriptionDetails = [
             'type' => $type,
             'is_first_subscription' => false,
             'subscribed_at' => Carbon::now(),
             'expired_at' => $expiredAt,
             'cost' => $cost
-        ]);
+        ];
+
+        $result = $userSubscription->update($subscriptionDetails);
+
+        if ($result) {
+            event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails));
+        }
 
         return $result;
     }
