@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationsController extends Controller
@@ -18,14 +19,17 @@ class NotificationsController extends Controller
      */
     public function paymentAuthorizationNotifications()
     {
-        $notification = auth('api')
+        $notifications = auth('api')
             ->user()
             ->notifications
-            ->filter(function ($notification) {
-                return $notification->type === 'App\Notifications\PaymentAuthorizationNotification';
+            ->filter(fn ($notification) => $notification->type === 'App\Notifications\PaymentAuthorizationNotification')
+            ->map(function ($notification) {
+                $notification->time_ago = $notification->created_at->diffForHumans();
+
+                return $notification;
             });
 
-        return !$notification->count() ? $this->noContent() : $this->success($notification);
+        return !$notifications->count() ? $this->noContent() : $this->success($notifications);
     }
 
 

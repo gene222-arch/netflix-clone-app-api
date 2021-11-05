@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Notifications\PaymentAuthorizationNotification;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -43,8 +44,14 @@ class QueuePaymentAuthorizationNotification implements ShouldQueue
         event(new \App\Events\PaymentAuthorizationSentEvent($this->user, [
             'read_at' => NULL,
             'data' => [
-                'type' => 'Payment Authorization Notification',
-            ]
+                'type' => 'PaymentAuthorizationNotification',
+                'data' => [
+                        'user_id' => $this->user->id,
+                        'status' => 'pending',
+                        'message' => 'Payment Authorization will expire in an hour, please authorize your payment within the specified time.'
+                ]
+            ],
+            'time_ago' => Carbon::parse(now())->diffForHumans()
         ]));
     }
 }
