@@ -7,6 +7,8 @@ use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Traits\Api\ApiResponser;
 use App\Http\Controllers\Controller;
+use Google\Service\SQLAdmin\Database;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationsController extends Controller
@@ -66,7 +68,12 @@ class NotificationsController extends Controller
         return $this->success(NULL, 'Notifications mark all as read');
     }
 
-    
+    public function markPaymentAuthNotifsAsRead(DatabaseNotification $notification)
+    {
+        $notification->markAsRead();
+
+        return $this->success(NULL, 'Notifications mark as read');
+    }
 
     public function clearPaymentAuthNotifs()
     {
