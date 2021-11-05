@@ -132,10 +132,15 @@ trait SubscriptionServices
 
         $type = $request->type;
         $expiredAt = NULL;
-        $cost = 200;
+        $cost = 0;
 
         switch ($type) 
         {
+            case 'Basic':
+                $expiredAt = Carbon::now()->addMonth();
+                $cost = 100;
+                break;
+
             case 'Standard':
                 $expiredAt = Carbon::now()->addMonths(5);
                 $cost = 200;
@@ -145,14 +150,12 @@ trait SubscriptionServices
                 $expiredAt = Carbon::now()->addMonths(6);
                 $cost = 600;
                 break;
-
-            default:
-                # code...
-                break;
         }
 
         $result = $userSubscription->update([
+            'type' => $type,
             'is_first_subscription' => false,
+            'subscribed_at' => Carbon::now(),
             'expired_at' => $expiredAt,
             'cost' => $cost
         ]);
