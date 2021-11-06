@@ -40,6 +40,14 @@ class UserProfile extends Model
         {
             $userProfile->user_id = auth('api')->user()->id;
         });
+
+        static::created(function ($userProfile) 
+        {
+            event(new \App\Events\SubscriberProfileCreatedEvent(
+                auth('api')->user(), 
+                $userProfile
+            ));
+        });
     }
 
     /** RELATIONSHIPS */
