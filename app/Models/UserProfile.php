@@ -48,6 +48,14 @@ class UserProfile extends Model
                 $userProfile
             ));
         });
+
+        static::deleted(function ($userProfile) 
+        {
+            event(new \App\Events\SubscriberProfileDeletedEvent(
+                auth('api')->user(), 
+                $userProfile->id
+            ));
+        });
     }
 
     /** RELATIONSHIPS */
