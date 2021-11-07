@@ -40,19 +40,8 @@ class NotifyUserOnMovieReleasedCommand extends Command
      */
     public function handle()
     {
-        $authenticatedUser = Auth::user();
-        $authUserIpAddress = request()->ip();
-
-        $isAuthUserIpAddressNotified = ReleasedMovieNotifiedUser::query()
-            ->where('user_id', $authenticatedUser->id)
-            ->get()
-            ->filter(fn($notified) => $notified->ip_address === $authUserIpAddress)
-            ->count();
-
-        // if (! $isAuthUserIpAddressNotified) {
-        //     $authenticatedUser->notify(
-        //         new \App\Notifications\MovieReleaseExpoNotification(\App\Models\Movie::first())
-        //     );
-        // }
+        # save the notification in a table with user_id
+        # using exponents notification iterate over it to send a notification
+        # check if a user is notified or not
     }
 }
