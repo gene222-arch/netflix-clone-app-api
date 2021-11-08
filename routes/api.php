@@ -311,6 +311,9 @@ Route::middleware(['api', 'verified'])->group(function ()
 
             Route::post('/', [PaymentMethodsController::class, 'storePaymentIntent'])
                 ->withoutMiddleware('verified');
+
+            Route::post('/attach-payment-intent', [PaymentMethodsController::class, 'attachPaymentIntent'])
+                ->withoutMiddleware('verified');
                 
             Route::put('/{paymentIntentId}/cancel', [PaymentMethodsController::class, 'cancelPaymentIntent'])
                 ->withoutMiddleware('verified'); 

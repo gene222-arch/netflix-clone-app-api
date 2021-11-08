@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Str;
 use Luigel\Paymongo\Facades\Paymongo;
 
 class PaymongoService
@@ -29,6 +30,54 @@ class PaymongoService
         ]);
 
         return collect($paymentIntent)->first();
+    }
+
+    public function attachPaymentIntent(
+        string $paymentIntentId,
+        int $cardNumber, 
+        int $expMonth, 
+        int $expYear, 
+        int $cvc, 
+        string $name, 
+        string $phoneNumber, 
+        string $email,
+        string $requestType,
+        string $planType
+    )
+    {
+        $subscriptionPath = $requestType === 'POST' ? 'subscribed-successfully' : 'updated-successfully';
+        $address = auth('api')->user()->address;
+
+        $paymentMethod = Paymongo::paymentMethod()->create([
+            'type' => 'card',
+            'details' => [
+                'card_number' => $cardNumber,
+                'exp_month' => $expMonth,
+                'exp_year' => $expYear,
+                'cvc' => $cvc,
+            ],
+            'billing' => [
+                'address' => [
+                    'line1' => $address->city_name . ',' . $address->country,
+                    'city' => $address->city_name,
+                    'state' => $address->city_name,
+                    'country' => Str::substr($address->country_code, 0, 1),
+                    'postal_code' => $address->zip_code,
+                ],
+                'name' => $name,
+                'email' => $email,
+                'phone' => $phoneNumber
+            ],
+        ]);
+
+        $attachedPaymentIntent = Paymongo::paymentIntent()
+            ->find($paymentIntentId)
+            ->attach(
+                $paymentMethod->id, 
+                env('REACT_APP_URL') . "/subscriptions/$subscriptionPath?email=$email&type=$planType"
+            );
+
+        return $attachedPaymentIntent;
     }
 
     public static function ePayment(

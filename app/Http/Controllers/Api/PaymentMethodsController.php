@@ -6,6 +6,7 @@ use App\Services\PaymongoService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentMethod\CardRequest;
 use App\Http\Requests\PaymentMethod\EPaymentRequest;
+use App\Http\Requests\PaymentMethod\AttachPaymentIntentRequest;
 use Luigel\Paymongo\Facades\Paymongo;
 
 class PaymentMethodsController extends Controller
@@ -29,6 +30,24 @@ class PaymentMethodsController extends Controller
         $paymentIntent = $service->cardPaymentIntent($request->amount);
 
         return $this->success($paymentIntent, 'Payment Intent Created');
+    }
+
+    public function attachPaymentIntent(AttachPaymentIntentRequest $request, PaymongoService $service)
+    {
+        $paymentIntent = $service->attachPaymentIntent(
+            $request->payment_intent_id,
+            $request->card_number, 
+            $request->exp_month, 
+            $request->exp_year, 
+            $request->cvc, 
+            $request->name, 
+            $request->phone_number, 
+            $request->email,
+            $request->request_type,
+            $request->plan_type
+        );
+
+        return $this->success($paymentIntent, 'Payment Intent attached successfully to card.');
     }
 
     public function showPaymentIntent(string $paymentIntentId)
