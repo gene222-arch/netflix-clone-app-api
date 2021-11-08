@@ -34,10 +34,10 @@ class PaymongoService
 
     public function attachPaymentIntent(
         string $paymentIntentId,
-        int $cardNumber, 
+        string $cardNumber, 
         int $expMonth, 
         int $expYear, 
-        int $cvc, 
+        string $cvc, 
         string $name, 
         string $phoneNumber, 
         string $email,
@@ -61,7 +61,7 @@ class PaymongoService
                     'line1' => $address->city_name . ',' . $address->country,
                     'city' => $address->city_name,
                     'state' => $address->city_name,
-                    'country' => Str::substr($address->country_code, 0, 1),
+                    'country' => Str::substr($address->country_code, 0, 2),
                     'postal_code' => $address->zip_code,
                 ],
                 'name' => $name,
@@ -70,14 +70,16 @@ class PaymongoService
             ],
         ]);
 
-        $attachedPaymentIntent = Paymongo::paymentIntent()
-            ->find($paymentIntentId)
-            ->attach(
-                $paymentMethod->id, 
-                env('REACT_APP_URL') . "/subscriptions/$subscriptionPath?email=$email&type=$planType"
-            );
+        $paymentIntent = Paymongo::paymentIntent()->find($paymentIntentId);
+        $paymentIntent_ = collect($paymentIntent)->first();
 
-        return $attachedPaymentIntent;
+        $paymentIntent->attach(
+            $paymentMethod->id, 
+            $paymentIntent_['client_key'],
+            env('REACT_APP_URL') . "/subscriptions/$subscriptionPath?email=$email&type=$planType"
+        );
+
+        return collect($paymentIntent)->first();
     }
 
     public static function ePayment(

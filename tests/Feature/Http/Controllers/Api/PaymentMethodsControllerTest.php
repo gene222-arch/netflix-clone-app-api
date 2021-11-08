@@ -80,6 +80,31 @@ class PaymentMethodsControllerTest extends TestCase
     }
 
     /** test */
+    public function user_can_attach_payment_intent()
+    {
+        $data = [
+            'payment_intent_id' => 'pi_eRKvZHvVduC1GFMz8DK1ERE9',
+            'card_number' => '4343434343434345', 
+            'exp_month' => '12', 
+            'exp_year' => '25', 
+            'cvc' => '251', 
+            'name' => 'Gene Phillip Artista', 
+            'phone_number' => '09154082715', 
+            'email' => 'genephillip222@gmail.com',
+            'request_type' => 'POST',
+            'plan_type' => 'Basic'
+        ];
+
+        $response = $this->post(
+            '/api/payment-methods/payment-intents/attach-payment-method',
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_cancel_payment_intent()
     {
         $id = 'pi_9YR1V7cpCF1oMk3oRKf3vuKF';

@@ -21,10 +21,10 @@ class AttachPaymentIntentRequest extends BaseRequest
     {
         return [
             'payment_intent_id' => ['required', 'string'],
-            'card_number' => ['required', 'intege'], 
-            'exp_month' => ['required', 'integer', 'min:2', 'max:2'], 
-            'exp_year' => ['required', 'integer', 'min:2', 'max:2'], 
-            'cvc' => ['required', 'integer', 'min:3', 'max:3'], 
+            'card_number' => ['required', 'string', 'min:16'], 
+            'exp_month' => ['required', 'string', 'min:2', 'max:2'], 
+            'exp_year' => ['required', 'string', 'min:2', 'max:2'], 
+            'cvc' => ['required', 'string', 'min:3', 'max:3'], 
             'name' => ['required', 'string'], 
             'phone_number' => ['required', 'string'], 
             'email' => ['required', 'email'],
