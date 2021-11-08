@@ -59,7 +59,7 @@ class UserProfile extends Model
 
         static::updated(function ($userProfile) 
         {
-            event(new \App\Events\SubscriberProfileDeletedEvent(
+            event(new \App\Events\SubscriberProfileUpdatedEvent(
                 auth('api')->user(), 
                 $userProfile
             ));

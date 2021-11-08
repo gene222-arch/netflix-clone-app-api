@@ -55,6 +55,18 @@ class SubscriptionsController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  App\Models\Subscription  $subscription
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showByAuthenticatedUser()
+    {
+        $subscriptions = auth('api')->user()->subscriptions;
+        return $this->success($subscriptions);
+    }
+
+    /**
      * Update a specified resource in storage.
      *
      * @param  App\Http\Requests\Subscription\StoreRequest  $request
