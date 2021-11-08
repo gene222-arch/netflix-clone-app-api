@@ -4,6 +4,7 @@ namespace Tests\Feature\Http\Controllers\Api;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Test;
 use Tests\TestCase;
 
 class SubscriptionControllerTest extends TestCase
@@ -34,6 +35,18 @@ class SubscriptionControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function subscriber_can_view_his_subscriptions()
+    {
+        $response = $this->get(
+            "/api/subscriptions/auth-user",
+            $this->apiHeader()
+        );
+
+        dd(json_decode($response->getContent()));
+
+        $this->assertResponse($response);
+    }
 
     /** test */
     public function subscriber_can_create_subscription()

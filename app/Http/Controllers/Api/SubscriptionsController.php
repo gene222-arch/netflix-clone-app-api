@@ -63,6 +63,7 @@ class SubscriptionsController extends Controller
     public function showByAuthenticatedUser()
     {
         $subscriptions = auth('api')->user()->subscriptions;
+
         return $this->success($subscriptions);
     }
 

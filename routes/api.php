@@ -324,8 +324,8 @@ Route::middleware(['api', 'verified'])->group(function ()
       Route::prefix('subscriptions')->group(function () 
       {
           Route::get('/', [SubscriptionsController::class, 'index']);
-          Route::get('/{subscription}', [SubscriptionsController::class, 'show']);
           Route::get('/auth-user', [SubscriptionsController::class, 'showByAuthenticatedUser']);
+          Route::get('/{subscription}', [SubscriptionsController::class, 'show']);
           Route::post('/', [SubscriptionsController::class, 'store'])
             ->withoutMiddleware(['verified']);
           Route::put('/', [SubscriptionsController::class, 'update']);
