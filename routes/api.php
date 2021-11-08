@@ -306,10 +306,10 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::group([
             'prefix' => 'payment-intents'
         ], function () {
-            Route::get('/{paymentIntentId}', [PaymentMethodsController::class, 'storePaymentIntent'])
+            Route::get('/{paymentIntentId}', [PaymentMethodsController::class, 'showPaymentIntent'])
                 ->withoutMiddleware('verified'); 
 
-            Route::post('/', [PaymentMethodsController::class, 'showPaymentIntent'])
+            Route::post('/', [PaymentMethodsController::class, 'storePaymentIntent'])
                 ->withoutMiddleware('verified');
                 
             Route::put('/{paymentIntentId}/cancel', [PaymentMethodsController::class, 'cancelPaymentIntent'])

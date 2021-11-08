@@ -33,7 +33,10 @@ class PaymentMethodsController extends Controller
 
     public function showPaymentIntent(string $paymentIntentId)
     {
-        return $this->success(Paymongo::paymentIntent()->find($paymentIntentId));
+        $paymentIntent = Paymongo::paymentIntent()->find($paymentIntentId);
+        $paymentIntent = collect($paymentIntent)->first();
+
+        return $this->success($paymentIntent);
     }
 
     public function cancelPaymentIntent(string $paymentIntentId)

@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class PaymentMethodsControllerTest extends TestCase
 {
-    /** @test */
+    /** test */
     public function user_can_create_e_payment()
     {
         $data = [
@@ -21,8 +21,6 @@ class PaymentMethodsControllerTest extends TestCase
             $data,
             $this->apiHeader()
         );
-
-        dd(json_decode($response->getContent()));
 
         $this->assertResponse($response);
     }
@@ -49,5 +47,49 @@ class PaymentMethodsControllerTest extends TestCase
                 'data',
                 'status_message'
             ]);
+    }
+
+
+    /** test */
+    public function user_can_view_payment_intent()
+    {
+        $id = 'pi_9YR1V7cpCF1oMk3oRKf3vuKF';
+
+        $response = $this->get(
+            '/api/payment-methods/payment-intents/' . $id,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_create_payment_intent()
+    {
+        $data = [
+            'amount' => 200.00
+        ];
+
+        $response = $this->post(
+            '/api/payment-methods/payment-intents',
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
+    public function user_can_cancel_payment_intent()
+    {
+        $id = 'pi_9YR1V7cpCF1oMk3oRKf3vuKF';
+
+        $response = $this->put(
+            '/api/payment-methods/payment-intents/' . $id . '/cancel',
+            [],
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
     }
 }

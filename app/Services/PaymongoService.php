@@ -28,7 +28,7 @@ class PaymongoService
             'currency' => 'PHP'
         ]);
 
-        return $paymentIntent;
+        return collect($paymentIntent)->first();
     }
 
     public static function ePayment(
