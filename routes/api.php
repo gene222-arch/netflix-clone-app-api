@@ -302,6 +302,19 @@ Route::middleware(['api', 'verified'])->group(function ()
     {
         Route::post('/e-payment', [PaymentMethodsController::class, 'ePayment'])
             ->withoutMiddleware('verified');
+
+        Route::group([
+            'prefix' => 'payment-intents'
+        ], function () {
+            Route::get('/{paymentIntentId}', [PaymentMethodsController::class, 'storePaymentIntent'])
+                ->withoutMiddleware('verified'); 
+
+            Route::post('/', [PaymentMethodsController::class, 'showPaymentIntent'])
+                ->withoutMiddleware('verified');
+                
+            Route::put('/{paymentIntentId}/cancel', [PaymentMethodsController::class, 'cancelPaymentIntent'])
+                ->withoutMiddleware('verified'); 
+        });
     });
 
     /**

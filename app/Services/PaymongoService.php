@@ -11,25 +11,24 @@ class PaymongoService
         return Paymongo::paymentMethod()->find($id) ?? NULL;
     }
 
-    public static function card(array $details, string $name, string $email, string $phone)
+    public static function cardPaymentIntent(float $amount)
     {
-        $payload = [
-            'type' => 'card',
-            'details' => [
-                'card_number' => $details['cardNumber'],
-                'exp_month' => $details['expMonth'],
-                'exp_year' => $details['expYear'],
-                'cvc' => $details['cvc'],
+        $paymentIntent = Paymongo::paymentIntent()->create([
+            'amount' => $amount,
+            'payment_method_allowed' => [
+                'card'
             ],
-            'billing' => NULL,  
-            'name' => $name,
-            'email' => $email,
-            'phone' => $phone
-        ];
+            'payment_method_options' => [
+                'card' => [
+                    'request_three_d_secure' => 'automatic'
+                ]
+            ],
+            'description' => 'Payment Intent',
+            'statement_descriptor' => env('APP_NAME') . ' ' . 'Organization',
+            'currency' => 'PHP'
+        ]);
 
-        $payment = Paymongo::paymentMethod()->create($payload);
-
-        return $payment;
+        return $paymentIntent;
     }
 
     public static function ePayment(
