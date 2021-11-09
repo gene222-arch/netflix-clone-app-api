@@ -19,6 +19,7 @@ class PaymentMethodsController extends Controller
             $request->input('currency', 'PHP'),
             $request->email,
             $request->input('request_type', 'POST'),
+            $request->payment_method,
             $request->input('send_payment_authorization_notif', false)
         );
 

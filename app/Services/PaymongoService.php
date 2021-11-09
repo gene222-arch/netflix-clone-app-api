@@ -88,6 +88,7 @@ class PaymongoService
         string $currency,
         string $email,
         string $requestType,
+        string $paymentMethod,
         bool $sendPaymentAuthorizationNotif = false,
     )
     {
@@ -104,7 +105,7 @@ class PaymongoService
             'amount' => $amount,
             'currency' => $currency,
             'redirect' => [
-                'success' => env('REACT_APP_URL') . "/subscriptions/$subscriptionPath?email=$email&type=$planType",
+                'success' => env('REACT_APP_URL') . "/subscriptions/$subscriptionPath?email=$email&type=$planType&paymentMethod=$paymentMethod",
                 'failed' => env('REACT_APP_URL') . '/subscriptions/unauthorized?status=failed'
             ],
         ];
