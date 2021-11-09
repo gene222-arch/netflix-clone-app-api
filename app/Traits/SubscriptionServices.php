@@ -65,8 +65,7 @@ trait SubscriptionServices
             DB::transaction(function () use ($userEmail, $type, $paymentMethod) 
             {
                 $user = auth('api')->user();
-
-                $subscription = new Subscription();
+                $subscriptionDetails = [];
         
                 if (! $user) {
                     $user = User::query()->firstWhere('email', '=', $userEmail);
@@ -95,7 +94,7 @@ trait SubscriptionServices
                             break;
                     }
         
-                    $subscription = [
+                    $subscriptionDetails = [
                         'is_first_subscription' => true,
                         'expired_at' => $expiredAt,
                         'is_expired' => false,
@@ -103,7 +102,7 @@ trait SubscriptionServices
                         'status' => 'subscribed'
                     ];
         
-                    $user->inActiveSubscription()->update($subscription);
+                    $user->inActiveSubscription()->update($subscriptionDetails);
                 }
         
                 /** Has subscriptions */
@@ -129,7 +128,7 @@ trait SubscriptionServices
                             break;
                     }
         
-                    $subscription = [
+                    $subscriptionDetails = [
                         'type' => $type,
                         'cost' => $cost,
                         'is_expired' => false,
@@ -138,7 +137,7 @@ trait SubscriptionServices
                         'status' => 'subscribed'
                     ];
         
-                    $subscription = $user->subscriptions()->create($subscription);
+                    $subscription = $user->subscriptions()->create($subscriptionDetails);
                     $subscription->details()->create([
                         'payment_method' => $paymentMethod,
                         'paid_amount' => $cost
@@ -150,7 +149,7 @@ trait SubscriptionServices
                     ->first()
                     ->markAsRead();
         
-                event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscription));
+                event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails));
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
