@@ -2,188 +2,216 @@
 
 namespace App\Traits;
 
-use App\Http\Requests\Subscription\UpdateRequest;
 use Carbon\Carbon;
-use App\Models\Subscription;
 use App\Models\User;
+use App\Models\Subscription;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Subscription\UpdateRequest;
 
 trait SubscriptionServices
 {
-    public function preSubscription(string $type, int $userId, string $paymentMethod)
+    public function preSubscription(string $type, int $userId, string $paymentMethod): bool|string
     {
-        $subscription = NULL;
-        $amount = 0;
-
-        $data = [
-            'user_id' => $userId,
-            'type' => $type
-        ];
-
-        switch ($type) 
-        {
-            case 'Basic':
-                $amount = 100;
-                $subscription = Subscription::query()->create(array_merge(
-                    $data,
-                    [ 'cost' => 100 ]
-                ));
-
-            case 'Standard':
-                $amount = 200;
-                $subscription = Subscription::query()->create(array_merge(
-                    $data,
-                    [ 'cost' => 200 ]
-                ));
-
-            case 'Premium':
-                $amount = 600;
-                $subscription = Subscription::query()->create(array_merge(
-                    $data,
-                    [ 'cost' => 600 ]
-                ));
-        }
-
-        $subscription->details()->create([
-            'payment_method' => $paymentMethod,
-            'paid_amount' => $amount
-        ]);
-    }
-
-    public function subscribe(string $userEmail, string $type, string $paymentMethod)
-    {
-        $user = auth('api')->user();
-
-        $subscription = new Subscription();
-
-        if (! $user) {
-            $user = User::query()->firstWhere('email', '=', $userEmail);
-        }
-
-        $totalSubscriptions = $user->subscriptions->where('subscribed_at', '!=', NULL)->count();
+        try {
+            DB::transaction(function () use ($type, $userId, $paymentMethod)
+            {
+                $subscription = NULL;
+                $amount = 0;
         
-        if (! $totalSubscriptions) 
-        {
-            $inActiveSubscription = $user->inActiveSubscription->first();
-            $expiredAt = null;
-
-            switch ($inActiveSubscription->type) 
-            {
-                case 'Basic':
-                    $expiredAt = Carbon::now()->addMonths(2);
-                    break;
-
-                case 'Standard':
-                    $expiredAt = Carbon::now()->addMonths(5);
-                    break;
-
-                case 'Premium':
-                    $expiredAt = Carbon::now()->addMonths(7);
-                    break;
-            }
-
-            $subscription = [
-                'is_first_subscription' => true,
-                'expired_at' => $expiredAt,
-                'is_expired' => false,
-                'subscribed_at' => Carbon::now(),
-                'status' => 'subscribed'
-            ];
-
-            $user->inActiveSubscription()->update($subscription);
+                $data = [
+                    'user_id' => $userId,
+                    'type' => $type
+                ];
+        
+                switch ($type) 
+                {
+                    case 'Basic':
+                        $amount = 100;
+                        $subscription = Subscription::query()->create(array_merge(
+                            $data,
+                            [ 'cost' => 100 ]
+                        ));
+        
+                    case 'Standard':
+                        $amount = 200;
+                        $subscription = Subscription::query()->create(array_merge(
+                            $data,
+                            [ 'cost' => 200 ]
+                        ));
+        
+                    case 'Premium':
+                        $amount = 600;
+                        $subscription = Subscription::query()->create(array_merge(
+                            $data,
+                            [ 'cost' => 600 ]
+                        ));
+                }
+        
+                $subscription->details()->create([
+                    'payment_method' => $paymentMethod,
+                    'paid_amount' => $amount
+                ]);
+            });
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
 
-        if ($totalSubscriptions && $type)
-        {
-            $expiredAt = null;
-            $cost = 200;
+        return true;
+    }
 
-            switch ($type) 
+    public function subscribe(string $userEmail, string $type, string $paymentMethod): bool|string
+    {
+        try {
+            DB::transaction(function () use ($userEmail, $type, $paymentMethod) 
             {
-                case 'Basic':
-                    $expiredAt = Carbon::now()->addMonth();
-                    break;
+                $user = auth('api')->user();
 
-                case 'Standard':
-                    $expiredAt = Carbon::now()->addMonths(4);
-                    $cost = 400;
-                    break;
-
-                case 'Premium':
-                    $expiredAt = Carbon::now()->addMonths(6);
-                    $cost = 600;
-                    break;
-            }
-
-            $subscription = [
-                'type' => $type,
-                'cost' => $cost,
-                'is_expired' => false,
-                'expired_at' => $expiredAt,
-                'subscribed_at' => Carbon::now(),
-                'status' => 'subscribed'
-            ];
-
-            $subscription = $user->subscriptions()->create($subscription);
-            $subscription->details()->create([
-                'payment_method' => $paymentMethod,
-                'paid_amount' => $cost
-            ]);
+                $subscription = new Subscription();
+        
+                if (! $user) {
+                    $user = User::query()->firstWhere('email', '=', $userEmail);
+                }
+        
+                $totalSubscriptions = $user->subscriptions->where('subscribed_at', '!=', NULL)->count();
+                
+                /** Has no subscriptions */
+                if (! $totalSubscriptions) 
+                {
+                    $inActiveSubscription = $user->inActiveSubscription->first();
+                    $expiredAt = null;
+        
+                    switch ($inActiveSubscription->type) 
+                    {
+                        case 'Basic':
+                            $expiredAt = Carbon::now()->addMonths(2);
+                            break;
+        
+                        case 'Standard':
+                            $expiredAt = Carbon::now()->addMonths(5);
+                            break;
+        
+                        case 'Premium':
+                            $expiredAt = Carbon::now()->addMonths(7);
+                            break;
+                    }
+        
+                    $subscription = [
+                        'is_first_subscription' => true,
+                        'expired_at' => $expiredAt,
+                        'is_expired' => false,
+                        'subscribed_at' => Carbon::now(),
+                        'status' => 'subscribed'
+                    ];
+        
+                    $user->inActiveSubscription()->update($subscription);
+                }
+        
+                /** Has subscriptions */
+                if ($totalSubscriptions && $type)
+                {
+                    $expiredAt = null;
+                    $cost = 200;
+        
+                    switch ($type) 
+                    {
+                        case 'Basic':
+                            $expiredAt = Carbon::now()->addMonth();
+                            break;
+        
+                        case 'Standard':
+                            $expiredAt = Carbon::now()->addMonths(4);
+                            $cost = 400;
+                            break;
+        
+                        case 'Premium':
+                            $expiredAt = Carbon::now()->addMonths(6);
+                            $cost = 600;
+                            break;
+                    }
+        
+                    $subscription = [
+                        'type' => $type,
+                        'cost' => $cost,
+                        'is_expired' => false,
+                        'expired_at' => $expiredAt,
+                        'subscribed_at' => Carbon::now(),
+                        'status' => 'subscribed'
+                    ];
+        
+                    $subscription = $user->subscriptions()->create($subscription);
+                    $subscription->details()->create([
+                        'payment_method' => $paymentMethod,
+                        'paid_amount' => $cost
+                    ]);
+                }
+        
+                $user->notifications()
+                    ->latest()
+                    ->first()
+                    ->markAsRead();
+        
+                event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscription));
+            });
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
 
-        $user->notifications()
-            ->latest()
-            ->first()
-            ->markAsRead();
-
-        event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscription));
+        return true;
     }
 
 
-    public function updateSubscription(UpdateRequest $request)
+    public function updateSubscription(UpdateRequest $request): bool|string
     {
-        $user = User::query()->firstWhere('email', $request->user_email);
-        $userSubscription = $user->activeSubscription();
-
-        $type = $request->type;
-        $expiredAt = NULL;
-        $cost = 0;
-
-        switch ($type) 
-        {
-            case 'Basic':
-                $expiredAt = Carbon::now()->addMonth();
-                $cost = 100;
-                break;
-
-            case 'Standard':
-                $expiredAt = Carbon::now()->addMonths(5);
-                $cost = 200;
-                break;
-            
-            case 'Premium':
-                $expiredAt = Carbon::now()->addMonths(6);
-                $cost = 600;
-                break;
+        try {
+            DB::transaction(function () use ($request) 
+            {
+                $user = User::query()->firstWhere('email', $request->user_email);
+                $userSubscription = $user->activeSubscription();
+        
+                $type = $request->type;
+                $expiredAt = NULL;
+                $cost = 0;
+        
+                switch ($type) 
+                {
+                    case 'Basic':
+                        $expiredAt = Carbon::now()->addMonth();
+                        $cost = 100;
+                        break;
+        
+                    case 'Standard':
+                        $expiredAt = Carbon::now()->addMonths(5);
+                        $cost = 200;
+                        break;
+                    
+                    case 'Premium':
+                        $expiredAt = Carbon::now()->addMonths(6);
+                        $cost = 600;
+                        break;
+                }
+        
+                $subscriptionDetails = [
+                    'type' => $type,
+                    'is_first_subscription' => false,
+                    'subscribed_at' => Carbon::now(),
+                    'expired_at' => $expiredAt,
+                    'cost' => $cost
+                ];
+        
+                $result = $userSubscription->update($subscriptionDetails);
+                $userSubscription->details()->create([
+                    'payment_method' => $request->payment_method,
+                    'paid_amount' => $request->paid_amount
+                ]);
+        
+                if ($result) {
+                    event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails));
+                }
+            });
+        } catch (\Throwable $th) {
+            return $th->getMessage();
         }
 
-        $subscriptionDetails = [
-            'type' => $type,
-            'is_first_subscription' => false,
-            'subscribed_at' => Carbon::now(),
-            'expired_at' => $expiredAt,
-            'cost' => $cost
-        ];
-
-        $result = $userSubscription->update($subscriptionDetails);
-        $userSubscription->details()->create([
-            'payment_method' => $request->payment_method,
-            'paid_amount' => $request->paid_amount
-        ]);
-
-        if ($result) {
-            event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails));
-        }
-
-        return $result;
+        return true;
     }
 }

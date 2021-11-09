@@ -14,4 +14,6 @@ class SubscriptionDetail extends Model
         'payment_method',
         'paid_amount'
     ];
+
+    public $timestamps = false;
 }

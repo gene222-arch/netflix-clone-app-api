@@ -37,9 +37,11 @@ class SubscriptionsController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $this->subscribe($request->user_email, $request->type, $request->payment_method);
+        $result = $this->subscribe($request->user_email, $request->type, $request->payment_method);
 
-        return $this->success(null, 'Subscribed successfully.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(null, 'Subscribed successfully.');
     }
 
 
@@ -78,7 +80,7 @@ class SubscriptionsController extends Controller
         $result = $this->updateSubscription($request);
 
         return !$result 
-            ? $this->error('There`s an error in the server')
+            ? $this->error($result)
             : $this->success(NULL, 'Plan updated successfully');
     }
 
