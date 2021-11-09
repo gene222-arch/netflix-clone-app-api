@@ -68,16 +68,24 @@ class RegisterController extends Controller
                 ];
 
                 $user = $user->query()->create($userDetails);
-                $user->sendEmailVerificationNotification();
-                $user->sendPaymentAuthorizationNotification($request->check_out_url);
                 $user->assignRole($request->role);
 
-                if ($request->has('plan_type')) {
-                    $this->preSubscription($request->plan_type, $user->id);
+                if ($request->payment_method !== 'card') {
+                    $user->sendPaymentAuthorizationNotification($request->check_out_url);
                 }
 
+                if ($request->has('plan_type')) {
+                    $this->preSubscription(
+                        $request->plan_type, 
+                        $user->id, 
+                        $request->payment_method
+                    );
+                }
+
+                $user->sendEmailVerificationNotification();
+
                 /** Save user location if access is allowed */
-                if ( $request->allow_access_to_location && $address = Location::get($request->ip()) ) 
+                if ($request->allow_access_to_location && $address = Location::get($request->ip())) 
                 {
                     $userAddressDetails = [
                         'user_id' => $user->id,

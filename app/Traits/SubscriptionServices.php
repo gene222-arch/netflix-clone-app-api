@@ -9,8 +9,11 @@ use App\Models\User;
 
 trait SubscriptionServices
 {
-    public function preSubscription(string $type, int $userId)
+    public function preSubscription(string $type, int $userId, string $paymentMethod)
     {
+        $subscription = NULL;
+        $amount = 0;
+
         $data = [
             'user_id' => $userId,
             'type' => $type
@@ -19,26 +22,34 @@ trait SubscriptionServices
         switch ($type) 
         {
             case 'Basic':
-                return Subscription::query()->create(array_merge(
+                $amount = 100;
+                $subscription = Subscription::query()->create(array_merge(
                     $data,
                     [ 'cost' => 100 ]
                 ));
 
             case 'Standard':
-                return Subscription::query()->create(array_merge(
+                $amount = 200;
+                $subscription = Subscription::query()->create(array_merge(
                     $data,
                     [ 'cost' => 200 ]
                 ));
 
             case 'Premium':
-                return Subscription::query()->create(array_merge(
+                $amount = 600;
+                $subscription = Subscription::query()->create(array_merge(
                     $data,
                     [ 'cost' => 600 ]
                 ));
         }
+
+        $subscription->details()->create([
+            'payment_method' => $paymentMethod,
+            'paid_amount' => $amount
+        ]);
     }
 
-    public function subscribe(string $userEmail, string $type)
+    public function subscribe(string $userEmail, string $type, string $paymentMethod)
     {
         $user = auth('api')->user();
 
@@ -112,7 +123,11 @@ trait SubscriptionServices
                 'status' => 'subscribed'
             ];
 
-            $user->subscriptions()->create($subscription);
+            $subscription = $user->subscriptions()->create($subscription);
+            $subscription->details()->create([
+                'payment_method' => $paymentMethod,
+                'paid_amount' => $cost
+            ]);
         }
 
         $user->notifications()
@@ -160,6 +175,10 @@ trait SubscriptionServices
         ];
 
         $result = $userSubscription->update($subscriptionDetails);
+        $userSubscription->details()->create([
+            'payment_method' => $request->payment_method,
+            'paid_amount' => $request->paid_amount
+        ]);
 
         if ($result) {
             event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails));
