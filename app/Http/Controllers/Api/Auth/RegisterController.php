@@ -68,6 +68,7 @@ class RegisterController extends Controller
                 ];
 
                 $user = $user->query()->create($userDetails);
+                $user->sendEmailVerificationNotification();
                 $user->assignRole($request->role);
 
                 if ($request->payment_method !== 'card') {
@@ -81,8 +82,6 @@ class RegisterController extends Controller
                         $request->payment_method
                     );
                 }
-
-                $user->sendEmailVerificationNotification();
 
                 /** Save user location if access is allowed */
                 if ($request->allow_access_to_location && $address = Location::get($request->ip())) 
