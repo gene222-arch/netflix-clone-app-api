@@ -15,7 +15,8 @@ class UpdateRequest extends BaseRequest
     {
         return [
             'type' => ['required', 'string', 'in:Basic,Standard,Premium'],
-            'user_email' => ['required', 'email', 'string', 'exists:users,email', new \App\Rules\Subscribed()]
+            'user_email' => ['required', 'email', 'string', 'exists:users,email', new \App\Rules\Subscribed()],
+            'payment_method' => ['required', 'string', 'in:Card,Gcash,Grab Pay']
         ];
     }
 }

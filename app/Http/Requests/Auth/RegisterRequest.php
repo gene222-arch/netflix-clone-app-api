@@ -33,7 +33,7 @@ class RegisterRequest extends BaseRequest
             'role' => ['required', 'string', 'exists:roles,name'],
             'plan_type' => ['nullable', 'string', 'in:Basic,Standard,Premium'],
             'check_out_url' => ['nullable', 'url'],
-            'payment_method' => ['required', 'string', 'in:card,gcash,grabpay']
+            'payment_method' => ['required', 'string', 'in:Card,Gcash,Grab Pay']
         ];
     }
 }
