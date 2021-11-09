@@ -73,10 +73,11 @@ class PaymongoService
         $paymentIntent = Paymongo::paymentIntent()->find($paymentIntentId);
         $paymentIntent_ = collect($paymentIntent)->first();
 
+        // ? Should i add the client key?
+        // $paymentIntent_['client_key'] 
         $paymentIntent->attach(
             $paymentMethod->id, 
-            $paymentIntent_['client_key'],
-            env('REACT_APP_URL') . "/subscriptions/$subscriptionPath?email=$email&type=$planType"
+            env('REACT_APP_URL') . "/subscriptions/$subscriptionPath?email=$email&type=$planType&paymentMethod=Card"
         );
 
         return collect($paymentIntent)->first();
