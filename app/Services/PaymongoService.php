@@ -46,7 +46,7 @@ class PaymongoService
     )
     {
         $subscriptionPath = $requestType === 'POST' ? 'subscribed-successfully' : 'updated-successfully';
-        $address = auth('api')->user()->address;
+        $address = auth('api')->user()?->address;
 
         $paymentMethod = Paymongo::paymentMethod()->create([
             'type' => 'card',
@@ -58,11 +58,11 @@ class PaymongoService
             ],
             'billing' => [
                 'address' => [
-                    'line1' => $address->city_name . ',' . $address->country,
-                    'city' => $address->city_name,
-                    'state' => $address->city_name,
-                    'country' => Str::substr($address->country_code, 0, 2),
-                    'postal_code' => $address->zip_code,
+                    'line1' => $address?->city_name . ',' . $address?->country,
+                    'city' => $address?->city_name,
+                    'state' => $address?->city_name,
+                    'country' => Str::substr($address?->country_code, 0, 2),
+                    'postal_code' => $address?->zip_code,
                 ],
                 'name' => $name,
                 'email' => $email,

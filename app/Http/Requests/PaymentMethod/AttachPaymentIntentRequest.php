@@ -28,7 +28,7 @@ class AttachPaymentIntentRequest extends BaseRequest
             'name' => ['required', 'string'], 
             'phone_number' => ['required', 'string'], 
             'email' => ['required', 'email'],
-            'request_type' => ['required', 'string', 'in:POST,PUT'],
+            'request_type' => ['nullable', 'string', 'in:POST,PUT'],
             'plan_type' => ['required', 'string', 'in:Basic,Standard,Premium']
         ];
     }

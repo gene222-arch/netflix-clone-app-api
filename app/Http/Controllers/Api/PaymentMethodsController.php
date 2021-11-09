@@ -43,7 +43,7 @@ class PaymentMethodsController extends Controller
             $request->name, 
             $request->phone_number, 
             $request->email,
-            $request->request_type,
+            $request->input('request_type', 'POST'),
             $request->plan_type
         );
 
