@@ -53,7 +53,8 @@ class SubscriptionControllerTest extends TestCase
     {
         $data = [
             'user_email' => 'genephillip222@gmail.com',
-            'type' => 'Premium'
+            'type' => 'Premium',
+            'payment_method' => 'card'
         ];
 
         $response = $this->post(
@@ -88,7 +89,8 @@ class SubscriptionControllerTest extends TestCase
 
         $data = [
             'type' => 'Premium',
-            'user_email' => 'genephillip222@gmail.com'
+            'user_email' => 'genephillip222@gmail.com',
+            'payment_method' => 'card'
         ];
 
         $response = $this->put(
