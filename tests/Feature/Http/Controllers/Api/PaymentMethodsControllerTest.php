@@ -30,7 +30,8 @@ class PaymentMethodsControllerTest extends TestCase
     {
         $data = [
             'type' => '',
-            'amount' => ''
+            'amount' => '',
+            'payment_method' => 'Gcash'
         ];
 
         $response = $this->post(
