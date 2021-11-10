@@ -11,6 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Jenssegers\Agent\Facades\Agent;
 
 class SubscriberProfileDeletedEvent implements ShouldBroadcastNow
 {
@@ -42,11 +43,14 @@ class SubscriberProfileDeletedEvent implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
+        $platform = Agent::isAndroidOS() ? 'android' : 'web';
+        
         return [
             'type' => 'User Profile Deleted Event',
             'data' => [
                 'profileId' => $this->profileId
-            ]
+            ],
+            'platform' => $platform
         ];
     }
 }
