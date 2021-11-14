@@ -12,7 +12,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Jenssegers\Agent\Facades\Agent;
+
 
 class SubscriberProfileCreatedEvent implements ShouldBroadcastNow
 {
@@ -44,7 +44,9 @@ class SubscriberProfileCreatedEvent implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        $platform = Agent::isAndroidOS() ? 'android' : 'web';
+        $agent = new \Jenssegers\Agent\Agent;
+
+        $platform = $agent->browser() ? 'web' : 'android';
 
         return [
             'type' => 'Subscriber Profile Created Event',

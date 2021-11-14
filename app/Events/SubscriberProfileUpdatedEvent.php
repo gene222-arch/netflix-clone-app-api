@@ -44,7 +44,9 @@ class SubscriberProfileUpdatedEvent implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        $platform = Agent::isAndroidOS() ? 'android' : 'web';
+        $agent = new \Jenssegers\Agent\Agent;
+
+        $platform = $agent->browser() ? 'web' : 'android';
 
         return [
             'type' => 'Subscriber Profile Updated Event',
