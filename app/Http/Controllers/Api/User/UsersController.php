@@ -12,12 +12,6 @@ use App\Notifications\ChangeEmailVerificationNotification;
 
 class UsersController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth:api', 'permission:Manage Users']);
-    }
-
-
     /**
      * Display a listing of the user's users.
      *

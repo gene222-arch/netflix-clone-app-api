@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class ReleasedMovieNotifiedUsersControllerTest extends TestCase
 {
-    /** @test */
+    /** test */
     public function user_can_create_a_notified_user()
     {
         $id = 17;
