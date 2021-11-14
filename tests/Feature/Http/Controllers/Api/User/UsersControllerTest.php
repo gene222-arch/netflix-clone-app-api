@@ -33,7 +33,19 @@ class UsersControllerTest extends TestCase
         );
 
         $this->assertResponse($response);
-}
+    }
+
+    /** test */
+    public function user_can_show_subscriber()
+    {
+        $response = $this->get(
+            '/api/users/subscriber',
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
 
     /** test */
     public function user_can_update_password()
