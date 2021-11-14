@@ -354,11 +354,12 @@ Route::middleware(['api', 'verified'])->group(function ()
      */
     Route::group([
         'prefix' => 'users',
-        'middleware' => ['auth:api']
+        'middleware' => ['auth:api'],
+        'name' => 'users.'
     ], function() {
-        Route::get('/', [UsersController::class, 'index'])->middleware('permission:Manage Users');
-        Route::get('/via-token', [UsersController::class, 'getUserByToken']);
-        Route::get('/subscriber', [UsersController::class, 'showSubscriber']);
+        Route::get('/', [UsersController::class, 'index'])->middleware('permission:Manage Users')->name('index');
+        Route::get('/via-token', [UsersController::class, 'getUserByToken'])->name('via.token');
+        Route::get('/subscriber', [UsersController::class, 'showSubscriber'])->name('subscriber');
         Route::put('/email', [UsersController::class, 'updateEmail']);
         Route::put('/password', [UsersController::class, 'updatePassword']);
         Route::post('/email-verification-code', [UsersController::class, 'sendEmailVerificationCode']);
