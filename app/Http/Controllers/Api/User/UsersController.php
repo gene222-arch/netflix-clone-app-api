@@ -38,6 +38,29 @@ class UsersController extends Controller
             : $this->success($users, 'Users fetched successfully.');
     }
 
+    public function showSubscriber()
+    {
+        $auth = auth('api')->user();
+
+        $subscriber = $auth->withoutRelations();
+        $subscriberProfiles = $auth->profiles;
+        $subscriberSubscriptionDetails = $auth->currentSubscription();
+        $subscriber->account_created_at = Carbon::parse($auth->created_at)->format('F Y');
+
+        $data = [
+            'user' => $subscriber,
+            'profiles' => $subscriberProfiles
+        ];
+
+        if ($auth->hasRole('Subscriber') || $auth->hasRole(1)) {
+            $data = $data + [
+                'subscription_details' => $subscriberSubscriptionDetails
+            ];
+        }
+
+        return $this->success($data);
+    }
+
     /**
      * Get specified resource.
      *

@@ -356,6 +356,7 @@ Route::middleware(['api', 'verified'])->group(function ()
     {
         Route::get('/', [UsersController::class, 'index']);
         Route::get('/via-token', [UsersController::class, 'getUserByToken'])->withoutMiddleware('permission:Manage Users');
+        Route::get('/subscriber', [UsersController::class, 'showSubscriber']);
         Route::put('/email', [UsersController::class, 'updateEmail'])->withoutMiddleware('permission:Manage Users');
         Route::put('/password', [UsersController::class, 'updatePassword'])->withoutMiddleware('permission:Manage Users');
         Route::post('/email-verification-code', [UsersController::class, 'sendEmailVerificationCode'])->withoutMiddleware('permission:Manage Users');
