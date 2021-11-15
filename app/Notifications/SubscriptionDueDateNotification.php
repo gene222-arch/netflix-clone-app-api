@@ -13,15 +13,17 @@ class SubscriptionDueDateNotification extends Notification implements ShouldQueu
     use Queueable;
 
     public Carbon $expirationDate;
+    public int $daysBeforeExpiration;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Carbon $expirationDate)
+    public function __construct(Carbon $expirationDate, int $daysBeforeExpiration)
     {
         $this->expirationDate = $expirationDate;
+        $this->daysBeforeExpiration = $daysBeforeExpiration;
     }
 
     /**
@@ -44,10 +46,13 @@ class SubscriptionDueDateNotification extends Notification implements ShouldQueu
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting('Good day our fellow subscribers,')
                     ->subject('Subscription Expiration')
-                    ->line('Your account will expire in a week at exactly')
-                    ->line($this->expirationDate)
+                    ->greeting('Your subscription will expire in ' . $this->daysBeforeExpiration . ' day/s')
+                    ->line('Hi ' . $notifiable->first_name . ',')
+                    ->line('Your account will at exactly ' . $this->expirationDate->format('M d, Y') . '.')
+                    ->line('Please do update your subscription to further enjoy')
+                    ->line('the services you`ve enjoyed so far.')
+                    ->action('Renew Subscription', 'http://localhost:3000/renew-subscription')
                     ->line('Thank you for using our application!');
     }
 
