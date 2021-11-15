@@ -20,6 +20,23 @@ class UsersControllerTest extends TestCase
     }
 
     /** test */
+    public function user_can_update_name()
+    {
+        $data = [
+            'first_name' => 'Gene Phillip Decena',
+            'last_name' => 'Artista'
+        ];
+
+        $response = $this->put(
+            '/api/users/name',
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_update_email()
     {
         $data = [
