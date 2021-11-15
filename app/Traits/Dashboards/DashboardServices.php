@@ -58,19 +58,11 @@ trait DashboardServices
                 ) AS total_active_subscribers,
                 (
                     SELECT
-                        COUNT(*)  
-                    FROM
-                        users
-                    LEFT JOIN 
-                        model_has_roles
-                    ON 
-                        users.id  = model_has_roles.model_id
-                    LEFT JOIN 
-                        roles
-                    ON 
-                        model_has_roles.role_id = roles.id
+                        COUNT(*)
+                    FROM 
+                        subscriptions
                     WHERE 
-                        roles.name = "Subscriber"
+                        subscriptions.status = "subscribed"
                 ) as total_number_of_subscribers,
                 (
                     SELECT 
