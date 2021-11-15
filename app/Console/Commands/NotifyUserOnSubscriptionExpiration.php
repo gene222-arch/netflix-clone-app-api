@@ -7,21 +7,21 @@ use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Console\Command;
 
-class MonitorSubscriptionExpirationDate extends Command
+class NotifyUserOnSubscriptionExpiration extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'subscription:monitor-expiration';
+    protected $signature = 'subscription:notify-expiration';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Monitor user`s subscription expiration date';
+    protected $description = 'Notify user`s subscription expiration date';
 
     /**
      * Create a new command instance.
@@ -41,22 +41,21 @@ class MonitorSubscriptionExpirationDate extends Command
     public function handle()
     {
         $users = User::role('Subscriber')->get();
-        $today = Carbon::now();
 
-        $users->map(function ($user) use ($today) 
+        $users->map(function ($user)
         {
             $subscription = $user->activeSubscription();
 
             if ($subscription)
             {
                 $expiredAt = Carbon::parse($subscription->expired_at);
+                $daysBeforeExpiration = $expiredAt->diffInDays(Carbon::today());
                 
-                if ($today->gte($expiredAt)) 
-                {
-                    $subscription->update([
-                        'is_expired' => true,
-                        'status' => 'expired'
-                    ]);
+                if ($daysBeforeExpiration <= 7 && $daysBeforeExpiration > 0) {
+                    $this->info('Mailing user');
+                    $user->notify(
+                        new \App\Notifications\SubscriptionDueDateNotification($expiredAt)
+                    );
                 }
             }
         });

@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:clean')->everyMinute();
         $schedule->command('backup:run --only-db')->everyMinute();
         $schedule->command('subscription:monitor-expiration')->everyMinute();
+        $schedule->command('subscription:notify-expiration')->dailyAt('11:34');
     }
 
     /**
