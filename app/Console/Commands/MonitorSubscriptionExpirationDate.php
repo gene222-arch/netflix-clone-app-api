@@ -41,28 +41,21 @@ class MonitorSubscriptionExpirationDate extends Command
     public function handle()
     {
         $users = User::role('Subscriber')->get();
-        $today = Carbon::now();
 
-        $users->map(function ($user) use ($today) 
+        $users->map(function ($user)
         {
             $subscription = $user->activeSubscription();
-            $expiredAt = $subscription->expired_at;
+            $subscribedAt = Carbon::parse($subscription->subscribed_at);
+            $expiredAt = Carbon::parse($subscription->expired_at);
 
             if ($subscription)
             {
-                if ($expiredAt->lte($today)) 
+                if ($expiredAt->lessThanOrEqualTo($subscribedAt) && !$subscription->is_expired) 
                 {
                     $subscription->update([
                         'is_expired' => true,
-                        'expired_at' => $today,
                         'status' => 'expired'
                     ]);
-                }
-
-                if ($expiredAt->diffInDays(Carbon::now()) === 7) {
-                    $user->notify(
-                        new \App\Notifications\SubscriptionDueDateNotification(Carbon::now()->addWeek())
-                    );
                 }
             }
         });
