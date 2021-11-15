@@ -360,8 +360,9 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/', [UsersController::class, 'index'])->middleware('permission:Manage Users')->name('index');
         Route::get('/via-token', [UsersController::class, 'getUserByToken'])->name('via.token');
         Route::get('/subscriber', [UsersController::class, 'showSubscriber'])->name('subscriber');
-        Route::put('/email', [UsersController::class, 'updateEmail']);
-        Route::put('/password', [UsersController::class, 'updatePassword']);
+        Route::put('/email', [UsersController::class, 'updateEmail'])->name('update.email');
+        Route::put('/name', [UsersController::class, 'updateName'])->name('update.name');
+        Route::put('/password', [UsersController::class, 'updatePassword'])->name('update.password');
         Route::post('/email-verification-code', [UsersController::class, 'sendEmailVerificationCode']);
     });
     /**

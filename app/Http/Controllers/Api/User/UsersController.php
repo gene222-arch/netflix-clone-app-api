@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\User\UpdateEmailRequest;
+use App\Http\Requests\User\UpdateNameRequest;
 use App\Http\Requests\User\UpdatePasswordRequest;
 use App\Notifications\ChangeEmailVerificationNotification;
 
@@ -88,6 +89,22 @@ class UsersController extends Controller
         ]);
 
         return $this->success(null, 'Account email updated successfully.');
+    }
+
+        /**
+     * Update the specified resource in storage.
+     *
+     * @param  App\Http\Requests\User\UpdateNameRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateName(UpdateNameRequest $request)
+    {
+        $request->user('api')->update([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name
+        ]);
+
+        return $this->success(null, 'Account Name updated successfully.');
     }
 
     /**
