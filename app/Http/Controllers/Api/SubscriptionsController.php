@@ -37,7 +37,10 @@ class SubscriptionsController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $result = $this->subscribe($request->user_email, $request->type, $request->payment_method);
+        $result = $this->subscribe(
+            $request->user_email, 
+            $request->type, 
+            $request->payment_method);
 
         return $result !== true 
             ? $this->error($result)
