@@ -31,8 +31,8 @@ class RegisterRequest extends BaseRequest
             'allow_access_to_location' => ['required', 'boolean'],
             'avatar_path' => ['required', 'string'],
             'role' => ['required', 'string', 'exists:roles,name'],
-            'plan_type' => ['nullable', 'string', 'in:Basic,Standard,Premium'],
-            'check_out_url' => ['nullable', 'url'],
+            'plan_type' => ['required', 'string', 'in:Basic,Standard,Premium'],
+            'check_out_url' => ['required', 'url'],
             'payment_method' => ['required', 'string', 'in:Card,Gcash,Grab Pay']
         ];
     }

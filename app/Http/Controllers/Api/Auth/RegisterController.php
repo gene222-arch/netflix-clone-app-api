@@ -71,7 +71,7 @@ class RegisterController extends Controller
                 $user->sendEmailVerificationNotification();
                 $user->assignRole($request->role);
 
-                if ($request->payment_method !== 'card') {
+                if ($request->has('check_out_url')) {
                     $user->sendPaymentAuthorizationNotification($request->check_out_url);
                 }
 
