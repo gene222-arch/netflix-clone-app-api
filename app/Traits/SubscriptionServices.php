@@ -160,7 +160,7 @@ trait SubscriptionServices
     }
 
 
-    public function updateSubscription(string $type, string $userEmail, $paymentMethod): bool|string
+    public function updateSubscription(string $type, string $userEmail, string $paymentMethod): bool|string
     {
         try {
             DB::transaction(function () use ($type, $userEmail, $paymentMethod) 
