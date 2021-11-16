@@ -77,7 +77,11 @@ class SubscriptionsController extends Controller
      */
     public function update(UpdateRequest $request)
     {
-        $result = $this->updateSubscription($request);
+        $result = $this->updateSubscription(
+            $request->type, 
+            $request->user_email, 
+            $request->payment_method
+        );
 
         return !$result 
             ? $this->error($result)

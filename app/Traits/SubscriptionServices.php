@@ -59,6 +59,7 @@ trait SubscriptionServices
         return true;
     }
 
+
     public function subscribe(string $userEmail, string $type, string $paymentMethod): bool|string
     {
         try {
@@ -159,15 +160,15 @@ trait SubscriptionServices
     }
 
 
-    public function updateSubscription(UpdateRequest $request): bool|string
+    public function updateSubscription(string $type, string $userEmail, $paymentMethod): bool|string
     {
         try {
-            DB::transaction(function () use ($request) 
+            DB::transaction(function () use ($type, $userEmail, $paymentMethod) 
             {
-                $user = User::query()->firstWhere('email', $request->user_email);
+                $user = User::query()->firstWhere('email', $userEmail);
                 $userSubscription = $user->activeSubscription();
         
-                $type = $request->type;
+                $type = $type;
                 $expiredAt = NULL;
                 $cost = 0;
         
@@ -199,8 +200,8 @@ trait SubscriptionServices
         
                 $result = $userSubscription->update($subscriptionDetails);
                 $userSubscription->details()->create([
-                    'payment_method' => $request->payment_method,
-                    'paid_amount' => $request->paid_amount
+                    'payment_method' => $paymentMethod,
+                    'paid_amount' => $paid_amount
                 ]);
         
                 if ($result) {
