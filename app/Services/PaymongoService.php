@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Luigel\Paymongo\Facades\Paymongo;
 
 class PaymongoService
@@ -45,42 +46,60 @@ class PaymongoService
         string $planType
     )
     {
-        $subscriptionPath = $requestType === 'POST' ? 'subscribed-successfully' : 'updated-successfully';
-        $address = auth('api')->user()?->address;
+        try {
+            DB::transaction(function () 
+                use (
+                    $paymentIntentId,
+                    $cardNumber, 
+                    $expMonth, 
+                    $expYear, 
+                    $cvc, 
+                    $name, 
+                    $phoneNumber, 
+                    $email,
+                    $requestType,
+                    $planType,
+                ) 
+            {
+                $address = auth('api')->user()?->address;
+        
+                $paymentMethod = Paymongo::paymentMethod()->create([
+                    'type' => 'card',
+                    'details' => [
+                        'card_number' => $cardNumber,
+                        'exp_month' => $expMonth,
+                        'exp_year' => $expYear,
+                        'cvc' => $cvc,
+                    ],
+                    'billing' => [
+                        'address' => [
+                            'line1' => $address?->city_name . ',' . $address?->country,
+                            'city' => $address?->city_name,
+                            'state' => $address?->city_name,
+                            'country' => Str::substr($address?->country_code, 0, 2),
+                            'postal_code' => $address?->zip_code,
+                        ],
+                        'name' => $name,
+                        'email' => $email,
+                        'phone' => $phoneNumber
+                    ],
+                ]);
+        
+                $paymentIntent = Paymongo::paymentIntent()->find($paymentIntentId);
+                $subscriptionPath = $requestType === 'POST' ? 'subscribed-successfully' : 'updated-successfully';
+        
+                $paymentIntent->attach(
+                    $paymentMethod->id, 
+                    env('REACT_APP_URL') . "/subscriptions/$subscriptionPath?email=$email&type=$planType&paymentMethod=Card"
+                );
 
-        $paymentMethod = Paymongo::paymentMethod()->create([
-            'type' => 'card',
-            'details' => [
-                'card_number' => $cardNumber,
-                'exp_month' => $expMonth,
-                'exp_year' => $expYear,
-                'cvc' => $cvc,
-            ],
-            'billing' => [
-                'address' => [
-                    'line1' => $address?->city_name . ',' . $address?->country,
-                    'city' => $address?->city_name,
-                    'state' => $address?->city_name,
-                    'country' => Str::substr($address?->country_code, 0, 2),
-                    'postal_code' => $address?->zip_code,
-                ],
-                'name' => $name,
-                'email' => $email,
-                'phone' => $phoneNumber
-            ],
-        ]);
 
-        $paymentIntent = Paymongo::paymentIntent()->find($paymentIntentId);
-        $paymentIntent_ = collect($paymentIntent)->first();
+            });
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
 
-        // ? Should i add the client key?
-        // $paymentIntent_['client_key'] 
-        $paymentIntent->attach(
-            $paymentMethod->id, 
-            env('REACT_APP_URL') . "/subscriptions/$subscriptionPath?email=$email&type=$planType&paymentMethod=Card"
-        );
-
-        return collect($paymentIntent)->first();
+        return true;
     }
 
     public static function ePayment(

@@ -35,7 +35,7 @@ class PaymentMethodsController extends Controller
 
     public function attachPaymentIntent(AttachPaymentIntentRequest $request, PaymongoService $service)
     {
-        $paymentIntent = $service->attachPaymentIntent(
+        $result = $service->attachPaymentIntent(
             $request->payment_intent_id,
             $request->card_number, 
             $request->exp_month, 
@@ -48,7 +48,9 @@ class PaymentMethodsController extends Controller
             $request->plan_type
         );
 
-        return $this->success($paymentIntent, 'Payment Intent attached successfully to card.');
+        return $result !== true 
+            ? $this->error($result)
+            : $this->success(NULL, 'Payment Intent attached successfully to card.');
     }
 
     public function showPaymentIntent(string $paymentIntentId)
