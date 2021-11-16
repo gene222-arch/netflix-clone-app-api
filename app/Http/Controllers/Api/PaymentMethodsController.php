@@ -41,7 +41,7 @@ class PaymentMethodsController extends Controller
             $request->exp_month, 
             $request->exp_year, 
             $request->cvc, 
-            $request->name, 
+            $request->first_name . '' . $request->last_name, 
             $request->phone_number, 
             $request->email,
             $request->input('request_type', 'POST'),

@@ -20,12 +20,13 @@ class AttachPaymentIntentRequest extends BaseRequest
     public function rules()
     {
         return [
+            'first_name' => ['required', 'string'],
+            'last_name' => ['required', 'string'],
             'payment_intent_id' => ['required', 'string'],
             'card_number' => ['required', 'string', 'min:16'], 
             'exp_month' => ['required', 'string', 'min:2', 'max:2'], 
             'exp_year' => ['required', 'string', 'min:2', 'max:2'], 
-            'cvc' => ['required', 'string', 'min:3', 'max:3'], 
-            'name' => ['required', 'string'], 
+            'cvc' => ['required', 'string', 'min:3', 'max:3'],
             'phone_number' => ['required', 'string'], 
             'email' => ['required', 'email'],
             'request_type' => ['nullable', 'string', 'in:POST,PUT'],
