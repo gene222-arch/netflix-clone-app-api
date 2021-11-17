@@ -53,7 +53,7 @@ class MovieReleaseExpoNotification extends Notification
             ->title($title)
             ->body("Start watching it now")
             ->setJsonData([
-                'type' => 'MovieReleaseExpoNotification',
+                'type' => 'Movie Release Expo Notification',
                 'movie' => $this->movie,
                 'coming_soon_movie_id' => $this->comingSoonMovieId
             ])
