@@ -270,7 +270,7 @@ trait HasComingSoonMovieServices
                     /** Notify user on movie release */
                     auth('api')
                         ->user()
-                        ->notify(new \App\Notifications\MovieReleaseExpoNotification($movie));
+                        ->notify(new \App\Notifications\MovieReleaseExpoNotification($movie, $comingSoonMovie->id));
 
                     ComingSoonMovie::cacheToForget();
 
