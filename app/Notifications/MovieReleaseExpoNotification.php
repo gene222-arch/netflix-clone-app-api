@@ -41,7 +41,7 @@ class MovieReleaseExpoNotification extends Notification
             ->isNotEmpty();
 
         $movieTitle = $this->movie->title;
-        $titleSubContent = "a new movie called $movieTitle is available in Flicklify.";
+        $titleSubContent = "a new movie called $movieTitle is available in " . env('APP_NAME') . ".";
 
         $title = $upcomingMovieIsInReminded 
             ? "🔔 Reminder: $titleSubContent" 
