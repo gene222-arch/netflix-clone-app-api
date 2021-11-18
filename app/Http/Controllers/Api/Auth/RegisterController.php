@@ -69,11 +69,8 @@ class RegisterController extends Controller
 
                 $user = $user->query()->create($userDetails);
                 $user->sendEmailVerificationNotification();
+                $user->sendPaymentAuthorizationNotification($request->check_out_url);
                 $user->assignRole($request->role);
-
-                if ($request->has('check_out_url')) {
-                    $user->sendPaymentAuthorizationNotification($request->check_out_url);
-                }
 
                 if ($request->has('plan_type')) {
                     $this->preSubscription(
