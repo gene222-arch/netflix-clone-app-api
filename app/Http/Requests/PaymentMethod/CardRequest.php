@@ -20,7 +20,7 @@ class CardRequest extends BaseRequest
     public function rules()
     {
         return [
-            'amount' => ['required', 'numeric', 'min:200']
+            'amount' => ['required', 'numeric', 'min:100']
         ];
     }
 }
