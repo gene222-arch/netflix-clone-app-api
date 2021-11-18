@@ -110,12 +110,13 @@ trait SubscriptionServices
                 if ($totalSubscriptions && $type)
                 {
                     $expiredAt = null;
-                    $cost = 200;
+                    $cost = 0;
         
                     switch ($type) 
                     {
                         case 'Basic':
                             $expiredAt = Carbon::now()->addMonth();
+                            $cost = 100;
                             break;
         
                         case 'Standard':
@@ -150,7 +151,9 @@ trait SubscriptionServices
                     ->first()
                     ->markAsRead();
         
-                event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails));
+                event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails + [
+                    'days_left' => Carbon::createFromDate($expiredAt)->diffInDays()
+                ]));
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -195,7 +198,8 @@ trait SubscriptionServices
                     'is_first_subscription' => false,
                     'subscribed_at' => Carbon::now(),
                     'expired_at' => $expiredAt,
-                    'cost' => $cost
+                    'cost' => $cost,
+                    'status' => 'subscribed'
                 ];
         
                 $result = $userSubscription->update($subscriptionDetails);
@@ -205,7 +209,9 @@ trait SubscriptionServices
                 ]);
         
                 if ($result) {
-                    event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails));
+                    event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails + [
+                        'days_left' => Carbon::createFromDate($expiredAt)->diffInDays()
+                    ]));
                 }
             });
         } catch (\Throwable $th) {
