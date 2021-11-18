@@ -86,7 +86,7 @@ class SubscriptionsController extends Controller
             $request->payment_method
         );
 
-        return !$result 
+        return $result !== true
             ? $this->error($result)
             : $this->success(NULL, 'Plan updated successfully');
     }

@@ -201,7 +201,7 @@ trait SubscriptionServices
                 $result = $userSubscription->update($subscriptionDetails);
                 $userSubscription->details()->create([
                     'payment_method' => $paymentMethod,
-                    'paid_amount' => $paid_amount
+                    'paid_amount' => $cost
                 ]);
         
                 if ($result) {
