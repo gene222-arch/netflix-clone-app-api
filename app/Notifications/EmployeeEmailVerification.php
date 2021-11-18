@@ -46,7 +46,7 @@ class EmployeeEmailVerification extends Notification
         $hashedEmail = sha1($notifiable->email);
         $id = $notifiable->id;
 
-        $urlVerificationPath = "http://localhost:3000/employees/email/verify?id=$id&hash=$hashedEmail";
+        $urlVerificationPath =  env('REACT_APP_URL') . "/employees/email/verify?id=$id&hash=$hashedEmail";
 
         return (new MailMessage)
                     ->subject('Email Verification')
