@@ -16,7 +16,7 @@ class UpdateRequest extends BaseRequest
     {
         return [
             'id' => ['required', 'integer', 'exists:user_profiles'],
-            'name' => ['required', 'string', "unique:user_profiles,name,{$this->id}"],
+            'name' => ['required', 'string', 'min:4', 'max:8', "unique:user_profiles,name,{$this->id}"],
             'avatar' => ['required', 'string'],
             'is_for_kids' => ['required', 'boolean']
         ];
