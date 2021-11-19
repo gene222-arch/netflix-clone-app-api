@@ -131,7 +131,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this
             ->subscriptions()
             ->get()
-            ->last();
+            ->first();
     }
 
     public function getKey(): int
