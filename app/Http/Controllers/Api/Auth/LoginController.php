@@ -56,17 +56,25 @@ class LoginController extends Controller
         $role = '';
 
         $subscriber = $auth->withoutRelations();
-        $subscriber->account_created_at = Carbon::parse($auth->created_at)->format('F Y');
 
         $data = [
             'user' => $subscriber,
             'profiles' => $auth->profiles
         ];
 
-        if ($auth->hasRole('Subscriber') || $auth->hasRole(1)) {
+        if ($auth->hasRole('Subscriber') || $auth->hasRole(1)) 
+        {
             $data = $data + [
                 'subscription_details' => $auth->currentSubscription()
             ];
+
+            $oldestSubscriptionDate = $auth
+                ->subscriptions()
+                ->orderBy('subscribed_at', 'ASC')
+                ->get()
+                ->first()->subscribed_at;
+
+            $subscriber->account_created_at = Carbon::parse($oldestSubscriptionDate)->format('F Y');
         }
 
         if ($withRoles) 
