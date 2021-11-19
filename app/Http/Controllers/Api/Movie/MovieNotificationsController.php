@@ -28,8 +28,8 @@ class MovieNotificationsController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $notifications = $notifications->filter(fn ($notification) => $notification->movie);
+        $filteredNotifications = $notifications->filter->movie->values();
 
-        return !$notifications->count() ? $this->noContent(): $this->success($notifications);
+        return !$filteredNotifications->count() ? $this->noContent(): $this->success($filteredNotifications);
     }
 }
