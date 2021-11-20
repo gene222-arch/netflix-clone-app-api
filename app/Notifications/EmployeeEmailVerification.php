@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\HtmlString;
 
-class EmployeeEmailVerification extends Notification
+class EmployeeEmailVerification extends Notification implements ShouldQueue
 {
     use Queueable;
 
