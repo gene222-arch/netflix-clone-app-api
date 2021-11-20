@@ -97,6 +97,26 @@ class UserProfilesControllerTest extends TestCase
     }
 
     /** test */
+    public function user_can_disable_profile()
+    {
+        $data = [
+            'ids' => [
+                32
+            ]
+        ];
+
+        $response = $this->put(
+            "/api/user-profiles/disable",
+            $data,
+            $this->apiHeader()
+        );
+
+        dd(json_decode($response->getContent()));
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_upload_avatar()
     {
         $avatar = UploadedFile::fake()

@@ -374,9 +374,9 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/{id}', [UserProfilesController::class, 'show']);
         Route::post('/', [UserProfilesController::class, 'store']);
         Route::post('/avatar-upload', [UserProfilesController::class, 'uploadAvatar']);
+        Route::put('/disable', [UserProfilesController::class, 'disable']);
         Route::put('/{profile}', [UserProfilesController::class, 'update']);
         Route::put('/{profile}/pin-code', [UserProfilesController::class, 'managePinCode']);
-        Route::put('/disabled', [UserProfilesController::class, 'disable']);
         Route::delete('/{profile}', [UserProfilesController::class, 'destroy']);
     });
 
