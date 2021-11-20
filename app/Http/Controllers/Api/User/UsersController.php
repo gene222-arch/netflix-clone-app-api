@@ -13,6 +13,7 @@ use App\Notifications\ChangeEmailVerificationNotification;
 
 class UsersController extends Controller
 {
+
     /**
      * Display a listing of the user's users.
      *
@@ -67,12 +68,18 @@ class UsersController extends Controller
 
         $user = $auth->withoutRelations();
         $user->account_created_at = Carbon::parse($user->created_at)->format('F Y');
+        $profiles = $auth->profiles;
+        $subscriptionDetails = $auth->currentSubscription();
+        $role = $auth->roles->first()?->withoutRelations()->name;
+        
+        $token = $auth->createToken(env('PERSONAL_ACCESS_TOKEN'))->accessToken;
 
         return $this->success([
             'user' => $user,
-            'profiles' => $auth->profiles,
-            'subscription_details' => $auth->currentSubscription(),
-            'role' => $auth->roles->first()?->withoutRelations()->name
+            'profiles' => $profiles,
+            'subscription_details' => $subscriptionDetails,
+            'role' => $role,
+            'token' => $token
         ]);
     }
 
