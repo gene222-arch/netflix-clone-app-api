@@ -14,7 +14,6 @@ use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\Dashboards\DashboardsController;
 use App\Http\Controllers\Api\EmployeesController;
 use App\Http\Controllers\Api\Movie\ComingSoonMoviesController;
-use App\Http\Controllers\Api\Exports\UserExportController;
 use App\Http\Controllers\Api\Movie\AuthorsController;
 use App\Http\Controllers\Api\Movie\CastsController;
 use App\Http\Controllers\Api\Movie\DirectorsController;
@@ -359,6 +358,7 @@ Route::middleware(['api', 'verified'])->group(function ()
     ], function() {
         Route::get('/', [UsersController::class, 'index'])->middleware('permission:Manage Users')->name('index');
         Route::get('/via-token', [UsersController::class, 'getUserByToken'])->name('via.token');
+        Route::get('/subscribers', [UsersController::class, 'subscribers'])->name('subscribers');
         Route::get('/subscriber', [UsersController::class, 'showSubscriber'])->name('subscriber');
         Route::put('/email', [UsersController::class, 'updateEmail'])->name('update.email');
         Route::put('/name', [UsersController::class, 'updateName'])->name('update.name');

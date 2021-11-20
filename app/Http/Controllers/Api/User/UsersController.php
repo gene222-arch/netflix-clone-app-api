@@ -34,6 +34,20 @@ class UsersController extends Controller
             : $this->success($users, 'Users fetched successfully.');
     }
 
+    /**
+     * Display a listing of the user's with subscriber role.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function subscribers()
+    {
+        $users = User::with([ 'roles' => fn ($q) => $q->where('name', '=', 'Subscriber') ])->get();
+
+        return !$users->count()
+            ? $this->noContent()
+            : $this->success($users, 'Subscribers fetched successfully.');
+    }
+
     public function showSubscriber()
     {
         $auth = auth('api')->user();
