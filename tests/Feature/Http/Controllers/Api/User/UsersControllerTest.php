@@ -20,6 +20,17 @@ class UsersControllerTest extends TestCase
     }
 
     /** test */
+    public function user_can_view_subscribers()
+    {
+        $response = $this->get(
+            '/api/users/subscribers',
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_update_name()
     {
         $data = [
