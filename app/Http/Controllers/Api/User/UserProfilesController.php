@@ -8,6 +8,7 @@ use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\UserProfile\StoreRequest;
 use App\Http\Requests\UserProfile\UpdateRequest;
 use App\Http\Requests\Upload\UploadAvatarRequest;
+use App\Http\Requests\UserProfile\DisableRequest;
 use App\Http\Requests\UserProfile\ManagePinCodeRequest;
 
 class UserProfilesController extends Controller
@@ -122,6 +123,25 @@ class UserProfilesController extends Controller
         $profile->update($data);
 
         return $this->success(null, 'Profile updated successfully.');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \App\Http\Requests\UserProfile\DisableRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function disable(DisableRequest $request)
+    {
+        auth('api')
+            ->user()
+            ->profiles()
+            ->whereIn('id', $request->ids)
+            ->update([
+                'enabled' => 0
+            ]);
+
+        return $this->success(NULL, 'Profiles disabled successfully.');
     }
 
     /**

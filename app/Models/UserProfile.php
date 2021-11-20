@@ -22,6 +22,7 @@ class UserProfile extends Model
         'previous_avatar',
         'is_for_kids',
         'is_profile_locked',
+        'enabled',
         'pin_code'
     ];
     
