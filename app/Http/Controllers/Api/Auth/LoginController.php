@@ -59,7 +59,7 @@ class LoginController extends Controller
 
         $data = [
             'user' => $subscriber,
-            'profiles' => $auth->profiles
+            'profiles' => $auth->profiles()->orderBy('enabled', 'DESC')->get()
         ];
 
         if ($auth->hasRole('Subscriber') || $auth->hasRole(1)) 

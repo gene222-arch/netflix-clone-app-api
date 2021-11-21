@@ -130,6 +130,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this
             ->subscriptions()
+            ->orderBy('subscribed_at', 'Asc')
             ->get()
             ->last();
     }
