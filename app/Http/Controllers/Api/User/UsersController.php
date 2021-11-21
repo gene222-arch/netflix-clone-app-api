@@ -53,7 +53,7 @@ class UsersController extends Controller
         $auth = auth('api')->user();
 
         $subscriber = $auth->withoutRelations();
-        $subscriberProfiles = $auth->profiles;
+        $subscriberProfiles = $auth->profiles()->orderBy('enabled', 'DESC')->get();
         $subscriberSubscriptionDetails = $auth->currentSubscription();
         $subscriber->account_created_at = Carbon::parse($auth->created_at)->format('F Y');
 
