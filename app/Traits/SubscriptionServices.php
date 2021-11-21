@@ -221,4 +221,21 @@ trait SubscriptionServices
 
         return true;
     }
+
+    public function cancelSubscription()
+    {
+        $user = auth('api')->user();
+
+        $data = [
+            'is_cancelled' => true,
+            'cancelled_at' => Carbon::now(),
+            'status' => 'cancelled'
+        ];
+        
+        $user
+            ->currentSubscription()
+            ->update($data);
+
+        event(new \App\Events\SubscriptionCancelledEvent($user, $data));
+    }
 }
