@@ -133,13 +133,16 @@ class UserProfilesController extends Controller
      */
     public function disable(DisableRequest $request)
     {
-        auth('api')
-            ->user()
+        $user = $request->user('api');
+
+        $user
             ->profiles()
             ->whereIn('id', $request->ids)
             ->update([
                 'enabled' => 0
             ]);
+
+        event(new \App\Events\SubscriberProfileDisabledEvent($user, $request->ids));
 
         return $this->success(NULL, 'Profiles disabled successfully.');
     }
