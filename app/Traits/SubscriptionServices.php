@@ -222,7 +222,7 @@ trait SubscriptionServices
         return true;
     }
 
-    public function cancelSubscription()
+    public function cancelSubscription(): array
     {
         $user = auth('api')->user();
 
@@ -237,5 +237,7 @@ trait SubscriptionServices
             ->update($data);
 
         event(new \App\Events\SubscriptionCancelledEvent($user, $data));
+
+        return $data;
     }
 }

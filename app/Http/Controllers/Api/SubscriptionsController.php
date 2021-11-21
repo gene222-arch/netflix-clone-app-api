@@ -108,7 +108,7 @@ class SubscriptionsController extends Controller
      */
     public function cancel()
     {
-        $this->cancelSubscription();
+        $data = $this->cancelSubscription();
 
         return $this->success($data, 'Subscription cancelled successfully.');
     }
