@@ -170,8 +170,7 @@ trait SubscriptionServices
             {
                 $user = User::query()->firstWhere('email', $userEmail);
                 $userSubscription = $user->activeSubscription();
-        
-                $type = $type;
+
                 $expiredAt = NULL;
                 $cost = 0;
         
@@ -199,20 +198,22 @@ trait SubscriptionServices
                     'subscribed_at' => Carbon::now(),
                     'expired_at' => $expiredAt,
                     'cost' => $cost,
-                    'status' => 'subscribed'
+                    'status' => 'subscribed',
+                    'days_left' => Carbon::createFromDate($expiredAt)->diffInDays()
                 ];
         
-                $result = $userSubscription->update($subscriptionDetails);
+                $userSubscription->update($subscriptionDetails);
+
                 $userSubscription->details()->create([
                     'payment_method' => $paymentMethod,
                     'paid_amount' => $cost
                 ]);
+
+                $user->profiles()->update([
+                   'enabled' => true 
+                ]);
         
-                if ($result) {
-                    event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails + [
-                        'days_left' => Carbon::createFromDate($expiredAt)->diffInDays()
-                    ]));
-                }
+                event(new \App\Events\SubscribedSuccessfullyEvent($user, $subscriptionDetails));
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
