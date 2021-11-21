@@ -52,3 +52,7 @@ Broadcast::channel('subscriber.profile.deleted.{userId}', function (\App\Models\
 Broadcast::channel('subscriber.profile.updated.{userId}', function (\App\Models\User $user, $userId) {
     return $user->id === (int) $userId;
 });
+
+Broadcast::channel('subscriber.profile.disabled.{userId}', function (\App\Models\User $user, $userId) {
+    return $user->id === (int) $userId;
+});
