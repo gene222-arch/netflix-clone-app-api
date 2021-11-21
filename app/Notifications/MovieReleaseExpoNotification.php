@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use App\Models\Movie;
-use App\Models\ReleasedMovie;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\ExpoPushNotifications\ExpoChannel;

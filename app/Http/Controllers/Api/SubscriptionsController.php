@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Subscription;
 use App\Http\Controllers\Controller;
 use App\Traits\SubscriptionServices;
-use App\Http\Requests\Subscription\DestroyRequest;
 use App\Http\Requests\Subscription\StoreRequest;
 use App\Http\Requests\Subscription\UpdateRequest;
+use App\Http\Requests\Subscription\DestroyRequest;
 
 class SubscriptionsController extends Controller
 {
@@ -90,9 +91,13 @@ class SubscriptionsController extends Controller
             $request->payment_method
         );
 
+        $subscription = User::query()
+            ->firstWhere('email', '=', $request->user_email)
+            ->currentSubscription();
+
         return $result !== true
             ? $this->error($result)
-            : $this->success(NULL, 'Plan updated successfully');
+            : $this->success($subscription, 'Plan updated successfully');
     }
 
 
