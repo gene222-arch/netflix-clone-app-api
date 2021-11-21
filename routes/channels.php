@@ -56,3 +56,7 @@ Broadcast::channel('subscriber.profile.updated.{userId}', function (\App\Models\
 Broadcast::channel('subscriber.profile.disabled.{userId}', function (\App\Models\User $user, $userId) {
     return $user->id === (int) $userId;
 });
+
+Broadcast::channel('subscription.cancelled.event.{userId}', function (\App\Models\User $user, $userId) {
+    return $user->id === (int) $userId;
+});
