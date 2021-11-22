@@ -22,6 +22,7 @@ class CreateUserProfilesTable extends Migration
             $table->boolean('is_for_kids')->default(false);
             $table->char('pin_code', 4)->nullable()->unique();
             $table->boolean('is_profile_locked')->default(false);
+            $table->boolean('enabled')->default(true);
             $table->timestamps();
 
             $table->foreign('user_id')
