@@ -19,6 +19,7 @@ class CreateUserProfilesTable extends Migration
             $table->foreignId('user_id');
             $table->string('name')->unique();
             $table->string('avatar');
+            $table->string('previous_avatar')->nullable();
             $table->boolean('is_for_kids')->default(false);
             $table->char('pin_code', 4)->nullable()->unique();
             $table->boolean('is_profile_locked')->default(false);
