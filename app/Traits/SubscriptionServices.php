@@ -238,6 +238,8 @@ trait SubscriptionServices
 
         event(new \App\Events\SubscriptionCancelledEvent($user, $data));
 
+        $user->notify(new \App\Notifications\SubscriptionCancelledExpoNotification());
+
         return $data;
     }
 }
