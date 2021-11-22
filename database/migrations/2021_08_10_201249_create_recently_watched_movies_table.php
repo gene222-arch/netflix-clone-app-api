@@ -20,6 +20,8 @@ class CreateRecentlyWatchedMoviesTable extends Migration
             $table->foreignId('user_profile_id')->constrained();
             $table->foreignId('movie_id')->constrained();
             $table->timestamp('recently_watched_at')->default(Carbon::now());
+            $table->unsignedBigInteger('duration_in_millis')->default(0);
+            $table->unsignedBigInteger('last_played_position_millis')->default(0);
         });
     }
 
