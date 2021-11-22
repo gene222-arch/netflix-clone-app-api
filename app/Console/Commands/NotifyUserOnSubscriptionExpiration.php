@@ -52,7 +52,6 @@ class NotifyUserOnSubscriptionExpiration extends Command
                 $daysBeforeExpiration = $expiredAt->diffInDays(Carbon::today());
                 
                 if ($daysBeforeExpiration <= 7 && $daysBeforeExpiration > 0) {
-                    $this->info('Mailing user');
                     $user->notify(
                         new \App\Notifications\SubscriptionDueDateNotification($expiredAt, $daysBeforeExpiration)
                     );
