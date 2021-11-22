@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\ExpoPushNotifications\ExpoChannel;
 use NotificationChannels\ExpoPushNotifications\ExpoMessage;
 
-class SubscriptionExpiredExpoNotification extends Notification
+class SubscriptionCancelledExpoNotification extends Notification
 {
     use Queueable;
 
@@ -31,9 +31,9 @@ class SubscriptionExpiredExpoNotification extends Notification
         return ExpoMessage::create()
             ->badge(1)
             ->enableSound()
-            ->title('⏳ Subscription Expired')
-            ->body("Please renew your subscription")
-            ->setChannelId('subscription-expired-channel')
+            ->title('❌ Subscription Cancelled')
+            ->body("Your " . $notifiable->currentSubscription()->type . " subscription had been cancelled successfully.")
+            ->setChannelId('subscription-cancelled-channel')
             ->priority('high');
     }
 }
