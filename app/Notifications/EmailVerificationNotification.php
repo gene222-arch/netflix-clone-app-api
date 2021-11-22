@@ -7,7 +7,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class EmailVerificationNotification extends VerifyEmail
 {

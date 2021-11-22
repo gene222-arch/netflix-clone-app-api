@@ -10,7 +10,6 @@ use App\Http\Requests\Movie\Movie\UpdateRequest;
 use App\Models\SimilarMovie;
 use App\Traits\ActivityLogsServices;
 use Carbon\Carbon;
-use Google\Service\Bigquery\Model;
 use Illuminate\Support\Facades\Cache;
 
 

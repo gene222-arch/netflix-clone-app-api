@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\Subscription\UpdateRequest;
 
 trait SubscriptionServices
 {
