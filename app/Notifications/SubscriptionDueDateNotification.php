@@ -4,15 +4,15 @@ namespace App\Notifications;
 
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class SubscriptionDueDateNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public Carbon $expirationDate;
+    public Carbon|string $expirationDate;
     public int $daysBeforeExpiration;
 
     /**
@@ -20,7 +20,7 @@ class SubscriptionDueDateNotification extends Notification implements ShouldQueu
      *
      * @return void
      */
-    public function __construct(Carbon $expirationDate, int $daysBeforeExpiration)
+    public function __construct(Carbon|string $expirationDate, int $daysBeforeExpiration)
     {
         $this->expirationDate = $expirationDate;
         $this->daysBeforeExpiration = $daysBeforeExpiration;
@@ -45,11 +45,25 @@ class SubscriptionDueDateNotification extends Notification implements ShouldQueu
      */
     public function toMail($notifiable)
     {
+        $isExpirationDateString = gettype($this->expirationDate) === 'string';
+
+        $expirationDate = $isExpirationDateString 
+            ? $this->expirationDate 
+            : $this->expirationDate->format('M d, Y');
+
+        $expirationDateStatement = $isExpirationDateString 
+            ? ''
+            : 'Your account will expired at exactly ' . $expirationDate . '.';
+
+        $greeting = !$this->daysBeforeExpiration 
+            ? 'Your subscription will expire in ' . $this->expirationDate . ' hour/s'
+            : 'Your subscription will expire in ' . $this->daysBeforeExpiration . ' days/s';
+
         return (new MailMessage)
                     ->subject('Subscription Expiration')
-                    ->greeting('Your subscription will expire in ' . $this->daysBeforeExpiration . ' day/s')
+                    ->greeting($greeting)
                     ->line('Hi ' . $notifiable->first_name . ',')
-                    ->line('Your account will at exactly ' . $this->expirationDate->format('M d, Y') . '.')
+                    ->line($expirationDateStatement)
                     ->line('Please do update your subscription to further enjoy')
                     ->line('the services you`ve enjoyed so far.')
                     ->action('Renew Subscription', 'http://localhost:3000/renew-subscription')

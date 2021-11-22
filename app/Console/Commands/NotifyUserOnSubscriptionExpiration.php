@@ -50,10 +50,23 @@ class NotifyUserOnSubscriptionExpiration extends Command
             {
                 $expiredAt = Carbon::parse($subscription->expired_at);
                 $daysBeforeExpiration = $expiredAt->diffInDays(Carbon::today());
+                $hoursLeft = $expiredAt->diffInHours(Carbon::today());
                 
                 if ($daysBeforeExpiration <= 7 && $daysBeforeExpiration > 0) {
                     $user->notify(
-                        new \App\Notifications\SubscriptionDueDateNotification($expiredAt, $daysBeforeExpiration)
+                        new \App\Notifications\SubscriptionDueDateNotification(
+                            $expiredAt, 
+                            $daysBeforeExpiration
+                        )
+                    );
+                }
+
+                if ($hoursLeft <= 23 && $hoursLeft >= 1) {
+                    $user->notify(
+                        new \App\Notifications\SubscriptionDueDateNotification(
+                            $hoursLeft, 
+                            $daysBeforeExpiration
+                        )
                     );
                 }
             }
