@@ -55,6 +55,21 @@ class PermissionSeeder extends Seeder
                 'name' => 'Manage Access Rights',
                 'guard_name' => 'api',
                 'description' => 'Has access to Create, Read, Update and Delete one or multiple user role and permissions. Has access to assign a role to one or multiple users.'
+            ], //
+            [
+                'name' => 'Manage Activity Logs',
+                'guard_name' => 'api',
+                'description' => 'Can view and delete one or multiple activity logs'
+            ],
+            [
+                'name' => 'Manage Employees',
+                'guard_name' => 'api',
+                'description' => 'Has access to Create, Read, Update and Delete one or multiple employees and assign role to them.'
+            ],
+            [
+                'name' => 'Manage Subscriptions',
+                'guard_name' => 'api',
+                'description' => 'Has access to read user subscriptions'
             ]
         ]);
     }
