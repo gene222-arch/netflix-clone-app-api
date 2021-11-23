@@ -70,6 +70,8 @@ trait SubscriptionServices
                 if (! $user) {
                     $user = User::query()->firstWhere('email', '=', $userEmail);
                 }
+
+                $user->profiles()->update([ 'enabled' => 1 ]);
         
                 $totalSubscriptions = $user->subscriptions->where('subscribed_at', '!=', NULL)->count();
                 
@@ -235,9 +237,9 @@ trait SubscriptionServices
             ->currentSubscription()
             ->update($data);
 
-        event(new \App\Events\SubscriptionCancelledEvent($user, $data));
-
         $user->notify(new \App\Notifications\SubscriptionCancelledExpoNotification());
+
+        event(new \App\Events\SubscriptionCancelledEvent($user, $data));
 
         return $data;
     }
