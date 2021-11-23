@@ -175,10 +175,10 @@ class UserProfilesController extends Controller
      */
     public function destroy(UserProfile $profile)
     {
-        $profile->myDownloads()->delete();
-        $profile->myLists()->delete();
-        $profile->recentlyWatchedMovies()->delete();
-        $profile->remindedComingSoonMovies()->delete();
+        $profile->myDownloads()?->delete();
+        $profile->myLists()?->delete();
+        $profile->recentlyWatchedMovies()?->delete();
+        $profile->remindedComingSoonMovies()?->delete();
         $profile->delete();
 
         return $this->success(null, 'Profile deleted successfully');
