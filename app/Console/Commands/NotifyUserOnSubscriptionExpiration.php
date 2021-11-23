@@ -60,7 +60,7 @@ class NotifyUserOnSubscriptionExpiration extends Command
                         )
                     );
 
-                    $user->notify(new \App\Notifications\SubscriptionExpiredExpoNotification());
+                    
                 }
 
                 if ($hoursLeft <= 23 && $hoursLeft >= 1) {
@@ -71,7 +71,7 @@ class NotifyUserOnSubscriptionExpiration extends Command
                         )
                     );
 
-                    $user->notify(new \App\Notifications\SubscriptionExpiredExpoNotification());
+                    
                 }
             }
         });

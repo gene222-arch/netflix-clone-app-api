@@ -60,3 +60,7 @@ Broadcast::channel('subscriber.profile.disabled.{userId}', function (\App\Models
 Broadcast::channel('subscription.cancelled.{userId}', function (\App\Models\User $user, $userId) {
     return $user->id === (int) $userId;
 });
+
+Broadcast::channel('subscription.expired.{userId}', function (\App\Models\User $user, $userId) {
+    return $user->id === (int) $userId;
+});
