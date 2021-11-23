@@ -61,6 +61,12 @@ class MonitorSubscriptionExpirationDate extends Command
                     $user->notify(
                         new \App\Notifications\SubscriptionExpiredExpoNotification()
                     );
+
+                    event(new \App\Events\SubscriptionExpiredEvent($user, [
+                        'is_expired' => true,
+                        'expired_at' => $today,
+                        'status' => 'expired',
+                    ]));
                 }
             }
         });
