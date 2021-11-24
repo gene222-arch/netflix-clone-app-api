@@ -20,7 +20,6 @@ use App\Http\Controllers\Api\Movie\DirectorsController;
 use App\Http\Controllers\Api\Movie\GenresController;
 use App\Http\Controllers\Api\Movie\MovieNotificationsController;
 use App\Http\Controllers\Api\Movie\MoviesController;
-use App\Http\Controllers\Api\Movie\MyDownloadsController;
 use App\Http\Controllers\Api\Movie\MyListsController;
 use App\Http\Controllers\Api\Movie\RecentlyWatchedMoviesController;
 use App\Http\Controllers\Api\Movie\ReleasedMovieNotifiedUsersController;
@@ -262,18 +261,6 @@ Route::middleware(['api', 'verified'])->group(function ()
       Route::prefix('released-movie-notified-users')->group(function () 
       {
           Route::post('/{releasedMovie}', [ReleasedMovieNotifiedUsersController::class, 'store']);
-      });
-
-
-    /**
-      * My Downloads
-      */
-      Route::prefix('my-downloads')->group(function () 
-      {
-          Route::get('/', [MyDownloadsController::class, 'index']);
-          Route::get('/{myDownload}', [MyDownloadsController::class, 'show']);
-          Route::post('/', [MyDownloadsController::class, 'store']);
-          Route::delete('/user-profiles/{userProfileId}', [MyDownloadsController::class, 'destroy']);
       });
 
     /**
