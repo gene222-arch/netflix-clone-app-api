@@ -126,7 +126,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ]);
     }
 
-    public function currentSubscription(): \App\Models\Subscription
+    public function currentSubscription(): \App\Models\Subscription|null
     {
         return $this
             ->subscriptions()

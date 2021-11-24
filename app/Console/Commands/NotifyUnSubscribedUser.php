@@ -12,7 +12,7 @@ class NotifyUnSubscribedUser extends Command
      *
      * @var string
      */
-    protected $signature = 'notify:user unsubscribed';
+    protected $signature = 'notify:user-unsubscribed';
 
     /**
      * The console command description.
@@ -40,8 +40,12 @@ class NotifyUnSubscribedUser extends Command
     {
         $subscribers = User::role('Subscriber')->get();
 
-        $subscribers->each(function ($subscriber) {
-            if ($subscriber->is_expired || $subscriber->is_cancelled) {
+        $subscribers->each(function ($subscriber) 
+        {
+            $subscription = $subscriber->currentSubscription();
+
+            if ($subscription && ($subscription->is_expired || $subscription->is_cancelled)) 
+            {
                 $subscriber->notify(
                     new \App\Notifications\UnSubscribedUserNotification()
                 );

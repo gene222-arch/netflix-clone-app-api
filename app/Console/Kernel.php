@@ -29,8 +29,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:run --only-db')->everyMinute();
         $schedule->command('subscription:monitor-expiration')->everyMinute();
         $schedule->command('subscription:notify-expiration')->dailyAt('08:00');
-        $schedule->command('notify:user unsubscribed')
-            ->dailyAt('6:00, 12:00, 18:00, 24:00');
+        
+        collect(['6:00', '12:00', '18:00', '24:00'])->each(function ($time) use ($schedule) {
+            $schedule->command('notify:user-unsubscribed')->dailyAt($time);
+        });
     }
 
     /**
