@@ -38,9 +38,9 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'encrypted' => false,
-                'useTLS' => true,
+                'useTLS' => false,
                 'host' => env('APP_HOST'), // '127.0.0.1'
-                'port' => 6001, 
+                'port' => env('LARAVEL_WEBSOCKET_PORT'), 
                 'scheme' => 'http',
                 'curl_options' => [
                     CURLOPT_SSL_VERIFYHOST => 0,
