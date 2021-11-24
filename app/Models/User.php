@@ -5,7 +5,6 @@ namespace App\Models;
 use Carbon\Carbon;
 use App\Models\MyList;
 use App\Models\RemindMe;
-use App\Models\MyDownload;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -227,16 +226,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function findProfileById(int $id): UserProfile
     {
         return $this->profiles()->find($id);
-    }
-
-    /**
-     * Define a one-to-many relationship with MyDownload Class
-     *
-     * @return Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function myDownloads(): HasMany
-    {
-        return $this->hasMany(MyDownload::class);
     }
 
     public function findDownloadsByProfileId(int $id): HasMany

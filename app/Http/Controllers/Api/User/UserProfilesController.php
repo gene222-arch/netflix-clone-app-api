@@ -45,7 +45,6 @@ class UserProfilesController extends Controller
         $profileDetails = UserProfile::with([
                 'myLists.movie',
                 'remindedComingSoonMovies',
-                'myDownloads.movie',
                 'likedMovies',
                 'likedComingSoonMovies',
                 'recentlyWatchedMovies.movie.userRatings' => function($q) use($id) {
@@ -175,7 +174,6 @@ class UserProfilesController extends Controller
      */
     public function destroy(UserProfile $profile)
     {
-        $profile->myDownloads()?->delete();
         $profile->myLists()?->delete();
         $profile->recentlyWatchedMovies()?->delete();
         $profile->remindedComingSoonMovies()?->delete();
