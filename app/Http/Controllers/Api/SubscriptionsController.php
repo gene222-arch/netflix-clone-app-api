@@ -43,9 +43,9 @@ class SubscriptionsController extends Controller
             $request->type, 
             $request->payment_method);
 
-        return $result !== true 
+        return gettype($result) !== 'array' 
             ? $this->error($result)
-            : $this->success(null, 'Subscribed successfully.');
+            : $this->success($result, 'Subscribed successfully.');
     }
 
 

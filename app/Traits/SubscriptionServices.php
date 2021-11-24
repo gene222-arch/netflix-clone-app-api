@@ -59,10 +59,12 @@ trait SubscriptionServices
     }
 
 
-    public function subscribe(string $userEmail, string $type, string $paymentMethod): bool|string
+    public function subscribe(string $userEmail, string $type, string $paymentMethod): array|string
     {
+        $subscriptionDetails = [];
+
         try {
-            DB::transaction(function () use ($userEmail, $type, $paymentMethod) 
+            DB::transaction(function () use ($userEmail, $type, $paymentMethod, $subscriptionDetails) 
             {
                 $user = auth('api')->user();
                 $subscriptionDetails = [];
@@ -160,7 +162,7 @@ trait SubscriptionServices
             return $th->getMessage();
         }
 
-        return true;
+        return $subscriptionDetails;
     }
 
 
