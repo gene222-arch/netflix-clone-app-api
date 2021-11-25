@@ -38,15 +38,14 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'encrypted' => false,
-                'useTLS' => false, // https -> true
+                'useTLS' => true,
                 'host' => env('APP_HOST'), // '127.0.0.1'
                 'port' => env('LARAVEL_WEBSOCKET_PORT'), 
                 'scheme' => 'http',
-                # https configurations
-                // 'curl_options' => [ 
-                //     CURLOPT_SSL_VERIFYHOST => 0,
-                //     CURLOPT_SSL_VERIFYPEER => 0,
-                // ],
+                'curl_options' => [ 
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                ],
             ],
         ],
 
