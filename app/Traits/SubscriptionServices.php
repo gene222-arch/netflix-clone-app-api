@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Subscription;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\matches;
+
 trait SubscriptionServices
 {
     public function preSubscription(string $type, int $userId, string $paymentMethod): bool|string
@@ -61,10 +63,8 @@ trait SubscriptionServices
 
     public function subscribe(string $userEmail, string $type, string $paymentMethod): array|string
     {
-        $subscriptionDetails = [];
-
         try {
-            DB::transaction(function () use ($userEmail, $type, $paymentMethod, $subscriptionDetails) 
+            DB::transaction(function () use ($userEmail, $type, $paymentMethod) 
             {
                 $user = auth('api')->user();
                 $subscriptionDetails = [];
@@ -162,7 +162,11 @@ trait SubscriptionServices
             return $th->getMessage();
         }
 
-        return $subscriptionDetails;
+        return [
+            'is_expired' => false,
+            'subscribed_at' => Carbon::now(),
+            'status' => 'subscribed'
+        ];
     }
 
 
