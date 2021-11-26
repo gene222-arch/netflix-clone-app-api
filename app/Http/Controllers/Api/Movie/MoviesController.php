@@ -136,7 +136,15 @@ class MoviesController extends Controller
      */
     public function showRandom()
     {
-        return $this->success(Movie::all()->random(1)->first());
+        $isForKids = (bool) request()->input('isForKids');
+
+        $movie = Movie::query()
+            ->when($isForKids, fn ($q) => $q->where('age_restriction', '<=', 12))
+            ->get()
+            ->random(1)
+            ->first();
+
+        return $this->success($movie);
     }
 
 
