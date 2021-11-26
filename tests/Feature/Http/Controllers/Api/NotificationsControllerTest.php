@@ -8,7 +8,7 @@ use Tests\TestCase;
 
 class NotificationsControllerTest extends TestCase
 {
-    /** test */
+    /** ztest */
     public function user_can_view_payment_authorizations()
     {
         $response = $this->get(
