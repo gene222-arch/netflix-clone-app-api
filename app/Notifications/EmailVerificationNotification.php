@@ -26,16 +26,22 @@ class EmailVerificationNotification extends VerifyEmail
 
         $id = $notifiable->getKey();
         $hash = sha1($notifiable->getEmailForVerification());
+        $expirationDate = Carbon::now()
+            ->addMinutes(Config::get('auth.verification.expire', 60));
 
         $url = URL::temporarySignedRoute(
             'verification.verify',
-            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+            $expirationDate,
             [
                 'id' => $id,
                 'hash' => $hash,
             ]
         );
 
-        return str_replace( env('APP_HOST') . ":8000/api", 'localhost:3000/auth', $url);
+        $apiUrl = env('APP_HOST') . ":8000/api";
+        $reactAppUrl = env('REACT_APP_HOST') . '/auth';
+        $emailVerificationUrl = str_replace($apiUrl, $reactAppUrl, $url);
+
+        return $emailVerificationUrl;
     }
 }
