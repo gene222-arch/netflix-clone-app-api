@@ -31,18 +31,18 @@ return [
     'connections' => [
 
         'pusher' => [
-            'driver' => 'pusher',
+            'driver' => env('BROADCAST_DRIVER', 'pusher'),
             'key' => env('PUSHER_APP_KEY'),
             'secret' => env('PUSHER_APP_SECRET'),
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
-                'encrypted' => true,
-                'useTLS' => false,
+                'encrypted' => env('LARAVEL_WEBSOCKETS_ENCRYPTED', true),
+                'useTLS' => env('LARAVEL_WEBSOCKETS_USE_TLS', false),
                 'host' => env('LARAVEL_WEBSOCKETS_HOST'), // '127.0.0.1'
                 'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001), 
                 'scheme' => env('LARAVEL_WEBSOCKETS_SCHEME', 'http'),
-                'curl_options' => [ 
+                'curl_options' => [ // Disable SSL Verification
                     CURLOPT_SSL_VERIFYHOST => 0,
                     CURLOPT_SSL_VERIFYPEER => 0,
                 ],
