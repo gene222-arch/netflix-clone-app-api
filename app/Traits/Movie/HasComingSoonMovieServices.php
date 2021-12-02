@@ -213,77 +213,76 @@ trait HasComingSoonMovieServices
             DB::transaction(function () use ($request, $comingSoonMovie) 
             {
                 $currentDate = Carbon::today();
-
-                $status = $comingSoonMovie->status === 'Released' ? 'Coming Soon' : 'Released';
-                $releasedAt = $comingSoonMovie->status === 'Released' ? null : $currentDate;
         
                 $comingSoonMovie->update([
-                    'status' => $status,
-                    'released_at' => $releasedAt
+                    'status' => 'Released',
+                    'released_at' => $currentDate
                 ]);
         
-                if ($status === 'Released') 
-                {
-                    $movieDetails = array_merge(
-                        $comingSoonMovie->toArray(),
-                        [
-                            'year_of_release' => $currentDate->format('Y'),
-                            'date_of_release' => $currentDate,
-                            'duration_in_minutes' => $request->duration_in_minutes,
-                            'video_path' => $request->video_path,
-                            'video_preview_path' => $comingSoonMovie->video_trailer_path,
-                            'video_size_in_mb' => $request->video_size_in_mb
-                        ]
-                    );
-        
-                    $authorIds = $comingSoonMovie->authors()->get();
-                    $castIds = $comingSoonMovie->casts()->get();
-                    $directorIds = $comingSoonMovie->directors()->get();
-                    $genreIds = $comingSoonMovie->genres()->get();
-        
-                    $movie = Movie::query()->create($movieDetails);
-                    $movie->authors()->attach($authorIds);
-                    $movie->casts()->attach($castIds);
-                    $movie->directors()->attach($directorIds);
-                    $movie->genres()->attach($genreIds);
+                $movieDetails = [
+                    'year_of_release' => $currentDate->format('Y'),
+                    'date_of_release' => $currentDate,
+                    'duration_in_minutes' => $request->duration_in_minutes,
+                    'video_path' => $request->video_path,
+                    'video_preview_path' => $comingSoonMovie->video_trailer_path,
+                    'video_size_in_mb' => $request->video_size_in_mb
+                ];
 
-                    $similarMovieIds = $comingSoonMovie->similarMovies->map->similar_movie_id->toArray();
-                    
-                    $similarMovies = [];
-
-                    foreach ($similarMovieIds as $similarMovieId) {
-                        $similarMovies[] = new SimilarMovie([ 
-                            'similar_movie_id' => $similarMovieId, 
-                            'model_type' => Movie::class 
-                        ]);
-                    }
-                    
-                    $movie->similarMovies()->saveMany($similarMovies);
-
-                    auth('api')
-                        ->user()
-                        ->notify(new \App\Notifications\MovieReleaseExpoNotification($movie, $comingSoonMovie->id));
-
-                    event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
-
-                    ComingSoonMovie::cacheToForget();
-
-                    ReleasedMovie::query()->create([
-                        'movie_id' => $movie->id,
-                        'coming_soon_movie_id' => $comingSoonMovie->id
-                    ]);
-
-                    $this->createLog(
-                        'Update',
-                        ComingSoonMovie::class,
-                        "video-management/coming-soon-movies/$comingSoonMovie->id"
-                    );
+                $movieDetails =  $movieDetails + $comingSoonMovie->toArray();
     
-                    // Mark all remind mes table as released
-                    RemindMe::query()
-                        ->where('coming_soon_movie_id', $comingSoonMovie->id)
-                        ->update([ 'is_released' => true ]);
+                $authors = $comingSoonMovie->authors()->get();
+                $casts = $comingSoonMovie->casts()->get();
+                $directors = $comingSoonMovie->directors()->get();
+                $genres = $comingSoonMovie->genres()->get();
+    
+                $movie = Movie::query()->create($movieDetails);
+
+                $movie->authors()->attach($authors);
+                $movie->casts()->attach($casts);
+                $movie->directors()->attach($directors);
+                $movie->genres()->attach($genres);
+
+                $comingSoonMovieSimilarMovieIds = $comingSoonMovie->similarMovies->pluck('similar_movie_id')->toArray();
+                
+                $similarMovies = [];
+
+                foreach ($comingSoonMovieSimilarMovieIds as $similarMovieId) 
+                {
+                    $similarMovies[] = new SimilarMovie([ 
+                        'similar_movie_id' => $similarMovieId, 
+                        'model_type' => Movie::class 
+                    ]);
                 }
+                
+                $movie->similarMovies()->saveMany($similarMovies);
+
+                $shouldRemindUser = $request
+                    ->user('api')
+                    ->remindMes()
+                    ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
+                    ->exists();
+
+                $request
+                    ->user('api')
+                    ->notify(new \App\Notifications\MovieReleaseExpoNotification($movie, $shouldRemindUser));
+
+                event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
+
+                ReleasedMovie::query()->create([
+                    'movie_id' => $movie->id,
+                    'coming_soon_movie_id' => $comingSoonMovie->id
+                ]);
+
+                RemindMe::query()
+                    ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
+                    ->update([ 'is_released' => true ]);
+                    
+                ComingSoonMovie::cacheToForget();
+                $this->createLog(
+                    'Update',
+                    ComingSoonMovie::class,
+                    "video-management/coming-soon-movies/$comingSoonMovie->id"
+                );
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
