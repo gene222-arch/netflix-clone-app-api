@@ -28,34 +28,21 @@ class MovieReleaseExpoNotification extends Notification
 
     public function toExpoPush($notifiable)
     {        
-        $authUser = auth('api')->user();
-
-        $upcomingMovieIsInReminded = $authUser
-            ->remindMes
-            ->where(
-                'coming_soon_movie_id', 
-                '=', 
-                $this->comingSoonMovieId
-            )
-            ->isNotEmpty();
+        $exists = $notifiable
+            ->remindMes()
+            ->where('coming_soon_movie_id', '=', $this->comingSoonMovieId)
+            ->exists();
 
         $movieTitle = $this->movie->title;
-        $titleSubContent = "a new movie called $movieTitle is available in " . env('APP_NAME') . ".";
-
-        $title = $upcomingMovieIsInReminded 
-            ? "🔔 Reminder: $titleSubContent" 
-            : "📣 Release: $titleSubContent";
+        
+        $titleSubContent = "$movieTitle is available in " . env('APP_NAME') . ".";
+        $title = $exists ? "🔔 Reminder: $titleSubContent" : "📣 Release: $titleSubContent";
 
         return ExpoMessage::create()
             ->badge(1)
             ->enableSound()
             ->title($title)
             ->body("Start watching it now")
-            ->setJsonData([
-                'type' => 'Movie Release Expo Notification',
-                'movie' => $this->movie,
-                'coming_soon_movie_id' => $this->comingSoonMovieId
-            ])
             ->setChannelId('movie-release-channel')
             ->priority('high');
     }

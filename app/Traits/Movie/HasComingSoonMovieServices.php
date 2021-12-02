@@ -224,7 +224,7 @@ trait HasComingSoonMovieServices
         
                 if ($status === 'Released') 
                 {
-                    $movie = array_merge(
+                    $movieDetails = array_merge(
                         $comingSoonMovie->toArray(),
                         [
                             'year_of_release' => $currentDate->format('Y'),
@@ -241,7 +241,7 @@ trait HasComingSoonMovieServices
                     $directorIds = $comingSoonMovie->directors()->get();
                     $genreIds = $comingSoonMovie->genres()->get();
         
-                    $movie = Movie::create($movie);
+                    $movie = Movie::query()->create($movieDetails);
                     $movie->authors()->attach($authorIds);
                     $movie->casts()->attach($castIds);
                     $movie->directors()->attach($directorIds);
@@ -260,19 +260,18 @@ trait HasComingSoonMovieServices
                     
                     $movie->similarMovies()->saveMany($similarMovies);
 
-                    event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
-                    
-                    ReleasedMovie::query()->create([
-                        'movie_id' => $movie->id,
-                        'coming_soon_movie_id' => $comingSoonMovie->id
-                    ]);
-
-                    /** Notify user on movie release */
                     auth('api')
                         ->user()
                         ->notify(new \App\Notifications\MovieReleaseExpoNotification($movie, $comingSoonMovie->id));
 
+                    event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
+
                     ComingSoonMovie::cacheToForget();
+
+                    ReleasedMovie::query()->create([
+                        'movie_id' => $movie->id,
+                        'coming_soon_movie_id' => $comingSoonMovie->id
+                    ]);
 
                     $this->createLog(
                         'Update',
