@@ -214,11 +214,6 @@ trait HasComingSoonMovieServices
             {
                 $currentDate = Carbon::today();
         
-                $comingSoonMovie->update([
-                    'status' => 'Released',
-                    'released_at' => $currentDate
-                ]);
-        
                 $movieDetails = [
                     'year_of_release' => $currentDate->format('Y'),
                     'date_of_release' => $currentDate,
@@ -268,6 +263,11 @@ trait HasComingSoonMovieServices
 
                 event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
 
+                $comingSoonMovie->update([
+                    'status' => 'Released',
+                    'released_at' => $currentDate
+                ]);
+
                 ReleasedMovie::query()->create([
                     'movie_id' => $movie->id,
                     'coming_soon_movie_id' => $comingSoonMovie->id
@@ -277,12 +277,13 @@ trait HasComingSoonMovieServices
                     ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
                     ->update([ 'is_released' => true ]);
                     
-                ComingSoonMovie::cacheToForget();
                 $this->createLog(
                     'Update',
                     ComingSoonMovie::class,
                     "video-management/coming-soon-movies/$comingSoonMovie->id"
                 );
+                
+                ComingSoonMovie::cacheToForget();
             });
         } catch (\Throwable $th) {
             return $th->getMessage();
