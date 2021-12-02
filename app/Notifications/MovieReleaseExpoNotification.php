@@ -13,12 +13,12 @@ class MovieReleaseExpoNotification extends Notification
     use Queueable;
 
     public Movie $movie;
-    public int $comingSoonMovieId;
+    public bool $shouldRemindUser;
 
-    public function __construct(Movie $movie, int $comingSoonMovieId)
+    public function __construct(Movie $movie, bool $shouldRemindUser)
     {
         $this->movie = $movie;
-        $this->comingSoonMovieId = $comingSoonMovieId;
+        $this->shouldRemindUser = $shouldRemindUser;
     }
 
     public function via($notifiable)
@@ -28,15 +28,10 @@ class MovieReleaseExpoNotification extends Notification
 
     public function toExpoPush($notifiable)
     {        
-        $exists = $notifiable
-            ->remindMes()
-            ->where('coming_soon_movie_id', '=', $this->comingSoonMovieId)
-            ->exists();
-
         $movieTitle = $this->movie->title;
         
         $titleSubContent = "$movieTitle is available in " . env('APP_NAME') . ".";
-        $title = $exists ? "🔔 Reminder: $titleSubContent" : "📣 Release: $titleSubContent";
+        $title = $this->shouldRemindUser ? "🔔 Reminder: $titleSubContent" : "📣 Release: $titleSubContent";
 
         return ExpoMessage::create()
             ->badge(1)
