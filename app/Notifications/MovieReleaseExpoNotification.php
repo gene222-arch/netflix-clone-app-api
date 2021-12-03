@@ -2,19 +2,18 @@
 
 namespace App\Notifications;
 
-use App\Models\Movie;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\ExpoPushNotifications\ExpoChannel;
 use NotificationChannels\ExpoPushNotifications\ExpoMessage;
 
 class MovieReleaseExpoNotification extends Notification
 {
-    public Movie $movie;
+    public string $movieTitle;
     public bool $shouldRemindUser;
 
-    public function __construct(Movie $movie, bool $shouldRemindUser)
+    public function __construct(string $movieTitle, bool $shouldRemindUser)
     {
-        $this->movie = $movie;
+        $this->movieTitle = $movieTitle;
         $this->shouldRemindUser = $shouldRemindUser;
     }
 
@@ -25,9 +24,7 @@ class MovieReleaseExpoNotification extends Notification
 
     public function toExpoPush($notifiable)
     {        
-        $movieTitle = $this->movie->title;
-        
-        $titleSubContent = "$movieTitle is available in " . env('APP_NAME') . ".";
+        $titleSubContent = "{$this->movieTitle} is available in " . env('APP_NAME') . ".";
         $title = $this->shouldRemindUser ? "🔔 Reminder: $titleSubContent" : "📣 Release: $titleSubContent";
 
         return ExpoMessage::create()

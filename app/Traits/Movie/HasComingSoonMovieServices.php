@@ -212,7 +212,7 @@ trait HasComingSoonMovieServices
         try {
             DB::transaction(function () use ($request, $comingSoonMovie) 
             {
-                $authUser = $request->user('api');
+                $authUser = auth('api')->user();
                 $currentDate = Carbon::today();
         
                 $movieDetails = [
@@ -250,14 +250,17 @@ trait HasComingSoonMovieServices
                 
                 $movie->similarMovies()->saveMany($similarMovies);
 
-                $shouldRemindUser = $authUser
-                    ->remindMes()
-                    ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
-                    ->exists();
-
-                $authUser->notify(new \App\Notifications\MovieReleaseExpoNotification($movie, $shouldRemindUser));
-
                 event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
+
+                if ($movie) 
+                {
+                    $shouldRemindUser = $authUser
+                        ->remindMes()
+                        ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
+                        ->exists();
+
+                    $authUser->notify(new \App\Notifications\MovieReleaseExpoNotification($movie->title, $shouldRemindUser));
+                }
 
                 $comingSoonMovie->update([
                     'status' => 'Released',

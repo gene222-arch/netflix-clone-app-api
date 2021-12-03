@@ -2,34 +2,34 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\EmployeesController;
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\User\UsersController;
+use App\Http\Controllers\Api\Movie\CastsController;
+use App\Http\Controllers\Api\ActivityLogsController;
+use App\Http\Controllers\Api\Movie\GenresController;
+use App\Http\Controllers\Api\Movie\MoviesController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Movie\AuthorsController;
+use App\Http\Controllers\Api\Movie\MyListsController;
+use App\Http\Controllers\Api\NotificationsController;
+use App\Http\Controllers\Api\SubscriptionsController;
+use App\Http\Controllers\Api\PaymentMethodsController;
+use App\Http\Controllers\Api\Movie\DirectorsController;
+use App\Http\Controllers\Api\Movie\RemindMesController;
 use App\Http\Controllers\Api\Settings\AccountController;
+use App\Http\Controllers\Api\Auth\VerificationController;
+use App\Http\Controllers\Api\Movie\UserRatingsController;
+use App\Http\Controllers\Api\User\UserProfilesController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
-use App\Http\Controllers\Api\AccessRight\AccessRightsController;
-use App\Http\Controllers\Api\ActivityLogsController;
 use App\Http\Controllers\Api\Auth\UploadUserAvatarController;
-use App\Http\Controllers\Api\Auth\VerificationController;
 use App\Http\Controllers\Api\Dashboards\DashboardsController;
-use App\Http\Controllers\Api\EmployeesController;
 use App\Http\Controllers\Api\Movie\ComingSoonMoviesController;
-use App\Http\Controllers\Api\Movie\AuthorsController;
-use App\Http\Controllers\Api\Movie\CastsController;
-use App\Http\Controllers\Api\Movie\DirectorsController;
-use App\Http\Controllers\Api\Movie\GenresController;
+use App\Http\Controllers\Api\AccessRight\AccessRightsController;
 use App\Http\Controllers\Api\Movie\MovieNotificationsController;
-use App\Http\Controllers\Api\Movie\MoviesController;
-use App\Http\Controllers\Api\Movie\MyListsController;
 use App\Http\Controllers\Api\Movie\RecentlyWatchedMoviesController;
 use App\Http\Controllers\Api\Movie\ReleasedMovieNotifiedUsersController;
-use App\Http\Controllers\Api\Movie\RemindMesController;
-use App\Http\Controllers\Api\Movie\UserRatingsController;
-use App\Http\Controllers\Api\NotificationsController;
-use App\Http\Controllers\Api\PaymentMethodsController;
-use App\Http\Controllers\Api\SubscriptionsController;
-use App\Http\Controllers\Api\User\UserProfilesController;
-use App\Http\Controllers\Api\User\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -394,5 +394,3 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::delete('/', [UserRatingsController::class, 'destroy']);
     });
 });
-
-
