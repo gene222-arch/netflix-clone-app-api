@@ -13,13 +13,11 @@ class ReleaseRequest extends BaseRequest
      */
     public function rules()
     {
-        $isRequired = $this->status === 'Coming Soon' ? 'required' : 'nullable';
-
         return [
-            'video_path' => [$isRequired, 'string'],
-            'duration_in_minutes' => [$isRequired, 'numeric'],
-            'video_size_in_mb' => [$isRequired, 'numeric'],
-            'status' => ['required', 'string', 'in:Coming Soon,Released']
+            'video_path' => ['required', 'string'],
+            'duration_in_minutes' => ['required', 'numeric'],
+            'video_size_in_mb' => ['required', 'numeric'],
+            'status' => ['required', 'string', 'in:Coming Soon']
         ];
     }
 

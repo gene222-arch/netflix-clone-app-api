@@ -212,6 +212,7 @@ trait HasComingSoonMovieServices
         try {
             DB::transaction(function () use ($request, $comingSoonMovie) 
             {
+                $authUser = auth('api')->user();
                 $currentDate = Carbon::today();
         
                 $movieDetails = [
@@ -222,15 +223,13 @@ trait HasComingSoonMovieServices
                     'video_preview_path' => $comingSoonMovie->video_trailer_path,
                     'video_size_in_mb' => $request->video_size_in_mb
                 ];
-
-                $movieDetails =  $movieDetails + $comingSoonMovie->toArray();
     
                 $authors = $comingSoonMovie->authors()->get();
                 $casts = $comingSoonMovie->casts()->get();
                 $directors = $comingSoonMovie->directors()->get();
                 $genres = $comingSoonMovie->genres()->get();
     
-                $movie = Movie::query()->create($movieDetails);
+                $movie = Movie::create($movieDetails + $comingSoonMovie->toArray());
 
                 $movie->authors()->attach($authors);
                 $movie->casts()->attach($casts);
@@ -251,14 +250,12 @@ trait HasComingSoonMovieServices
                 
                 $movie->similarMovies()->saveMany($similarMovies);
 
-                $shouldRemindUser = $request
-                    ->user('api')
+                $shouldRemindUser = $authUser
                     ->remindMes()
                     ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
                     ->exists();
 
-                $request
-                    ->user('api')
+                $authUser
                     ->notify(new \App\Notifications\MovieReleaseExpoNotification($movie, $shouldRemindUser));
 
                 event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
