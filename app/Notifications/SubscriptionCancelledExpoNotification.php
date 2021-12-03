@@ -2,15 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\ExpoPushNotifications\ExpoChannel;
 use NotificationChannels\ExpoPushNotifications\ExpoMessage;
 
 class SubscriptionCancelledExpoNotification extends Notification
 {
-    use Queueable;
-
     /**
      * Create a new notification instance.
      *
