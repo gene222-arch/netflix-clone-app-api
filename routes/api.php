@@ -155,12 +155,14 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/', [ComingSoonMoviesController::class, 'index']);
         Route::get('/{comingSoonMovie}', [ComingSoonMoviesController::class, 'show']);
         Route::post('/', [ComingSoonMoviesController::class, 'store']);
+        Route::post('/{comingSoonMovie}/expo-notify-user', [ComingSoonMoviesController::class, 'notifyUserViaMobileOnMovieReleased']);
         Route::post('/upload/poster', [ComingSoonMoviesController::class, 'uploadPoster']);
         Route::post('/upload/wallpaper', [ComingSoonMoviesController::class, 'uploadWallpaper']);
         Route::post('/upload/title-logo', [ComingSoonMoviesController::class, 'uploadTitleLogo']);
         Route::post('/upload/video-trailer', [ComingSoonMoviesController::class, 'uploadVideo']);
         Route::put('/{comingSoonMovie}', [ComingSoonMoviesController::class, 'update']);
         Route::put('/{comingSoonMovie}/release', [ComingSoonMoviesController::class, 'release']);
+
         Route::delete('/', [ComingSoonMoviesController::class, 'destroy']);
 
         Route::get('/{comingSoonMovie}/trailers/{trailer}', [ComingSoonMoviesController::class, 'showTrailer']);

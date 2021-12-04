@@ -19,6 +19,7 @@ use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
 use App\Traits\ActivityLogsServices;
+use Illuminate\Support\Facades\DB;
 
 class ComingSoonMoviesController extends Controller
 {
@@ -289,6 +290,35 @@ class ComingSoonMoviesController extends Controller
         return $result !== true 
             ? $this->error($result)
             : $this->success(null, 'Status updated successfully.');
+    }
+
+    public function notifyUserViaMobileOnMovieReleased(ComingSoonMovie $comingSoonMovie)
+    {
+        $authUser = request()->user('api');
+
+        $shouldNotify = DB::table('exponent_push_notification_interests')
+            ->get()
+            ->map(fn ($exponent) => str_replace('App.Models.User.', '', $exponent->key))
+            ->filter(fn ($userId) => $userId === $authUser->id)
+            ->count();
+
+        if ($shouldNotify) 
+        {
+            $shouldRemindUser = $authUser
+                ->remindMes()
+                ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
+                ->exists();
+        
+            $authUser
+                ->notify(
+                    new \App\Notifications\MovieReleaseExpoNotification(
+                        $comingSoonMovie->title, 
+                        $shouldRemindUser
+                    )
+                );
+        }
+
+        return $this->success();
     }
 
 
