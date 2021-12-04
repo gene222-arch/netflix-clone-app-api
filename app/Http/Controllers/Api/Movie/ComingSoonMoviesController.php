@@ -28,7 +28,7 @@ class ComingSoonMoviesController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:api', 'permission:Manage Coming Soon Movies'])
-            ->except('index', 'incrementViews');
+            ->except('index', 'incrementViews', 'notifyUserViaMobileOnMovieReleased');
     }
 
     /**
@@ -299,7 +299,7 @@ class ComingSoonMoviesController extends Controller
         $shouldNotify = DB::table('exponent_push_notification_interests')
             ->get()
             ->map(fn ($exponent) => str_replace('App.Models.User.', '', $exponent->key))
-            ->filter(fn ($userId) => $userId === $authUser->id)
+            ->filter(fn ($userId) => (int) $userId === $authUser->id)
             ->count();
 
         if ($shouldNotify) 

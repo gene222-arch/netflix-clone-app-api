@@ -83,6 +83,20 @@ class ComingSoonMoviesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function can_notify_user_via_mobile_on_movie_release()
+    {
+        $id  = 40;
+
+        $response = $this->post(
+            "/api/coming-soon-movies/$id/expo-notify-user",
+            [],
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
 
     /** test */
     public function user_can_create_coming_soon_movie_trailer()
