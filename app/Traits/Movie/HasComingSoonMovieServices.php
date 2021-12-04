@@ -207,12 +207,11 @@ trait HasComingSoonMovieServices
     }
 
 
-    public function release(ReleaseRequest $request, ComingSoonMovie $comingSoonMovie)
+    public function release(ReleaseRequest $request, ComingSoonMovie $comingSoonMovie): bool|string
     {
         try {
             DB::transaction(function () use ($request, $comingSoonMovie) 
             {
-                $authUser = auth('api')->user();
                 $currentDate = Carbon::today();
         
                 $movieDetails = [
@@ -251,16 +250,6 @@ trait HasComingSoonMovieServices
                 $movie->similarMovies()->saveMany($similarMovies);
 
                 event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
-
-                if ($movie) 
-                {
-                    $shouldRemindUser = $authUser
-                        ->remindMes()
-                        ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
-                        ->exists();
-
-                    $authUser->notify(new \App\Notifications\MovieReleaseExpoNotification($movie->title, $shouldRemindUser));
-                }
 
                 $comingSoonMovie->update([
                     'status' => 'Released',
