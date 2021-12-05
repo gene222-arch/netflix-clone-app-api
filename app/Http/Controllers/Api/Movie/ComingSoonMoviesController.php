@@ -27,7 +27,7 @@ class ComingSoonMoviesController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:api', 'permission:Manage Coming Soon Movies'])
-            ->except('index', 'incrementViews', 'notifyUserViaMobileOnMovieReleased');
+            ->except('index', 'incrementViews');
     }
 
     /**
@@ -289,26 +289,6 @@ class ComingSoonMoviesController extends Controller
         return $result !== true 
             ? $this->error($result)
             : $this->success(null, 'Status updated successfully.');
-    }
-
-    public function notifyUserViaMobileOnMovieReleased(ComingSoonMovie $comingSoonMovie)
-    {
-        $authUser = request()->user('api');
-
-        $shouldRemindUser = $authUser
-            ->remindMes()
-            ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
-            ->exists();
-
-        $authUser
-            ->notify(
-                new \App\Notifications\MovieReleaseExpoNotification(
-                    $comingSoonMovie->title, 
-                    $shouldRemindUser
-                )
-            );
-
-        return $this->success();
     }
 
 
