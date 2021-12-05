@@ -19,7 +19,6 @@ use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
 use App\Traits\ActivityLogsServices;
-use Illuminate\Support\Facades\DB;
 
 class ComingSoonMoviesController extends Controller
 {
