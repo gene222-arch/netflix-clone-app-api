@@ -1,13 +1,13 @@
 <?php 
 
-namespace App\ExpoNotificationsServices;
+namespace App\ExpoNotificationServices;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class MovieReleasedExpoNotificationService
 {
-    public function notify(string $movieTitle, int $comingSoonMovieId)
+    public static function notify(string $movieTitle, int $comingSoonMovieId)
     {
         $userIds = DB::table('exponent_push_notification_interests')
             ->get()
@@ -18,11 +18,11 @@ class MovieReleasedExpoNotificationService
         $users->map(function ($user) use($movieTitle, $comingSoonMovieId)
         {
             $shouldRemindUser = false;
+            $comingSoonMovies = $user->remindMes;
 
-            if ($user->remindMes->count()) 
+            if ($comingSoonMovies->count()) 
             {
-                $shouldRemindUser = $user
-                    ->remindMes
+                $shouldRemindUser = $comingSoonMovies
                     ->map
                     ->coming_soon_movie_id
                     ->contains($comingSoonMovieId);

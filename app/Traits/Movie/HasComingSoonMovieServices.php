@@ -5,17 +5,18 @@ namespace App\Traits\Movie;
 use Carbon\Carbon;
 use App\Models\Movie;
 use App\Models\Trailer;
+use App\Models\RemindMe;
 use App\Models\SimilarMovie;
+use App\Models\ReleasedMovie;
 use App\Models\ComingSoonMovie;
 use Illuminate\Support\Facades\DB;
 use App\Traits\ActivityLogsServices;
 use App\Traits\Upload\HasUploadable;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
-use App\Models\ReleasedMovie;
-use App\Models\RemindMe;
+use App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest;
+use App\ExpoNotificationServices\MovieReleasedExpoNotificationService;
 
 trait HasComingSoonMovieServices
 {
@@ -249,6 +250,7 @@ trait HasComingSoonMovieServices
                 
                 $movie->similarMovies()->saveMany($similarMovies);
 
+                MovieReleasedExpoNotificationService::notify($movie->title, $comingSoonMovie->id);
                 event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
 
                 $comingSoonMovie->update([
