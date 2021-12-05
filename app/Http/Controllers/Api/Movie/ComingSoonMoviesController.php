@@ -296,27 +296,18 @@ class ComingSoonMoviesController extends Controller
     {
         $authUser = request()->user('api');
 
-        $shouldNotify = DB::table('exponent_push_notification_interests')
-            ->get()
-            ->map(fn ($exponent) => str_replace('App.Models.User.', '', $exponent->key))
-            ->filter(fn ($userId) => (int) $userId === $authUser->id)
-            ->count();
+        $shouldRemindUser = $authUser
+            ->remindMes()
+            ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
+            ->exists();
 
-        if ($shouldNotify) 
-        {
-            $shouldRemindUser = $authUser
-                ->remindMes()
-                ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
-                ->exists();
-        
-            $authUser
-                ->notify(
-                    new \App\Notifications\MovieReleaseExpoNotification(
-                        $comingSoonMovie->title, 
-                        $shouldRemindUser
-                    )
-                );
-        }
+        $authUser
+            ->notify(
+                new \App\Notifications\MovieReleaseExpoNotification(
+                    $comingSoonMovie->title, 
+                    $shouldRemindUser
+                )
+            );
 
         return $this->success();
     }
