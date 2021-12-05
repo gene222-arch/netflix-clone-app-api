@@ -17,7 +17,6 @@ class CreateMovieCastsTable extends Migration
             $table->id();
             $table->foreignId('movie_id');
             $table->foreignId('cast_id');
-            $table->timestamps();
 
             $table->unique([
                 'movie_id',

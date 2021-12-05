@@ -17,7 +17,6 @@ class CreateMovieDirectorsTable extends Migration
             $table->id();
             $table->foreignId('movie_id');
             $table->foreignId('director_id');
-            $table->timestamps();
 
             $table->unique([
                 'movie_id',

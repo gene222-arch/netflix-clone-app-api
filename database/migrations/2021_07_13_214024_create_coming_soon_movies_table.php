@@ -38,7 +38,6 @@ class CreateComingSoonMoviesTable extends Migration
             $table->id();
             $table->foreignId('coming_soon_movie_id');
             $table->foreignId('genre_id');
-            $table->timestamps();
 
             $table->unique([
                 'coming_soon_movie_id',
@@ -60,7 +59,6 @@ class CreateComingSoonMoviesTable extends Migration
             $table->id();
             $table->foreignId('coming_soon_movie_id');
             $table->foreignId('director_id');
-            $table->timestamps();
 
             $table->unique([
                 'coming_soon_movie_id',
@@ -82,7 +80,6 @@ class CreateComingSoonMoviesTable extends Migration
             $table->id();
             $table->foreignId('coming_soon_movie_id');
             $table->foreignId('author_id');
-            $table->timestamps();
 
             $table->unique([
                 'coming_soon_movie_id',
@@ -104,7 +101,6 @@ class CreateComingSoonMoviesTable extends Migration
             $table->id();
             $table->foreignId('coming_soon_movie_id');
             $table->foreignId('cast_id');
-            $table->timestamps();
 
             $table->unique([
                 'coming_soon_movie_id',

@@ -17,7 +17,6 @@ class CreateMovieGenresTable extends Migration
             $table->id();
             $table->foreignId('movie_id');
             $table->foreignId('genre_id');
-            $table->timestamps();
 
             $table->unique([
                 'movie_id',
