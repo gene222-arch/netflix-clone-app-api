@@ -41,6 +41,7 @@ trait HasMovieServices
                 $query->with('similarMovies.movie');
                 $query->select('*');
                 $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
+                $query->orderByDesc('created_at');
     
                 return $query->latest()->get();
             });
