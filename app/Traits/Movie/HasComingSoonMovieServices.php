@@ -49,10 +49,10 @@ trait HasComingSoonMovieServices
                 $query->when($isComingSoon, fn($q) => $q->where('released_at', null));
                 
                 return $query
-                            ->orderBy('status')
-                            ->orderBy('created_at', 'desc')
-                            ->with('trailers')
-                            ->get();
+                    ->orderBy('status')
+                    ->orderByDesc('created_at')
+                    ->with('trailers')
+                    ->get();
             });
 
             return $result;
