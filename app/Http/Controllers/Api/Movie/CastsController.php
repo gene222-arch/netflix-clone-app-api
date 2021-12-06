@@ -28,7 +28,7 @@ class CastsController extends Controller
      */
     public function index()
     {
-        $result = Cast::all();
+        $result = Cast::orderBy('birth_name', 'ASC')->get();
 
         return !$result->count()
             ? $this->noContent()

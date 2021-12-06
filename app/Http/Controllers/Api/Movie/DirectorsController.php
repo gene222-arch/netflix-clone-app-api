@@ -27,7 +27,7 @@ class DirectorsController extends Controller
      */
     public function index()
     {
-        $result = Director::all();
+        $result = Director::orderBy('birth_name', 'ASC')->get();
 
         return !$result->count()
             ? $this->noContent()

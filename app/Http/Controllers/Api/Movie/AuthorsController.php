@@ -27,7 +27,7 @@ class AuthorsController extends Controller
      */
     public function index()
     {
-        $result = Author::all();
+        $result = Author::orderBy('birth_name', 'ASC')->get();
 
         return !$result->count()
             ? $this->noContent()
