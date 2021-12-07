@@ -34,15 +34,20 @@ trait HasUserRatingServices
                     case 'like':
                         if ($modelType === 'Movie') 
                         {
-                            $movieReport = MovieReport::where('movie_id', $movieId);
+                            $movieReport = MovieReport::query()
+                                ->firstWhere('movie_id', '=', $movieId);
 
-                            if (! $movieReport) {
+                            if (! $movieReport) 
+                            {
                                 MovieReport::create([
                                     'movie_id' => $movieId,
                                     'total_likes_within_a_day' => 1,
                                     'total_likes_within_a_week' => 1
                                 ]); 
-                            } else {
+                            }
+
+                            if ($movieReport) 
+                            {
                                 $movieReport
                                     ->update([
                                         'total_likes_within_a_day' => DB::raw('total_likes_within_a_day + 1'),
@@ -83,11 +88,17 @@ trait HasUserRatingServices
                         
                         if ($modelType === 'Movie') 
                         {
-                            MovieReport::where('movie_id', $movieId)
-                                ->update([
-                                    'total_likes_within_a_day' => DB::raw('total_likes_within_a_day - 1'),
-                                    'total_likes_within_a_week' => DB::raw('total_likes_within_a_week - 1')
-                                ]);
+                            $movieReport = MovieReport::query()
+                                ->firstWhere('movie_id', '=', $movieId);
+
+                            if ($movieReport->total_likes_within_a_day && $movieReport->total_likes_within_a_week) 
+                            {
+                                $movieReport
+                                    ->update([
+                                        'total_likes_within_a_day' => DB::raw('total_likes_within_a_day - 1'),
+                                        'total_likes_within_a_week' => DB::raw('total_likes_within_a_week - 1')
+                                    ]);
+                            }
                         }
 
                         $previouseRate = UserRating::unrate($movieId, $userProfileId, $modelType);
