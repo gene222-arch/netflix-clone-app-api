@@ -34,16 +34,18 @@ class UserRating extends Model
         ]);
     }
 
-    protected static function unrate(int $movieID, int $userProfileID, string $modelType): string
+    protected static function unrate(int $movieID, int $userProfileID, string $modelType): string|null
     {
-        $userRatedMovie = self::where([
+        $userRatedMovie = self::query()
+            ->firstWhere([
                 [ 'movie_id', $movieID ],
                 [ 'model_type', $modelType ],
                 [ 'user_profile_id', $userProfileID ]
-            ])
-            ->first();
+            ]);
 
-        $userRatedMovie->delete();
+        if ($userRatedMovie) {
+            $userRatedMovie->delete();
+        }
 
         return $userRatedMovie->rate;
     }

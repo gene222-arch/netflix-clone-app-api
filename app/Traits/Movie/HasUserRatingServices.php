@@ -58,30 +58,55 @@ trait HasUserRatingServices
 
                         Rating::incrementLike($movieId, $modelType);
 
-                        UserRating::create([
-                            'movie_id' => $movieId,
-                            'model_type' => $modelType,
-                            'user_id' => $userId,
-                            'user_profile_id' => $userProfileId,
-                            'like' => true,
-                            'dislike' => false,
-                            'rate' => 'like'
-                        ]);
+                        $userRatingExists = UserRating::query()
+                            ->where([
+                                [ 'movie_id', '=', $movieId ],
+                                [ 'model_type', '=', $modelType ],
+                                [ 'user_id', '=', $userId ],
+                                [ 'user_profile_id', '=', $userProfileId ]
+                            ])
+                            ->exists();
+
+                        if (! $userRatingExists) {
+                            UserRating::query()
+                                ->create([
+                                    'movie_id' => $movieId,
+                                    'model_type' => $modelType,
+                                    'user_id' => $userId,
+                                    'user_profile_id' => $userProfileId,
+                                    'like' => true,
+                                    'dislike' => false,
+                                    'rate' => 'like'
+                                ]);
+                        }
                         
                         break;
 
                     case 'dislike':
                         Rating::incrementDislike($movieId, $modelType);
                         
-                        UserRating::create([
-                            'movie_id' => $movieId,
-                            'model_type' => $modelType,
-                            'user_id' => $userId,
-                            'user_profile_id' => $userProfileId,
-                            'like' => false,
-                            'dislike' => true,
-                            'rate' => 'dislike'
-                        ]);
+                        $userRatingExists = UserRating::query()
+                            ->where([
+                                [ 'movie_id', '=', $movieId ],
+                                [ 'model_type', '=', $modelType ],
+                                [ 'user_id', '=', $userId ],
+                                [ 'user_profile_id', '=', $userProfileId ]
+                            ])
+                            ->exists();
+
+                        if (! $userRatingExists) {
+                            UserRating::query()
+                                ->create([
+                                    'movie_id' => $movieId,
+                                    'model_type' => $modelType,
+                                    'user_id' => $userId,
+                                    'user_profile_id' => $userProfileId,
+                                    'like' => false,
+                                    'dislike' => true,
+                                    'rate' => 'dislike'
+                                ]);
+                        }
+                        
                         break;
 
                     default: 
