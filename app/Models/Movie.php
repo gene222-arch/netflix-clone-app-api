@@ -57,6 +57,10 @@ class Movie extends Model
                 'type' => 'New Arrival'
             ]);
         });
+
+        static::updated(function ($movie) {
+            static::cacheToForget();
+        });
     }
 
     public static function cacheToForget()

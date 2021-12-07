@@ -149,10 +149,12 @@ trait HasMovieServices
                         ->take(10)
                         ->get();
         
-                    array_push($result, [
-                        'title' => "Trending now in $country",
-                        'movies' => $trendingNowByUserAddress
-                    ]);
+                    if ($trendingNowByUserAddress->count()) {
+                        array_push($result, [
+                            'title' => "Trending now in $country",
+                            'movies' => $trendingNowByUserAddress
+                        ]);
+                    }
                 }
         
                 return $result;
