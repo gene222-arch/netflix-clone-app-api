@@ -37,7 +37,7 @@ class UserRatingsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\Movie\UserRating\Request  $request
+     * @param  \App\Http\Requests\Movie\UserRating\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
