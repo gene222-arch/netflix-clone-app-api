@@ -39,11 +39,6 @@ class CreateUserRatingsTable extends Migration
                 ->references('id')
                 ->on('user_profiles')
                 ->cascadeOnDelete();
-
-            $table->foreign('movie_id')
-                ->references('id')
-                ->on('movies')
-                ->cascadeOnDelete();
         });
     }
 
