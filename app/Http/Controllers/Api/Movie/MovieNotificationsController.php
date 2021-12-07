@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Movie;
 
 use App\Models\MovieNotification;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 
 class MovieNotificationsController extends Controller
 {
@@ -15,16 +14,17 @@ class MovieNotificationsController extends Controller
      */
     public function index()
     {
-        $isForKids = (bool) request()->input('isForKids');
+        $isForKids = request()->input('isForKids', false);
 
         $operation = $isForKids ? '<=' : '>=';
         $ageRestriction = $isForKids ? 12 : 0;
 
-        $notifications = MovieNotification::with([
-            'movie' => fn($q) => $q->where('age_restriction', $operation, $ageRestriction), 
-            'releasedDetails:id,movie_id,coming_soon_movie_id'
-        ])
-            ->where('created_at', '<=', Carbon::now()->addMonth())
+        $notifications = MovieNotification::query()
+            ->with([
+                'movie' => fn($q) => $q->where('age_restriction', $operation, $ageRestriction), 
+                'releasedDetails:id,movie_id,coming_soon_movie_id'
+            ])
+            ->whereRaw("DATE_ADD(created_at, INTERVAL 30 DAY) >= now()")
             ->orderByDesc('created_at')
             ->get();
 
