@@ -105,7 +105,7 @@ class MoviesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\Movie\Movie\StoreRequest  $request
+     * @param  \App\Http\Requests\Movie\Movie\StoreRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreRequest $request)
@@ -151,7 +151,7 @@ class MoviesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  App\Http\Requests\Movie\Movie\UpdateRequest  $request
+     * @param  \App\Http\Requests\Movie\Movie\UpdateRequest  $request
      * @param  Movie  $movie
      * @return \Illuminate\Http\JsonResponse
      */
