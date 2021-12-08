@@ -74,7 +74,7 @@ trait HasMovieServices
             {
                 $recentlyAddedMovies = Movie::query();
                 $recentlyAddedMovies->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
-                $recentlyAddedMovies = $recentlyAddedMovies->where('created_at', '<=', Carbon::now()->addDays(14))
+                $recentlyAddedMovies = $recentlyAddedMovies->whereRaw("DATE_ADD(created_at, INTERVAL 30 DAY) >= now()")
                     ->orderBy('created_at', 'desc')
                     ->orderBy('updated_at', 'desc')
                     ->get();
