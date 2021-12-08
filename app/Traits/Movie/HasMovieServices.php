@@ -186,18 +186,13 @@ trait HasMovieServices
                 movies.title,
                 (
                     ((avg_vote * avg_rating) + ((likes + dislikes) * (likes - dislikes)) ) / (avg_vote + (likes + dislikes))
-                    + (movie_reports.views + movie_reports.search_count)
-                ) AS score 
+                ) AS score
             FROM 
                 movies  
             INNER JOIN 
                 ratings
             ON 
                 ratings.movie_id = movies.id
-            INNER JOIN 
-                movie_reports
-            ON 
-                movie_reports.movie_id = movies.id 
             INNER JOIN 	
                 (
                     SELECT 
@@ -219,8 +214,8 @@ trait HasMovieServices
                 
             WHERE 
                 ratings.model_type = 'Movie'
-            HAVING 
-                score > 1000
+            AND 
+                (likes + dislikes) >= 1000
             LIMIT 
                 250
             "
