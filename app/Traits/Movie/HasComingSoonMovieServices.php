@@ -17,6 +17,7 @@ use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest;
 use App\ExpoNotificationServices\MovieReleasedExpoNotificationService;
+use App\Services\RatingService;
 
 trait HasComingSoonMovieServices
 {
@@ -267,6 +268,11 @@ trait HasComingSoonMovieServices
                     ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
                     ->update([ 'is_released' => true ]);
                     
+                RatingService::onReleaseRelocate(
+                    $comingSoonMovie->id,
+                    $movie->id
+                );
+
                 $this->createLog(
                     'Update',
                     ComingSoonMovie::class,
