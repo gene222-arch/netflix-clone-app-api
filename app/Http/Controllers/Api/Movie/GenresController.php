@@ -31,12 +31,12 @@ class GenresController extends Controller
         $trashedOnly = request()->input('trashedOnly', false);
 
         if ($trashedOnly === 'false') {
-            $result = Genre::orderBy('birth_name', 'ASC')->get();
+            $result = Genre::orderBy('name', 'ASC')->get();
         }
 
         if ($trashedOnly === 'true') {
             $result = Genre::onlyTrashed()
-                ->orderBy('birth_name', 'ASC')
+                ->orderBy('name', 'ASC')
                 ->get();
         }
 
