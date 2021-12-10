@@ -145,6 +145,22 @@ class ComingSoonMoviesControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_restore_soft_deleted_coming_soon_movies()
+    {
+        $data = [
+            'ids' => [43]
+        ];
+
+        $response = $this->put(
+            '/api/coming-soon-movies/restore',
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
 
     /** test */
     public function user_can_release_coming_soon_movie()
