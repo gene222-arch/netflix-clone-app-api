@@ -9,6 +9,7 @@ use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Movie\Author\Request;
 use App\Http\Requests\Upload\UploadAvatarRequest;
 use App\Http\Requests\Movie\Author\DestroyRequest;
+use App\Http\Requests\Movie\Author\RestoreRequest;
 use App\Traits\ActivityLogsServices;
 
 class AuthorsController extends Controller
@@ -146,6 +147,7 @@ class AuthorsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param \App\Http\Requests\Movie\Author\DestroyRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(DestroyRequest $request)
@@ -161,5 +163,14 @@ class AuthorsController extends Controller
         }
 
         return $this->success(null, 'Author/s deleted successfully.');
+    }
+
+    public function restore(RestoreRequest $request)
+    {
+        Author::withTrashed()
+            ->whereIn('id', $request->ids)
+            ->restore();
+
+        return $this->success(NULL, 'Selected authors are restored');
     }
 }

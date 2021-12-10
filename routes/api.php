@@ -130,6 +130,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::post('/upload-avatar', [AuthorsController::class, 'uploadAvatar']);
         Route::put('/{author}', [AuthorsController::class, 'update']);
         Route::put('/{author}/enabled', [AuthorsController::class, 'updateEnabledStatus']);
+        Route::put('/restore', [AuthorsController::class, 'restore']);
         Route::delete('/', [AuthorsController::class, 'destroy']);
     });
 
