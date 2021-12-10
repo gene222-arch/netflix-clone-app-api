@@ -125,6 +125,15 @@ class AuthorsController extends Controller
         return $this->success(null, 'Updated enabled successfully.');
     }
 
+    public function restore(RestoreRequest $request)
+    {
+        Author::withTrashed()
+            ->whereIn('id', $request->ids)
+            ->restore();
+
+        return $this->success(NULL, 'Selected authors are restored');
+    }
+
     /**
      * Display the specified resource.
      *
@@ -163,14 +172,5 @@ class AuthorsController extends Controller
         }
 
         return $this->success(null, 'Author/s deleted successfully.');
-    }
-
-    public function restore(RestoreRequest $request)
-    {
-        Author::withTrashed()
-            ->whereIn('id', $request->ids)
-            ->restore();
-
-        return $this->success(NULL, 'Selected authors are restored');
     }
 }
