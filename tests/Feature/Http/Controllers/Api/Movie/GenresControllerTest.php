@@ -74,7 +74,6 @@ class GenresControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
-
     /** test */
     public function user_can_update_enabled_status()
     {
@@ -89,6 +88,21 @@ class GenresControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_restore_soft_deleted_genres()
+    {
+        $data = [
+            'ids' => [1005]
+        ];
+
+        $response = $this->put(
+            "/api/genres/restore",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
 
     /** test */
     public function user_can_delete_genres()
