@@ -143,6 +143,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/{cast}', [CastsController::class, 'show']);
         Route::post('/', [CastsController::class, 'store']);
         Route::post('/upload-avatar', [CastsController::class, 'uploadAvatar']);
+        Route::put('/restore', [CastsController::class, 'restore']);
         Route::put('/{cast}', [CastsController::class, 'update']);
         Route::put('/{cast}/enabled', [CastsController::class, 'updateEnabledStatus']);
         Route::delete('/', [CastsController::class, 'destroy']);

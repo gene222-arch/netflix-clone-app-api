@@ -9,6 +9,7 @@ use App\Traits\ActivityLogsServices;
 use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Movie\Cast\Request;
 use App\Http\Requests\Movie\Cast\DestroyRequest;
+use App\Http\Requests\Movie\Cast\RestoreRequest;
 use App\Http\Requests\Upload\UploadAvatarRequest;
 
 class CastsController extends Controller
@@ -123,6 +124,15 @@ class CastsController extends Controller
         }
         
         return $this->success(null, 'Updated enabled successfully.');
+    }
+
+    public function restore(RestoreRequest $request)
+    {
+        Cast::withTrashed()
+            ->whereIn('id', $request->ids)
+            ->restore();
+        
+        return $this->success(NULL, 'Selected casts are restored successfully');
     }
 
     /**
