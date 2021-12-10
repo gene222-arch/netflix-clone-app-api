@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api\Movie;
 use App\Models\Genre;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Traits\ActivityLogsServices;
 use App\Http\Requests\Movie\Genre\StoreRequest;
 use App\Http\Requests\Movie\Genre\UpdateRequest;
 use App\Http\Requests\Movie\Genre\DestroyRequest;
-use App\Traits\ActivityLogsServices;
+use App\Http\Requests\Movie\Genre\RestoreRequest;
 
 class GenresController extends Controller
 {
@@ -98,6 +99,15 @@ class GenresController extends Controller
         }
 
         return $this->success(null, 'Genre updated successfully.');
+    }
+
+    public function restore(RestoreRequest $request)
+    {
+        Genre::withTrashed()
+            ->whereIn('id', $request->ids)
+            ->restore();
+
+        return $this->success(NULL, 'Selected genres are restored successfully');
     }
 
     /**

@@ -131,7 +131,7 @@ class AuthorsController extends Controller
             ->whereIn('id', $request->ids)
             ->restore();
 
-        return $this->success(NULL, 'Selected authors are restored');
+        return $this->success(NULL, 'Selected authors are restored successfully');
     }
 
     /**

@@ -216,6 +216,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/', [GenresController::class, 'index']);
         Route::get('/{genre}', [GenresController::class, 'show']);
         Route::post('/', [GenresController::class, 'store']);
+        Route::put('/restore', [GenresController::class, 'restore']);
         Route::put('/{genre}', [GenresController::class, 'update']);
         Route::put('/{genre}/enabled', [GenresController::class, 'updateEnabledStatus']);
         Route::delete('/', [GenresController::class, 'destroy']);
