@@ -196,6 +196,22 @@ class MoviesControllerTest extends TestCase
     }
 
     /** test */
+    public function user_can_restore_soft_deleted_movies()
+    {
+        $data = [
+            'ids' => [162]
+        ];
+
+        $response = $this->put(
+            "/api/movies/restore",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_upload_movie_poster()
     {
         $poster = UploadedFile::fake()->image('poster.jpg', 500, 578)->size(100);
