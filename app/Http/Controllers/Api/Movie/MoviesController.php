@@ -229,6 +229,8 @@ class MoviesController extends Controller
         Movie::withTrashed()
             ->whereIn('id', $request->ids)
             ->restore();
+
+        Movie::cacheToForget();
         
         return $this->success(NULL, 'Selected movies are restored successfully');
     }
