@@ -31,7 +31,7 @@ class EmployeesController extends Controller
             $result->onlyTrashed();
         }
 
-        $result
+        $result = $result
             ->with('roles')
             ->withCount('roles')
             ->having('roles_count', '<=', 1)
