@@ -23,7 +23,7 @@ trait HasComingSoonMovieServices
 {
     use HasUploadable, ActivityLogsServices;
     
-    public function getComingSoonMovies(bool $isForKids, bool $isComingSoon, bool $isFiltered) // null
+    public function getComingSoonMovies(bool $isForKids, bool $isComingSoon, bool $isFiltered, $trashedOnly) // null
     {
         $cacheKey = 'coming.soon.movies.index';
         $isForKidsCacheKey = 'is.for.kids.coming.soon.movies';
@@ -41,9 +41,13 @@ trait HasComingSoonMovieServices
 
             Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
 
-            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isComingSoon, $isForKids) 
+            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isComingSoon, $isForKids, $trashedOnly) 
             {
                 $query = ComingSoonMovie::query();
+
+                if ($trashedOnly === 'true') {
+                    $query->onlyTrashed();
+                }
 
                 $query->with('similarMovies.movie');
                 $query->when($isForKids, fn($q) => $q->where('age_restriction', '<=', 12));
