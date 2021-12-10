@@ -52,7 +52,7 @@ class ComingSoonMoviesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\Movie\ComingSoonMovie\StoreRequest  $request
+     * @param  \App\Http\Requests\Movie\ComingSoonMovie\StoreRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreRequest $request)
@@ -109,7 +109,7 @@ class ComingSoonMoviesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest  $request
+     * @param  \App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest  $request
      * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
@@ -278,7 +278,7 @@ class ComingSoonMoviesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest  $request
+     * @param  \App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest  $request
      * @param  ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
