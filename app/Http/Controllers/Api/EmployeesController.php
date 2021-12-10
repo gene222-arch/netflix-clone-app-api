@@ -24,7 +24,15 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        $result = Employee::with('roles')
+        $result = Employee::query();
+        $trashedOnly = request()->input('trashedOnly', false);
+        
+        if ($trashedOnly === 'true') {
+            $result->onlyTrashed();
+        }
+
+        $result
+            ->with('roles')
             ->withCount('roles')
             ->having('roles_count', '<=', 1)
             ->orderBy('first_name', 'ASC')
