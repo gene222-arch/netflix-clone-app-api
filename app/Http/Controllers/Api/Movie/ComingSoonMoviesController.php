@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Movie;
 use App\Models\Trailer;
 use App\Models\ComingSoonMovie;
 use App\Http\Controllers\Controller;
+use App\Traits\ActivityLogsServices;
 use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Upload\UploadVideoRequest;
 use App\Traits\Movie\HasComingSoonMovieServices;
@@ -15,10 +16,10 @@ use App\Http\Requests\Movie\ComingSoonMovie\StoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\UpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\DestroyRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest;
+use App\Http\Requests\Movie\ComingSoonMovie\RestoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerStoreRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerUpdateRequest;
 use App\Http\Requests\Movie\ComingSoonMovie\TrailerDestroyRequest;
-use App\Traits\ActivityLogsServices;
 
 class ComingSoonMoviesController extends Controller
 {
@@ -122,6 +123,14 @@ class ComingSoonMoviesController extends Controller
             : $this->success(null, 'Coming Soon Movie updated successfully.');
     }
 
+    public function restore(RestoreRequest $request)
+    {
+        ComingSoonMovie::withTrashed()
+            ->whereIn('id', $request->ids)
+            ->restore();
+        
+        return $this->success(NULL, 'Selected coming soon movies are restored successfully');
+    }
 
     /**
      * Upload a file.
