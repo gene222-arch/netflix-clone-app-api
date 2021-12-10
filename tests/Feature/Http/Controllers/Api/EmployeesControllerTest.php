@@ -86,6 +86,23 @@ class EmployeesControllerTest extends TestCase
 
 
     /** test */
+    public function user_can_restore_soft_deleted_employees()
+    {
+        $data = [
+            'ids' => [16]
+        ];
+
+        $response = $this->put(
+            "/api/employees/restore",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+
+    /** test */
     public function employee_can_verify_account()
     {
         $id = 109;
