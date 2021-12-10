@@ -21,14 +21,19 @@ trait HasMovieServices
     {
         $cacheKey = 'movies.index';
         $isForKidsCacheKey = 'is.for.kids.movies';
+        $trashedOnlyCacheKey = 'trashed.only.movies';
 
-        if (! Cache::has($isForKidsCacheKey)) {
-            $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
-        } else {
-            $cachedIsForKids = Cache::get($isForKidsCacheKey);
-        }
+        $endOfDay = Carbon::now()->endOfDay();
 
-        if (! Cache::has($cacheKey) || $cachedIsForKids !== $isForKids) 
+        $cachedIsForKids = !Cache::has($isForKidsCacheKey)
+            ? Cache::remember($isForKidsCacheKey, $endOfDay, fn() => $isForKids)
+            : Cache::get($isForKidsCacheKey);
+
+        $cachedTrashedOnly = !Cache::has($trashedOnlyCacheKey) 
+            ? Cache::remember($trashedOnlyCacheKey, $endOfDay, fn() => $trashedOnly)
+            : Cache::get($trashedOnlyCacheKey);
+
+        if (!Cache::has($cacheKey) || $cachedIsForKids !== $isForKids || $cachedTrashedOnly !== $trashedOnly) 
         {
             Cache::forget($isForKidsCacheKey);
             Cache::forget($cacheKey);
