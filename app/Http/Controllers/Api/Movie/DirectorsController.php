@@ -28,7 +28,17 @@ class DirectorsController extends Controller
      */
     public function index()
     {
-        $result = Director::orderBy('birth_name', 'ASC')->get();
+        $trashedOnly = request()->input('trashedOnly', false);
+
+        if ($trashedOnly === 'false') {
+            $result = Director::orderBy('birth_name', 'ASC')->get();
+        }
+
+        if ($trashedOnly === 'true') {
+            $result = Director::onlyTrashed()
+                ->orderBy('birth_name', 'ASC')
+                ->get();
+        }
 
         return !$result->count()
             ? $this->noContent()
