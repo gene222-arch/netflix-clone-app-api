@@ -28,7 +28,17 @@ class AuthorsController extends Controller
      */
     public function index()
     {
-        $result = Author::orderBy('birth_name', 'ASC')->get();
+        $trashedOnly = request()->input('trashedOnly', false);
+
+        if ($trashedOnly === 'false') {
+            $result = Author::orderBy('birth_name', 'ASC')->get();
+        }
+
+        if ($trashedOnly === 'true') {
+            $result = Author::onlyTrashed()
+                ->orderBy('birth_name', 'ASC')
+                ->get();
+        }
 
         return !$result->count()
             ? $this->noContent()
