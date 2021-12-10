@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Models\Employee;
 use App\Traits\HasEmployeeServices;
 use App\Http\Controllers\Controller;
+use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Employee\StoreRequest;
 use App\Http\Requests\Employee\UpdateRequest;
 use App\Http\Requests\Employee\DestroyRequest;
+use App\Http\Requests\Employee\RestoreRequest;
 use App\Http\Requests\Upload\UploadAvatarRequest;
-use App\Models\User;
-use App\Traits\Upload\HasUploadable;
 
 class EmployeesController extends Controller
 {
@@ -82,6 +83,15 @@ class EmployeesController extends Controller
         return is_string($result)
             ? $this->error($result)
             : $this->success(null, 'Employee updated successfully');
+    }
+
+    public function restore(RestoreRequest $request)
+    {
+        Employee::withTrashed()
+            ->whereIn('id', $request->ids)
+            ->restore();
+        
+        return $this->success(NULL, 'Selected employees are restored successfully');
     }
 
 
