@@ -106,6 +106,21 @@ class CastsControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_restore_soft_deleted_casts()
+    {
+        $data = [
+            'ids' => [20]
+        ];
+
+        $response = $this->put(
+            "/api/casts/restore",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
 
     /** test */
     public function user_can_upload_casts_avatar()
