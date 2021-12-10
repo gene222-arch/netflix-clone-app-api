@@ -107,6 +107,22 @@ class AuthorsControllerTest extends TestCase
     }
 
     /** test */
+    public function user_can_restore_soft_deleted_authors()
+    {
+        $data = [
+            'ids' => [ 1 ]
+        ];
+
+        $response = $this->put(
+            "/api/authors/restore",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
+    /** test */
     public function user_can_upload_authors_avatar()
     {
         $data = [

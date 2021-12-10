@@ -13,7 +13,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         
-        $this->actingAs(User::find(117), 'api');
+        $this->actingAs(User::find(1), 'api');
         $this->withoutExceptionHandling();
     }
 

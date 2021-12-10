@@ -128,9 +128,9 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/{author}', [AuthorsController::class, 'show']);
         Route::post('/', [AuthorsController::class, 'store']);
         Route::post('/upload-avatar', [AuthorsController::class, 'uploadAvatar']);
+        Route::put('/restore', [AuthorsController::class, 'restore']);
         Route::put('/{author}', [AuthorsController::class, 'update']);
         Route::put('/{author}/enabled', [AuthorsController::class, 'updateEnabledStatus']);
-        Route::put('/restore', [AuthorsController::class, 'restore']);
         Route::delete('/', [AuthorsController::class, 'destroy']);
     });
 

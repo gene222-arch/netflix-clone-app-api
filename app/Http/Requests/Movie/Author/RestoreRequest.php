@@ -14,7 +14,7 @@ class RestoreRequest extends BaseRequest
     public function rules()
     {
         return [
-            //
+            'ids.*' => ['required', 'distinct', 'integer', 'exists:authors,id']
         ];
     }
 }
