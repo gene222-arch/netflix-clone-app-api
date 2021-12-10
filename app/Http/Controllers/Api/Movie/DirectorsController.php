@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Api\Movie;
 use App\Models\Director;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Traits\ActivityLogsServices;
 use App\Traits\Upload\HasUploadable;
 use App\Http\Requests\Movie\Director\Request;
 use App\Http\Requests\Upload\UploadAvatarRequest;
 use App\Http\Requests\Movie\Director\DestroyRequest;
-use App\Traits\ActivityLogsServices;
+use App\Http\Requests\Movie\Director\RestoreRequest;
 
 class DirectorsController extends Controller
 {
@@ -148,6 +149,15 @@ class DirectorsController extends Controller
         return $this->success(null, 'Updated enabled successfully.');
     }
     
+    public function restore(RestoreRequest $request)
+    {
+        Director::withTrashed()
+            ->whereIn('id', $request->ids)
+            ->restore();
+        
+        return $this->success(NULL, 'Selected directors are restored successfully');
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -187,6 +187,7 @@ Route::middleware(['api', 'verified'])->group(function ()
         Route::get('/{director}', [DirectorsController::class, 'show']);
         Route::post('/', [DirectorsController::class, 'store']);
         Route::post('/upload-avatar', [DirectorsController::class, 'uploadAvatar']);
+        Route::put('/restore', [DirectorsController::class, 'restore']);
         Route::put('/{director}', [DirectorsController::class, 'update']);
         Route::put('/{director}/enabled', [DirectorsController::class, 'updateEnabledStatus']);
         Route::delete('/', [DirectorsController::class, 'destroy']);
