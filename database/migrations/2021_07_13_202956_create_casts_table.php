@@ -26,6 +26,7 @@ class CreateCastsTable extends Migration
             $table->text('death_details')->nullable();
             $table->timestamp('date_of_death')->nullable();
             $table->boolean('enabled');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 
             $table->index([
