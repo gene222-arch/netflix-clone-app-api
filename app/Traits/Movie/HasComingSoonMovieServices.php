@@ -34,7 +34,7 @@ trait HasComingSoonMovieServices
             $cachedIsForKids = Cache::get($isForKidsCacheKey);
         }
 
-        if (! Cache::has($cacheKey) || $cachedIsForKids !== $isForKids || !$isFiltered) 
+        if (! Cache::has($cacheKey) || $cachedIsForKids !== $isForKids) 
         {
             Cache::forget($isForKidsCacheKey);
             Cache::forget($cacheKey);
