@@ -29,7 +29,17 @@ class CastsController extends Controller
      */
     public function index()
     {
-        $result = Cast::orderBy('birth_name', 'ASC')->get();
+        $trashedOnly = request()->input('trashedOnly', false);
+
+        if ($trashedOnly === 'false') {
+            $result = Cast::orderBy('birth_name', 'ASC')->get();
+        }
+
+        if ($trashedOnly === 'true') {
+            $result = Cast::onlyTrashed()
+                ->orderBy('birth_name', 'ASC')
+                ->get();
+        }
 
         return !$result->count()
             ? $this->noContent()
