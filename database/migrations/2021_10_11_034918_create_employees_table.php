@@ -23,6 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->string('email');
             $table->string('phone');
             $table->char('pin_code', 4);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
 
             $table->unique([

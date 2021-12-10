@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 class Employee extends Model
 {
-    use HasFactory, HasRoles, HasApiTokens;
+    use HasFactory, HasRoles, HasApiTokens, SoftDeletes;
 
     protected $guard_name = 'api';
     
@@ -21,6 +22,10 @@ class Employee extends Model
         'email',
         'phone',
         'pin_code'
+    ];
+
+    protected $hidden = [
+        'deleted_at'
     ];
 
     protected static function boot()
