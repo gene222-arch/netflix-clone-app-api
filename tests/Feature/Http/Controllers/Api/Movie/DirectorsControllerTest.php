@@ -107,6 +107,22 @@ class DirectorsControllerTest extends TestCase
         $this->assertResponse($response);
     }
 
+    /** test */
+    public function user_can_restore_soft_deleted_directors()
+    {
+        $data = [
+            'ids' => [45]
+        ];
+
+        $response = $this->put(
+            "/api/directors/restore",
+            $data,
+            $this->apiHeader()
+        );
+
+        $this->assertResponse($response);
+    }
+
     
     /** test */
     public function user_can_upload_directors_avatar()
