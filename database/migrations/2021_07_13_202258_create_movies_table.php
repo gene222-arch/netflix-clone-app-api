@@ -33,6 +33,7 @@ class CreateMoviesTable extends Migration
             $table->string('video_preview_path');
             $table->string('title_logo_path');
             $table->string('video_size_in_mb');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
