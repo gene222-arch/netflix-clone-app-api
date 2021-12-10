@@ -17,7 +17,7 @@ trait HasMovieServices
 {
     use HasUploadable, ActivityLogsServices; 
 
-    public function getMovies(bool $isForKids)
+    public function getMovies(bool $isForKids, string $trashedOnly): mixed
     {
         $cacheKey = 'movies.index';
         $isForKidsCacheKey = 'is.for.kids.movies';
@@ -34,10 +34,14 @@ trait HasMovieServices
             Cache::forget($cacheKey);
 
             Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
-            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids) 
+            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids, $trashedOnly) 
             {
                 $query = Movie::query();
                 
+                if ($trashedOnly === 'true') {
+                    $query->onlyTrashed();
+                }
+
                 $query->with('similarMovies.movie');
                 $query->select('*');
                 $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
