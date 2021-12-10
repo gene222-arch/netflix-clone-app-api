@@ -46,7 +46,7 @@ trait HasMovieServices
             Cache::forget($cacheKey);
 
             Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
-            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids, $trashedOnly) 
+            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids) 
             {
                 $query = Movie::query();
 

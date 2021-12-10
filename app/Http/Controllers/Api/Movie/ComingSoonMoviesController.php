@@ -38,12 +38,13 @@ class ComingSoonMoviesController extends Controller
      */
     public function index()
     {
+        $isForKids = request()->input('isForKids', false);
+        $isComingSoon = request()->input('isComingSoon', false);
         $trashedOnly = request()->input('trashedOnly', false);
 
         $result = $this->getComingSoonMovies(
-            request()->input('isForKids', false),
-            request()->input('isComingSoon', false),
-            request()->input('isFiltered', false),
+            $isForKids,
+            $isComingSoon,
             $trashedOnly
         );
 
