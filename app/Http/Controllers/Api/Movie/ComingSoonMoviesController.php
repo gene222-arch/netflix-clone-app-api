@@ -132,6 +132,8 @@ class ComingSoonMoviesController extends Controller
         ComingSoonMovie::withTrashed()
             ->whereIn('id', $request->ids)
             ->restore();
+
+        ComingSoonMovie::cacheToForget();
         
         return $this->success(NULL, 'Selected coming soon movies are restored successfully');
     }
