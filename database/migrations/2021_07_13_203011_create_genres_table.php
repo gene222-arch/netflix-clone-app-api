@@ -18,6 +18,7 @@ class CreateGenresTable extends Migration
             $table->string('name')->unique();
             $table->text('description')->nullable();
             $table->boolean('enabled')->default(false);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
