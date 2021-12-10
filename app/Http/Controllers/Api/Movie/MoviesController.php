@@ -49,7 +49,7 @@ class MoviesController extends Controller
 
         $result = $this->getMovies($isForKids, $trashedOnly);
 
-        return $this->success($result);
+        return $this->success($result ?? []);
     }
 
     /**

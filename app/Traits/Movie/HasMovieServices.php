@@ -19,9 +19,19 @@ trait HasMovieServices
 
     public function getMovies(bool $isForKids, string $trashedOnly): mixed
     {
+        if ($trashedOnly === 'true') {
+            $query = Movie::query();
+
+            $query->onlyTrashed();
+            $query->with('similarMovies.movie');
+            $query->select('*');
+            $query->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12));
+
+            return $query->latest()->get();
+        }
+
         $cacheKey = 'movies.index';
         $isForKidsCacheKey = 'is.for.kids.movies';
-        $trashedOnlyCacheKey = 'trashed.only.movies';
 
         $endOfDay = Carbon::now()->endOfDay();
 
@@ -29,11 +39,8 @@ trait HasMovieServices
             ? Cache::remember($isForKidsCacheKey, $endOfDay, fn() => $isForKids)
             : Cache::get($isForKidsCacheKey);
 
-        $cachedTrashedOnly = !Cache::has($trashedOnlyCacheKey) 
-            ? Cache::remember($trashedOnlyCacheKey, $endOfDay, fn() => $trashedOnly)
-            : Cache::get($trashedOnlyCacheKey);
 
-        if (!Cache::has($cacheKey) || $cachedIsForKids !== $isForKids || $cachedTrashedOnly !== $trashedOnly) 
+        if (!Cache::has($cacheKey) || $cachedIsForKids !== $isForKids) 
         {
             Cache::forget($isForKidsCacheKey);
             Cache::forget($cacheKey);
@@ -42,10 +49,6 @@ trait HasMovieServices
             $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isForKids, $trashedOnly) 
             {
                 $query = Movie::query();
-                
-                if ($trashedOnly === 'true') {
-                    $query->onlyTrashed();
-                }
 
                 $query->with('similarMovies.movie');
                 $query->select('*');
