@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Api\Movie;
 use App\Models\Movie;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Traits\ActivityLogsServices;
 use App\Traits\Upload\HasUploadable;
 use App\Traits\Movie\HasMovieServices;
 use App\Http\Requests\Movie\Movie\StoreRequest;
 use App\Http\Requests\Movie\Movie\UpdateRequest;
 use App\Http\Requests\Upload\UploadVideoRequest;
 use App\Http\Requests\Movie\Movie\DestroyRequest;
+use App\Http\Requests\Movie\Movie\RestoreRequest;
 use App\Http\Requests\Upload\UploadPosterRequest;
 use App\Http\Requests\Upload\UploadTitleLogoRequest;
 use App\Http\Requests\Upload\UploadWallpaperRequest;
 use App\Http\Requests\Upload\UploadVideoPreviewRequest;
-use App\Traits\ActivityLogsServices;
 
 class MoviesController extends Controller
 {
@@ -218,6 +219,15 @@ class MoviesController extends Controller
         $movie->report()->create([ 'search_count' => 1 ]);
 
         return $this->success(null, 'Movie report created successfully.');
+    }
+
+    public function restore(RestoreRequest $request)
+    {
+        Movie::withTrashed()
+            ->whereIn('id', $request->ids)
+            ->restore();
+        
+        return $this->success(NULL, 'Selected movies are restored successfully');
     }
 
     /**
