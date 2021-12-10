@@ -28,7 +28,17 @@ class GenresController extends Controller
      */
     public function index()
     {
-        $result = Genre::orderBy('name', 'asc')->get();
+        $trashedOnly = request()->input('trashedOnly', false);
+
+        if ($trashedOnly === 'false') {
+            $result = Genre::orderBy('birth_name', 'ASC')->get();
+        }
+
+        if ($trashedOnly === 'true') {
+            $result = Genre::onlyTrashed()
+                ->orderBy('birth_name', 'ASC')
+                ->get();
+        }
 
         return !$result
             ? $this->noContent()
