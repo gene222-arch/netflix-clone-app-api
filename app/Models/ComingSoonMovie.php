@@ -12,10 +12,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ComingSoonMovie extends Model
 {
-    use HasFactory, HasUploadable;
+    use HasFactory, HasUploadable, SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -37,7 +38,8 @@ class ComingSoonMovie extends Model
 
 
     protected $hidden = [
-        'updated_at'
+        'updated_at',
+        'deleted_at'
     ];
 
     protected static function boot()
