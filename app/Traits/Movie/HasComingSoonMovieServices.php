@@ -23,7 +23,7 @@ trait HasComingSoonMovieServices
 {
     use HasUploadable, ActivityLogsServices;
     
-    public function getComingSoonMovies(bool $isForKids, bool $isComingSoon, $trashedOnly) // null
+    public function getComingSoonMovies(bool $isForKids, bool $isComingSoon, string $trashedOnly) // null
     {
         if ($trashedOnly === 'true') 
         {
@@ -40,7 +40,6 @@ trait HasComingSoonMovieServices
                 ->with('trailers')
                 ->get();
         }
-
 
         $cacheKey = 'coming.soon.movies.index';
         $isForKidsCacheKey = 'is.for.kids.coming.soon.movies';
