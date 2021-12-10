@@ -320,7 +320,7 @@ class MoviesController extends Controller
     public function destroy(DestroyRequest $request)
     {
         try {
-            DB::transaction(function ($request) 
+            DB::transaction(function () use($request)
             {
                 Movie::whereIn('id', $request->ids)->delete();
 
