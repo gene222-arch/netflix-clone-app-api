@@ -44,20 +44,22 @@ trait HasComingSoonMovieServices
         $cacheKey = 'coming.soon.movies.index';
         $isForKidsCacheKey = 'is.for.kids.coming.soon.movies';
 
+        $twentyFourHourLimit = Carbon::now()->endOfDay();
+
         if (! Cache::has($isForKidsCacheKey)) {
-            $cachedIsForKids = Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
+            $cachedIsForKids = Cache::remember($isForKidsCacheKey, $twentyFourHourLimit, fn() => $isForKids);
         } else {
             $cachedIsForKids = Cache::get($isForKidsCacheKey);
         }
 
-        if (! Cache::has($cacheKey) || $cachedIsForKids !== $isForKids) 
+        if (!Cache::has($cacheKey) || $cachedIsForKids !== $isForKids) 
         {
             Cache::forget($isForKidsCacheKey);
             Cache::forget($cacheKey);
 
-            Cache::remember($isForKidsCacheKey, Carbon::now()->endOfDay(), fn() => $isForKids);
+            Cache::remember($isForKidsCacheKey, $twentyFourHourLimit, fn() => $isForKids);
 
-            $result = Cache::remember($cacheKey, Carbon::now()->endOfDay(), function () use($isComingSoon, $isForKids) 
+            $result = Cache::remember($cacheKey, $twentyFourHourLimit, function () use($isComingSoon, $isForKids) 
             {
                 $query = ComingSoonMovie::query();
 
