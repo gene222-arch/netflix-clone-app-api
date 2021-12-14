@@ -5,7 +5,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.0|^7.3|^8.0.9",
+        "php": "^7.3|^8.0.9",
         "alymosul/laravel-exponent-push-notifications": "^2.4",
         "beyondcode/laravel-websockets": "^1.11",
         "fideloper/proxy": "^4.4",
