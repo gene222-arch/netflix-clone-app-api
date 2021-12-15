@@ -38,8 +38,8 @@ class EmailVerificationNotification extends VerifyEmail
             ]
         );
 
-        $apiUrl = env('APP_HOST') . ":8000/api";
-        $reactAppUrl = env('REACT_APP_HOST') . '/auth';
+        $apiUrl = env('APP_URL') . "/api";
+        $reactAppUrl = env('REACT_APP_URL') . '/auth';
         $emailVerificationUrl = str_replace($apiUrl, $reactAppUrl, $url);
 
         return $emailVerificationUrl;
