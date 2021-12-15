@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('subscription:monitor-expiration')->everyMinute();
         $schedule->command('subscription:notify-expiration')->dailyAt('08:00');
         
-        collect(['6:00', '12:00', '18:00', '24:00'])->each(function ($time) use ($schedule) {
+        collect(['6:00', '12:00', '18:00'])->each(function ($time) use ($schedule) {
             $schedule->command('notify:user-unsubscribed')->dailyAt($time);
         });
     }
