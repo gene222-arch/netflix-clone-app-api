@@ -39,13 +39,13 @@ return [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'encrypted' => env('LARAVEL_WEBSOCKETS_ENCRYPTED', true),
                 'useTLS' => env('LARAVEL_WEBSOCKETS_USE_TLS', false),
-                'host' => env('LARAVEL_WEBSOCKETS_HOST'), // '127.0.0.1'
+                'host' => env('LARAVEL_WEBSOCKETS_HOST'),
                 'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001), 
                 'scheme' => env('LARAVEL_WEBSOCKETS_SCHEME', 'http'),
-                // 'curl_options' => [ // Disable SSL Verification
-                //     CURLOPT_SSL_VERIFYHOST => 0,
-                //     CURLOPT_SSL_VERIFYPEER => 0,
-                // ],
+                'curl_options' => [
+                    CURLOPT_SSL_VERIFYHOST => 0,
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                ],
             ],
         ],
 
