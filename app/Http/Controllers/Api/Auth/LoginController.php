@@ -72,7 +72,8 @@ class LoginController extends Controller
                 ->subscriptions()
                 ->orderBy('subscribed_at', 'ASC')
                 ->get()
-                ->first()->subscribed_at;
+                ->first()
+                ->subscribed_at;
 
             $subscriber->account_created_at = Carbon::parse($oldestSubscriptionDate)->format('F Y');
         }
@@ -83,12 +84,6 @@ class LoginController extends Controller
 
             $data = $data + [
                 'role' => $role
-            ];
-        }
-
-        if ($withPermissions && $role !== 'Subscriber') {
-            $data = $data + [
-                'permissions' => $this->authPermissionViaRoles($auth)
             ];
         }
 
