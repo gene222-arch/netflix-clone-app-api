@@ -97,7 +97,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
         dispatch(new QueuePasswordResetNotification($this, $token))
-            ->delay(now()->addSeconds(10));
+            ->delay(now()->addSeconds(1));
     }
 
     public function subscriberActiveLogs()
@@ -163,7 +163,7 @@ class User extends Authenticatable implements MustVerifyEmail
         dispatch(
             new \App\Jobs\QueuePaymentAuthorizationNotification($this, $checkOutUrl)
         )
-        ->delay(2);
+        ->delay(1);
     }
 
     /**
@@ -176,7 +176,7 @@ class User extends Authenticatable implements MustVerifyEmail
         dispatch(
             new QueueEmailVerificationNotification($this)
         )
-        ->delay(3);
+        ->delay(1);
     }
     
     /** RELATIONSHIPS */
