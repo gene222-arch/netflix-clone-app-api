@@ -42,10 +42,10 @@ return [
                 'host' => env('LARAVEL_WEBSOCKETS_HOST'), // '127.0.0.1'
                 'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001), 
                 'scheme' => env('LARAVEL_WEBSOCKETS_SCHEME', 'http'),
-                'curl_options' => [ // Disable SSL Verification
-                    CURLOPT_SSL_VERIFYHOST => 0,
-                    CURLOPT_SSL_VERIFYPEER => 0,
-                ],
+                // 'curl_options' => [ // Disable SSL Verification
+                //     CURLOPT_SSL_VERIFYHOST => 0,
+                //     CURLOPT_SSL_VERIFYPEER => 0,
+                // ],
             ],
         ],
 
