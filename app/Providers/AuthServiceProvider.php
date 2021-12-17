@@ -26,10 +26,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('viewWebSocketsDashboard', function ($user = null) {
-            return true;
-        });
-
         if (! $this->app->routesAreCached()) {
             Passport::routes();
         }
