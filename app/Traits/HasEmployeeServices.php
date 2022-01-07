@@ -45,7 +45,7 @@ trait HasEmployeeServices
         return true;
     }
 
-    public static function update(\App\Http\Requests\Employee\UpdateRequest $request, \App\Models\Employee $employee)
+    public static function update(\App\Http\Requests\Employee\UpdateRequest $request, Employee $employee)
     {
         try {
             DB::transaction(function () use ($request, $employee) 
