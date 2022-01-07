@@ -68,7 +68,7 @@ class EmployeesController extends Controller
      */
     public function show(Employee $employee)
     {
-        $role = User::firstWhere('email', $employee->email)?->roles?->first()?->name;
+        $role = User::firstWhere('email', $employee->email)?->roles?->first();
 
         return $this->success([
             'employee' => $employee,
