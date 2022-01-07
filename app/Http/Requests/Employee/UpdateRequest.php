@@ -23,7 +23,8 @@ class UpdateRequest extends BaseRequest
             'last_name' => ['required', 'string'],
             'email' => ['required', 'email', "unique:employees,email,$id"],
             'phone' => ['required', 'string', "unique:employees,phone,$id"],
-            'pin_code' => ['required', 'string', 'min:4', 'max:4', "unique:employees,pin_code,$id"]
+            'pin_code' => ['required', 'string', 'min:4', 'max:4', "unique:employees,pin_code,$id"],
+            'role_id' => ['required', 'integer', 'exists:roles,id']
         ];
     }
 }
