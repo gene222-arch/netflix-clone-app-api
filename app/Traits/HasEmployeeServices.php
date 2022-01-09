@@ -97,7 +97,7 @@ trait HasEmployeeServices
                     ->email
                     ->toArray();
 
-                DB::table('users')->whereIn('email', $employeeEmails)->delete();
+                User::whereIn('email', $employeeEmails)->delete();
                 
                 Employee::whereIn('id', $request->ids)->delete();
             });
