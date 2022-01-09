@@ -95,9 +95,18 @@ class EmployeesController extends Controller
 
     public function restore(RestoreRequest $request)
     {
-        Employee::withTrashed()
-            ->whereIn('id', $request->ids)
+        $employeeQuery = Employee::query()
+            ->withTrashed()
+            ->whereIn('id', $request->ids);
+
+        $employeeEmails = $employeeQuery->get()->map->email;
+
+        User::withTrashed()
+            ->whereIn('email', $employeeEmails)
             ->restore();
+
+        $employeeQuery->restore();
+            
         
         return $this->success(NULL, 'Selected employees are restored successfully');
     }
