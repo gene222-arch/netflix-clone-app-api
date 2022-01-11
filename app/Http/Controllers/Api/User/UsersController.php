@@ -88,8 +88,6 @@ class UsersController extends Controller
         
         $token = $auth->createToken(env('PERSONAL_ACCESS_TOKEN'))->accessToken;
 
-        $auth->withAccessToken($token);
-
         return $this->success([
             'user' => $user,
             'profiles' => $profiles,
