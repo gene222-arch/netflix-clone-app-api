@@ -262,7 +262,7 @@ trait HasComingSoonMovieServices
                 {
                     $similarMovies[] = new SimilarMovie([ 
                         'similar_movie_id' => $similarMovieId, 
-                        'model_type' => Movie::class 
+                        'model_type' => Movie::class
                     ]);
                 }
                 
