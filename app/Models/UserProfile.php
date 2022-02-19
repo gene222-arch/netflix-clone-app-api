@@ -60,6 +60,8 @@ class UserProfile extends Model
 
         static::updated(function ($userProfile) 
         {
+            $userProfile->enabled = 1;
+
             event(new \App\Events\SubscriberProfileUpdatedEvent(
                 auth('api')->user(), 
                 $userProfile
