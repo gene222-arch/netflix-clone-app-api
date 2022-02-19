@@ -56,8 +56,11 @@ class UserProfilesController extends Controller
             ])
             ->find($id);
 
-        $profileDetails->recently_watched_movies = $profileDetails
-            ?->recentlyWatchedMovies
+        $profileDetails->recently_watched_movies = [];
+
+        if ($profileDetails->recentlyWatchedMovies)
+        {
+            $profileDetails->recentlyWatchedMovies
             ->map(function ($recentlyWatchedMovie) 
             {
                 $movie = $recentlyWatchedMovie->movie;
@@ -67,7 +70,8 @@ class UserProfilesController extends Controller
                 return $movie;
             });
 
-        unset($profileDetails->recentlyWatchedMovies);
+            unset($profileDetails->recentlyWatchedMovies);
+        }
 
         return $this->success($profileDetails);
     }
