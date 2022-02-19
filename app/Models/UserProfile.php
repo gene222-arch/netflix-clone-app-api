@@ -44,6 +44,8 @@ class UserProfile extends Model
 
         static::created(function ($userProfile) 
         {
+            $userProfile->enabled = 1;
+            
             event(new \App\Events\SubscriberProfileCreatedEvent(
                 auth('api')->user(), 
                 $userProfile
@@ -60,8 +62,6 @@ class UserProfile extends Model
 
         static::updated(function ($userProfile) 
         {
-            $userProfile->enabled = 1;
-
             event(new \App\Events\SubscriberProfileUpdatedEvent(
                 auth('api')->user(), 
                 $userProfile
