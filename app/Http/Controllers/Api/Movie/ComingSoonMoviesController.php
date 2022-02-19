@@ -294,7 +294,7 @@ class ComingSoonMoviesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\Movie\ComingSoonMovie\ReleaseRequest  $request
-     * @param  ComingSoonMovie  $comingSoonMovie
+     * @param  \App\Models\ComingSoonMovie  $comingSoonMovie
      * @return \Illuminate\Http\JsonResponse
      */
     public function releaseMovie(ReleaseRequest $request, ComingSoonMovie $comingSoonMovie)
