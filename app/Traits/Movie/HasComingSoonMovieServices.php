@@ -231,6 +231,7 @@ trait HasComingSoonMovieServices
             DB::transaction(function () use ($request, $comingSoonMovie) 
             {
                 $currentDate = Carbon::today();
+                $comingSoonMovieID = $comingSoonMovie->id;
         
                 $movieDetails = [
                     'year_of_release' => $currentDate->format('Y'),
@@ -269,7 +270,7 @@ trait HasComingSoonMovieServices
                 
                 $movie->similarMovies()->saveMany($similarMovies);
 
-                MovieReleasedExpoNotificationService::notify($movie->title, $comingSoonMovie->id);
+                MovieReleasedExpoNotificationService::notify($movie->title, $comingSoonMovieID);
                 event(new \App\Events\ComingSoonMovieReleasedEvent($comingSoonMovie));
 
                 $comingSoonMovie->update([
@@ -279,22 +280,22 @@ trait HasComingSoonMovieServices
 
                 ReleasedMovie::query()->create([
                     'movie_id' => $movie->id,
-                    'coming_soon_movie_id' => $comingSoonMovie->id
+                    'coming_soon_movie_id' => $comingSoonMovieID
                 ]);
 
                 RemindMe::query()
-                    ->where('coming_soon_movie_id', '=', $comingSoonMovie->id)
+                    ->where('coming_soon_movie_id', '=', $comingSoonMovieID)
                     ->update([ 'is_released' => true ]);
                     
                 RatingService::onReleaseRelocate(
-                    $comingSoonMovie->id,
+                    $comingSoonMovieID,
                     $movie->id
                 );
 
                 $this->createLog(
                     'Update',
                     ComingSoonMovie::class,
-                    "video-management/coming-soon-movies/$comingSoonMovie->id"
+                    "video-management/coming-soon-movies/$comingSoonMovieID"
                 );
                 
                 ComingSoonMovie::cacheToForget();
