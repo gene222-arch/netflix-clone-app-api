@@ -247,8 +247,6 @@ trait HasComingSoonMovieServices
                 $directors = $comingSoonMovie->directors()->get();
                 $genres = $comingSoonMovie->genres()->get();
 
-                unset($comingSoonMovie->id);
-
                 $movie = Movie::create($movieDetails + $comingSoonMovie->toArray());
 
                 $movie->authors()->attach($authors);
