@@ -71,6 +71,7 @@ trait ApiResponser
             200 => '200 OK',
             204 => 'No Content',
             400 => '400 Bad Request',
+            404 => 'Not Found',
             403 => 'Forbidden Request',
             422 => 'Unprocessable Entity',
             500 => '500 Internal Server Error'
