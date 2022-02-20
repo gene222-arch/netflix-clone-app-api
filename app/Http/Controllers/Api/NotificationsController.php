@@ -21,8 +21,8 @@ class NotificationsController extends Controller
      */
     public function paymentAuthorizationNotifications()
     {
-        $notifications = auth('api')
-            ->user()
+        $notifications = request()
+            ->user('api')
             ->notifications
             ->filter(fn ($notification) => $notification->type === 'App\Notifications\PaymentAuthorizationNotification')
             ->map(function ($notification) {
@@ -31,7 +31,7 @@ class NotificationsController extends Controller
                 return $notification;
             });
 
-        return !$notifications->count() ? $this->noContent() : $this->success($notifications);
+        return !$notifications->count() ? $this->noContent() : $this->success($notifications->toArray());
     }
 
 
