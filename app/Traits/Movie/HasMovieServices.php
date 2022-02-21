@@ -99,7 +99,7 @@ trait HasMovieServices
                     ')
                         ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                         ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
-                        ->orderByDesc('trending_score')
+                        ->orderByRaw('trending_score DESC')
                         ->take(10)
                         ->get();
         
@@ -110,7 +110,7 @@ trait HasMovieServices
                     ')
                         ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                         ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
-                        ->orderByDesc('top_ten_score')
+                        ->orderByRaw('top_ten_score DESC')
                         ->take(10)
                         ->get();
         
@@ -122,7 +122,7 @@ trait HasMovieServices
                     ->leftJoin('ratings', 'ratings.movie_id', '=', 'movies.id')
                     ->where('ratings.model_type', 'Movie')
                     ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
-                    ->orderByDesc('popularity')
+                    ->orderByRaw('popularity DESC')
                     ->take(10)
                     ->get();
         
@@ -157,7 +157,7 @@ trait HasMovieServices
                         ->leftJoin('movie_reports', 'movie_reports.movie_id', '=', 'movies.id')
                         ->where('movies.country', $country)
                         ->when($isForKids, fn($q) => $q->where('movies.age_restriction', '<=', 12))
-                        ->orderByDesc('trending_score')
+                        ->orderByRaw('trending_score DESC')
                         ->take(10)
                         ->get();
         
